@@ -1,0 +1,248 @@
+/* Professional Agent Layout - Clean Design */
+.agent-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+/* Sidebar - Professional Teal/Green */
+.agent-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+}
+
+.agent-sidebar.open {
+    transform: translateX(0);
+}
+
+/* Mobile Header */
+.agent-mobile-header {
+    display: none;
+    height: 60px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.agent-brand {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #047857;
+}
+
+.brand-highlight {
+    color: #10b981;
+}
+
+.agent-menu-toggle {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: none;
+    /* Only show in sidebar on mobile */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-close {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.sidebar-content-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* User Profile Summary */
+.user-profile-summary {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.avatar-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.user-info {
+    text-align: left;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.user-role {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+/* Agent Navigation */
+.agent-nav {
+    flex: 1;
+    padding: 1rem 0;
+    overflow-y: auto;
+    position: relative;
+    z-index: 5;
+}
+
+.agent-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-weight: 500;
+    margin: 0 0.5rem;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.agent-nav-item svg {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.agent-nav-item:hover {
+    background: #f0fdf4;
+    color: #047857;
+}
+
+.agent-nav-item.active {
+    background: #d1fae5;
+    color: #047857;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.logout-btn:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+/* Main Content Area */
+.agent-main-content {
+    flex: 1;
+    margin-left: 260px;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    background: #f8f9fa;
+    min-height: 100vh;
+    width: calc(100% - 260px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .agent-mobile-header {
+        display: flex;
+    }
+
+    .agent-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+        width: 280px;
+        z-index: 1100;
+        height: 100vh;
+        box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.1), 10px 0 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .agent-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-header {
+        display: flex;
+    }
+
+    .sidebar-close {
+        display: block;
+    }
+
+    .agent-main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 1.5rem 1rem;
+        padding-top: 1rem;
+    }
+
+    .agent-layout {
+        display: block;
+    }
+}

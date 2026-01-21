@@ -1,0 +1,254 @@
+.my-bookings-page {
+    padding: 16px 0 80px;
+    background-color: #0f172a;
+    /* Dark theme as per screenshot */
+    min-height: 100vh;
+}
+
+.bookings-header {
+    margin: 0 0 40px 0;
+    text-align: left;
+}
+
+.bookings-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 12px 0;
+}
+
+.bookings-header p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+/* --- Premium 3-Column Booking Ticket --- */
+.bookings-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    width: 100% !important;
+}
+
+.booking-ticket {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: rgba(30, 41, 59, 0.4) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 24px !important;
+    padding: 2.5rem !important;
+    gap: 2rem !important;
+    transition: all 0.3s ease;
+    width: 100% !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+.booking-ticket:hover {
+    transform: translateY(-4px);
+    background: rgba(30, 41, 59, 0.5) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Section 1: Info (Left) */
+.ticket-info {
+    flex: 2 !important;
+    min-width: 0;
+}
+
+.info-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.ticket-info .property-title {
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.status-badge.confirmed {
+    background: rgba(52, 211, 153, 0.2);
+    color: #34d399;
+}
+
+.property-location {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.booking-ref {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: monospace;
+}
+
+/* Section 2: Specs (Middle) */
+.ticket-specs {
+    flex: 1.5 !important;
+    min-width: 280px;
+}
+
+.spec-card {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.spec-item svg {
+    color: #3b82f6;
+    opacity: 0.9;
+}
+
+.spec-content label {
+    display: block;
+    font-size: 0.7rem !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    text-transform: uppercase !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px !important;
+}
+
+.spec-content strong {
+    font-size: 1.05rem !important;
+    color: #f1f5f9 !important;
+    font-weight: 600 !important;
+}
+
+/* Section 3: Pricing (Right) */
+.ticket-pricing {
+    flex: 1 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.5rem;
+    text-align: right;
+    min-width: 180px;
+}
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.price-box label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+}
+
+.price-amount {
+    font-size: 2.2rem !important;
+    color: #10b981 !important;
+    font-weight: 800 !important;
+}
+
+.ticket-actions {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+/* Responsive Stacking */
+@media (max-width: 1150px) {
+    .booking-ticket {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem !important;
+        padding: 2rem !important;
+    }
+
+    .ticket-pricing {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+    }
+
+    .ticket-actions {
+        width: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .ticket-info .property-title {
+        font-size: 1.5rem !important;
+    }
+
+    .ticket-specs {
+        min-width: 0;
+    }
+
+    .ticket-pricing {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.25rem;
+    }
+
+    .ticket-actions {
+        flex-direction: column;
+    }
+
+    .ticket-actions .btn {
+        width: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

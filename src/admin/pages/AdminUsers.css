@@ -1,0 +1,303 @@
+/* Professional Admin Users Page */
+.admin-users {
+    padding: 0;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 4px 0;
+}
+
+.page-header p {
+    color: var(--gray-500);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background: var(--blue-600);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: var(--blue-700);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Stats Cards */
+.users-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card-mini {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    flex-shrink: 0;
+}
+
+.stat-icon.active {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.stat-icon.agent {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.stat-icon.admin {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    font-weight: 500;
+}
+
+/* Filters Bar */
+.filters-bar {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    border: 1px solid var(--gray-200);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group span {
+    color: var(--gray-700);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--gray-50);
+    color: var(--gray-700);
+    font-size: 0.85rem;
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--gray-900);
+    font-size: 0.9rem;
+}
+
+.user-email {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+}
+
+/* Badges */
+.role-badge,
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.role-badge.role-tenant {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.role-badge.role-agent {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.role-badge.role-admin,
+.role-badge.role-super_admin {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.status-badge.status-active {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.status-badge.status-suspended {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.status-badge.status-banned {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+/* Actions */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.action-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+    display: block !important;
+    stroke-width: 2.5px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.action-btn:hover {
+    background: #f8fafc;
+    color: #2563eb;
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.action-btn.edit:hover {
+    color: #059669;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+
+.action-btn.mail:hover {
+    color: #7c3aed;
+    background: #f5f3ff;
+    border-color: #ddd6fe;
+}
+
+.action-btn.delete:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .users-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filters-bar {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .filter-select {
+        flex: 1;
+    }
+
+    .filter-stats {
+        margin-left: 0;
+        width: 100%;
+        text-align: right;
+    }
+}

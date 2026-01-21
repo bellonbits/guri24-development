@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "Hooy",
+        "buy": "Iibso",
+        "rent": "Kirayso",
+        "sell": "Diiwaangeli Guri",
+        "about": "Nagu saabsan",
+        "agent": "Bogga Wakiilka",
+        "login": "Soo gal",
+        "register": "Isqor"
+    },
+    "hero": {
+        "title": "Ka hel Gurigaaga Riyada Guri24",
+        "subtitle": "Ku xiraya guryaha ugu fiican ee Soomaaliya, Kiiniya, iyo meelo kale.",
+        "search_placeholder": "Halkee u socotaa?",
+        "search_btn": "Raadi"
+    },
+    "categories": {
+        "apartment": "Aqalka",
+        "house": "Guriga",
+        "villa": "Fiilla",
+        "commercial": "Ganacsiga",
+        "land": "Dhulka",
+        "shop": "Dukaan",
+        "beachfront": "Xeebta",
+        "cabins": "Waabab",
+        "trending": "Kuwa Hadda",
+        "new": "Cusub",
+        "mansions": "Guryo Waaweyn",
+        "farms": "Beero",
+        "islands": "Jasiirado",
+        "golfing": "Golf"
+    },
+    "common": {
+        "language": "Luuqadda",
+        "english": "Ingiriis",
+        "somali": "Soomaali",
+        "view_all": "Eeg dhamaantood",
+        "featured_properties": "Guryaha la xushay",
+        "explore_category": "U baadh qayb ahaan",
+        "location": "Goobta",
+        "type": "Nooca",
+        "price_range": "Baaxadda Qiimaha",
+        "per_night": "/ habeen"
+    },
+    "stays": {
+        "badge": "Guryaha Kirada Gaaban",
+        "hero_title": "Ka hel meelo gaar ah oo aad degto",
+        "hero_subtitle": "Qabsato guryo, aqallo ama fiillooyin safarkaaga xiga.",
+        "location": "Goobta",
+        "search_placeholder": "Halkee u socotaa?",
+        "check_in": "Soo gelidda",
+        "check_out": "Ka bixidda",
+        "guests": "Martida",
+        "guest_count": "qof",
+        "search_btn": "Raadi"
+    }
+}

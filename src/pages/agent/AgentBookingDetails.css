@@ -1,0 +1,227 @@
+.agent-booking-details-page {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #1e293b;
+}
+
+.details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.details-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #64748b;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #0f172a;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    border: 1px solid transparent;
+}
+
+/* Tailwind-ish utility mapping for non-Tailwind setups */
+.text-green-500 {
+    color: #10b981;
+}
+
+.bg-green-100 {
+    background-color: #d1fae5;
+}
+
+.border-green-200 {
+    border-color: #a7f3d0;
+}
+
+.text-yellow-500 {
+    color: #f59e0b;
+}
+
+.bg-yellow-100 {
+    background-color: #fef3c7;
+}
+
+.border-yellow-200 {
+    border-color: #fde68a;
+}
+
+.text-red-500 {
+    color: #ef4444;
+}
+
+.bg-red-100 {
+    background-color: #fee2e2;
+}
+
+.border-red-200 {
+    border-color: #fecaca;
+}
+
+.text-gray-500 {
+    color: #6b7280;
+}
+
+.bg-gray-100 {
+    background-color: #f3f4f6;
+}
+
+.border-gray-200 {
+    border-color: #e5e7eb;
+}
+
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.detail-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.detail-card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 0.75rem;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Property Card Mini */
+.property-card-mini h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.view-property-btn {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.view-property-btn:hover {
+    background: #e2e8f0;
+}
+
+/* Guest Card */
+.guest-card .guest-avatar {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-color-light);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.5rem;
+    overflow: hidden;
+    /* Ensure image stays in circle */
+}
+
+.guest-card a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.message-btn {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.message-btn:hover {
+    background: #2563eb;
+}
+
+/* Summary */
+.summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.date-box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f8fafc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.price-breakdown {
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 1rem;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.price-row.total {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 0.5rem;
+}
+
+.loading-state,
+.error-state {
+    padding: 4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #64748b;
+}

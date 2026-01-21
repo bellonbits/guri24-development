@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "Home",
+        "buy": "Buy",
+        "rent": "Rent",
+        "sell": "List Property",
+        "about": "About",
+        "agent": "Agent Portal",
+        "login": "Sign In",
+        "register": "Sign Up"
+    },
+    "hero": {
+        "title": "Find Your Dream Home with Guri24",
+        "subtitle": "Connecting you with the best properties across Somalia, Kenya, and more.",
+        "search_placeholder": "Where are you going?",
+        "search_btn": "Search"
+    },
+    "categories": {
+        "apartment": "Apartment",
+        "house": "House",
+        "villa": "Villa",
+        "commercial": "Commercial",
+        "land": "Land",
+        "shop": "Shop",
+        "beachfront": "Beachfront",
+        "cabins": "Cabins",
+        "trending": "Trending",
+        "new": "New",
+        "mansions": "Mansions",
+        "farms": "Farms",
+        "islands": "Islands",
+        "golfing": "Golfing"
+    },
+    "common": {
+        "language": "Language",
+        "english": "English",
+        "somali": "Somali",
+        "view_all": "View all",
+        "featured_properties": "Featured Properties",
+        "explore_category": "Explore by Category",
+        "location": "Location",
+        "type": "Type",
+        "price_range": "Price Range",
+        "per_night": "/ night"
+    },
+    "stays": {
+        "badge": "Short-Term Stays",
+        "hero_title": "Find unique places to stay",
+        "hero_subtitle": "Book homes, apartments or villas for your next getaway.",
+        "location": "Location",
+        "search_placeholder": "Where are you going?",
+        "check_in": "Check in",
+        "check_out": "Check out",
+        "guests": "Guests",
+        "guest_count": "guest",
+        "search_btn": "Search"
+    }
+}

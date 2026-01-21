@@ -1,0 +1,323 @@
+.verification-gate {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.verification-gate-container {
+    background: white;
+    border-radius: 16px;
+    padding: 3rem;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.verification-gate-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.verification-gate-icon svg {
+    color: #667eea;
+}
+
+.verification-gate-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #1a202c;
+}
+
+.verification-description {
+    text-align: center;
+    color: #4a5568;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.verification-upload-section {
+    margin-top: 2rem;
+}
+
+.upload-instructions {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.upload-instructions h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.upload-instructions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.upload-instructions li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    color: #4a5568;
+}
+
+.upload-instructions li svg {
+    color: #48bb78;
+    flex-shrink: 0;
+}
+
+.upload-tip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #4a5568;
+    background: #edf2f7;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #667eea;
+}
+
+.upload-tip svg {
+    color: #667eea;
+}
+
+.upload-form {
+    margin-top: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input[type="text"]:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.file-upload-area {
+    position: relative;
+}
+
+.file-upload-area input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #f7fafc;
+}
+
+.file-upload-label:hover {
+    border-color: #667eea;
+    background: #edf2f7;
+}
+
+.file-upload-label svg {
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.file-upload-label span {
+    color: #4a5568;
+}
+
+.file-upload-label .file-info {
+    font-size: 0.875rem;
+    color: #a0aec0;
+    margin-top: 0.25rem;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.alert-error {
+    background: #fff5f5;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+}
+
+.alert-success {
+    background: #f0fff4;
+    color: #2f855a;
+    border: 1px solid #9ae6b4;
+}
+
+.uploaded-docs {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.uploaded-docs h4 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.doc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #f7fafc;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.doc-item svg {
+    color: #667eea;
+    flex-shrink: 0;
+}
+
+.doc-item span:first-of-type {
+    flex: 1;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.doc-date {
+    font-size: 0.875rem;
+    color: #a0aec0;
+}
+
+.status-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.status-message.pending {
+    background: #fffaf0;
+    border: 2px solid #fbd38d;
+}
+
+.status-message.pending svg {
+    color: #dd6b20;
+    margin-bottom: 1rem;
+}
+
+.status-message.rejected {
+    background: #fff5f5;
+    border: 2px solid #feb2b2;
+}
+
+.status-message.rejected svg {
+    color: #c53030;
+    margin-bottom: 1rem;
+}
+
+.status-message p {
+    text-align: center;
+    margin: 0.5rem 0;
+    color: #2d3748;
+}
+
+.status-note {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 0.5rem;
+}
+
+.rejection-reason {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+    border-left: 4px solid #c53030;
+}
+
+.rejection-reason strong {
+    color: #c53030;
+}
+
+@media (max-width: 768px) {
+    .verification-gate-container {
+        padding: 2rem 1.5rem;
+    }
+
+    .verification-gate-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .upload-instructions {
+        padding: 1rem;
+    }
+}
+
+.pulse-anim {
+    animation: pulse-gate 1.5s infinite;
+}
+
+@keyframes pulse-gate {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.doc-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}
+
+.doc-link:hover {
+    color: #667eea;
+}

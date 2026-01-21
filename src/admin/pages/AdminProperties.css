@@ -1,0 +1,363 @@
+.admin-properties {
+    padding: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: var(--primary-color-dark);
+    transform: translateY(-2px);
+}
+
+.filters-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.search-box svg {
+    color: var(--text-secondary);
+    margin-right: 0.75rem;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.filters-bar select {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+    min-width: 180px;
+}
+
+.properties-table {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.properties-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.properties-table thead {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.properties-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.properties-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.properties-table tr:hover {
+    background: #f9fafb;
+}
+
+.property-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.property-thumb,
+.property-thumb-placeholder {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.property-thumb-placeholder {
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    border: 1px dashed #d1d5db;
+}
+
+.property-cell strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+}
+
+.property-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.825rem;
+    color: var(--text-secondary);
+}
+
+.property-type {
+    text-transform: capitalize;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.dot {
+    color: #d1d5db;
+}
+
+.property-purpose {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.025em;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.agent-cell-admin {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.location-cell,
+.price-cell-admin {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+}
+
+.price-cell-admin {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.price-cell-admin .currency {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.location-cell svg {
+    color: #9ca3af;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-published {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid #10b98120;
+}
+
+.status-pending {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #f59e0b20;
+}
+
+.status-draft {
+    background: #f9fafb;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+}
+
+.status-rejected {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #ef444420;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon.approve {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.btn-icon.approve:hover {
+    background: #10b981;
+    color: white;
+}
+
+.btn-icon.reject,
+.btn-icon.deactivate {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.btn-icon.reject:hover,
+.btn-icon.deactivate:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-icon.edit {
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.btn-icon.edit:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-icon.view {
+    border-color: #8b5cf6;
+    color: #8b5cf6;
+}
+
+.btn-icon.view:hover {
+    background: #8b5cf6;
+    color: white;
+}
+
+.btn-icon.delete {
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+.btn-icon.delete:hover {
+    background: #dc2626;
+    color: white;
+}
+
+.loading-state,
+.empty-state {
+    padding: 3rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .admin-properties {
+        padding: 1rem;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .properties-table {
+        overflow-x: auto;
+    }
+
+    .filters-bar {
+        flex-direction: column;
+    }
+
+    .search-box {
+        min-width: 100%;
+    }
+
+    .filters-bar select {
+        width: 100%;
+    }
+}
