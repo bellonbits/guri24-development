@@ -46,7 +46,7 @@ GRANT ALL PRIVILEGES ON DATABASE guri24 TO admin;
 
 **Option B: Using pgAdmin**
 - Create database: `guri24`
-- Create user: `admin` / `admin123`
+- Create user: `admin` / ``
 - Grant privileges
 
 ### 3. Configure Environment
@@ -56,9 +56,9 @@ The `.env` file is already created with your email credentials. Verify it contai
 ```env
 # Email is already configured
 SMTP_HOST=mail.privateemail.com
-SMTP_USER=gatitu@evidflow.com
-SMTP_PASSWORD=gatitu@evidflow132
-EMAIL_FROM=gatitu@evidflow.com
+SMTP_USER=
+SMTP_PASSWORD=
+EMAIL_FROM=
 
 # Database (update if different)
 DATABASE_URL=postgresql+asyncpg://admin:admin123@localhost:5432/guri24
@@ -209,7 +209,7 @@ backend/
 
 ## Next Steps
 
-1. ✅ Backend is running
+1. Backend is running
 2. Connect frontend to backend API
 3. Add property management endpoints
 4. Implement admin dashboard API
