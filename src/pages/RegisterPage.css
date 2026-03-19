@@ -206,4 +206,27 @@
     .register-form-container {
         padding: 40px 24px 60px;
     }
+
+    /* Hide the right showcase panel on tablet/mobile */
+    .register-showcase {
+        display: none !important;
+    }
+
+    /* Logo: flow naturally on mobile */
+    .register-logo-link {
+        position: static;
+        display: block;
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .register-form-container {
+        padding: 32px 24px 60px;
+        justify-content: flex-start;
+    }
+
+    .register-form-main {
+        margin: 0 auto;
+    }
 }
