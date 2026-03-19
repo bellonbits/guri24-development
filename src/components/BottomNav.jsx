@@ -22,7 +22,7 @@ const BottomNav = () => {
     };
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 h-[65px] bg-white/90 backdrop-blur-xl flex justify-around items-center border-t border-black/5 z-[1999] px-[10px] pb-[env(safe-area-inset-bottom)] md:hidden dark:bg-black/90 dark:border-white/10">
+        <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl flex justify-around items-end border-t border-black/5 z-[1999] px-[10px] md:hidden dark:bg-black/90 dark:border-white/10" style={{ height: '65px', paddingBottom: 'env(safe-area-inset-bottom)' }}>
             <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -51,11 +51,27 @@ const BottomNav = () => {
                 )}
             </NavLink>
 
-            <div className="flex flex-col items-center justify-center no-underline flex-1 gap-1 transition-all duration-300 cursor-pointer relative -top-2.5 z-10" onClick={handleListProperty}>
-                <div className="w-[50px] h-[50px] bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center text-white shadow-[0_4px_15px_rgba(26,95,158,0.4)] transition-all duration-300 border-4 border-white active:scale-90 active:shadow-[0_2px_8px_rgba(26,95,158,0.3)]">
-                    <PlusCircle size={24} />
+            <div
+                className="flex flex-col items-center justify-center flex-1 gap-1 cursor-pointer relative"
+                style={{ marginTop: '-22px' }}
+                onClick={handleListProperty}
+            >
+                <div style={{
+                    width: '52px',
+                    height: '52px',
+                    background: 'linear-gradient(135deg, #1a5f9e 0%, #0d3b66 100%)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    boxShadow: '0 4px 16px rgba(26,95,158,0.45)',
+                    border: '3px solid white',
+                    transition: 'all 0.2s ease',
+                }}>
+                    <PlusCircle size={22} />
                 </div>
-                <span className="text-[10px] font-semibold relative top-1">List</span>
+                <span className="text-[10px] font-semibold" style={{ color: '#1a5f9e', marginTop: '2px' }}>List</span>
             </div>
 
             <NavLink

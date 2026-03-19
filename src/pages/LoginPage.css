@@ -265,4 +265,9 @@
     .login-form-container {
         padding: 40px 24px 60px;
     }
+
+    /* Hide the right showcase panel on tablet/mobile */
+    .login-showcase {
+        display: none !important;
+    }
 }

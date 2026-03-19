@@ -86,6 +86,7 @@ class UserResponse(BaseModel):
     company: Optional[str] = None
     specialization: Optional[str] = None
     verification_documents: Optional[list] = []
+    property_count: Optional[int] = 0
     created_at: datetime
     last_login: Optional[datetime]
     

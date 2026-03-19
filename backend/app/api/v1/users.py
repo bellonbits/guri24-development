@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
 import enum
 import os
 import shutil
@@ -276,23 +276,76 @@ async def get_user_stats(
 @router.get("/agents", response_model=List[UserResponse])
 async def list_public_agents(db: AsyncSession = Depends(get_db)):
     """List verified agents publicly"""
-    stmt = select(User).where(User.role == UserRole.AGENT, User.status == UserStatus.ACTIVE)
+    from app.models.property import Property
+    stmt = select(User).where(
+        User.role == UserRole.AGENT,
+        User.status == UserStatus.ACTIVE,
+        User.agent_status == AgentStatus.VERIFIED
+    )
     result = await db.execute(stmt)
     agents = result.scalars().all()
-    
-    # We use similar logic to read_users_me to populate verification_documents if needed,
-    # though usually public view doesn't need all docs.
-    return [UserResponse.from_orm(a) for a in agents]
+
+    agent_list = []
+    for a in agents:
+        # Count published properties for this agent
+        count_stmt = select(func.count()).select_from(Property).where(Property.agent_id == a.id)
+        count_result = await db.execute(count_stmt)
+        prop_count = count_result.scalar() or 0
+
+        agent_list.append({
+            "id": a.id,
+            "email": a.email,
+            "name": a.name,
+            "phone": a.phone,
+            "role": a.role,
+            "status": a.status,
+            "agent_status": a.agent_status,
+            "email_verified": a.email_verified,
+            "location": a.location,
+            "bio": a.bio,
+            "avatar_url": a.avatar_url,
+            "company": a.company,
+            "specialization": a.specialization,
+            "verification_documents": [],
+            "property_count": prop_count,
+            "created_at": a.created_at,
+            "last_login": a.last_login,
+        })
+    return agent_list
 
 @router.get("/agents/{agent_id}", response_model=UserResponse)
 async def get_public_agent_profile(agent_id: str, db: AsyncSession = Depends(get_db)):
     """Get a single agent's public profile"""
+    from app.models.property import Property
     stmt = select(User).where(User.id == agent_id, User.role == UserRole.AGENT)
     result = await db.execute(stmt)
     agent = result.scalar_one_or_none()
     if not agent:
         raise HTTPException(status_code=404, detail="Agent not found")
-    return UserResponse.from_orm(agent)
+
+    count_stmt = select(func.count()).select_from(Property).where(Property.agent_id == agent.id)
+    count_result = await db.execute(count_stmt)
+    prop_count = count_result.scalar() or 0
+
+    return {
+        "id": agent.id,
+        "email": agent.email,
+        "name": agent.name,
+        "phone": agent.phone,
+        "role": agent.role,
+        "status": agent.status,
+        "agent_status": agent.agent_status,
+        "email_verified": agent.email_verified,
+        "location": agent.location,
+        "bio": agent.bio,
+        "avatar_url": agent.avatar_url,
+        "company": agent.company,
+        "specialization": agent.specialization,
+        "verification_documents": [],
+        "property_count": prop_count,
+        "created_at": agent.created_at,
+        "last_login": agent.last_login,
+    }
 
 @router.post("/me/apply-agent", response_model=MessageResponse)
 async def apply_to_be_agent(
