@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Save, ArrowLeft, Loader, Upload, X, MapPin, Image as ImageIcon, CirclePlus } from 'lucide-react';
 import adminApi from '../../utils/adminApi';

@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     
     # Email (Resend)
     RESEND_API_KEY: str
-    EMAIL_FROM: str = "no-reply@guri24.com"
+    EMAIL_FROM: str = "no-reply@suqafuran.com"
     EMAIL_FROM_NAME: str = "Guri24"
     SUPPORT_EMAIL: str = "support@guri24.com"
     COMPANY_NAME: str = "Guri24"

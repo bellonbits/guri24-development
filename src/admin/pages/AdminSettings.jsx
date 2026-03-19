@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Save, Shield, Key, Database, Bell, Mail, Globe } from 'lucide-react';
 import './AdminSettings.css';
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, UserPlus, Shield, Ban, Mail, Phone, Calendar, Edit, Trash2, Loader, Check, X } from 'lucide-react';
 import DataTable from '../components/DataTable';

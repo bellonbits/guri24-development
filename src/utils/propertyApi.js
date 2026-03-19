@@ -8,16 +8,24 @@ export const formatPrice = (price, currency = 'KES') => {
 
 // Helper function to transform property data from API to component format
 export const transformProperty = (property) => {
-    // Handle features: if it's a dict, convert to array of values
-    // Handle features: if it's a dict, convert to array of values
+    // Handle features in multiple formats from backend
     let featuresArray = [];
     if (Array.isArray(property.features)) {
         featuresArray = property.features;
     } else if (property.features && typeof property.features === 'object') {
-        featuresArray = Object.values(property.features);
+        const entries = Object.entries(property.features);
+        if (entries.length > 0 && typeof entries[0][1] === 'boolean') {
+            // Format: { "wifi": true, "pool": false } — use keys where value is true
+            featuresArray = entries.filter(([, v]) => v === true).map(([k]) =>
+                k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+            );
+        } else {
+            // Format: { "0": "WiFi", "1": "Pool" } — use values
+            featuresArray = Object.values(property.features);
+        }
     }
 
-    // Filter out empty features (empty strings)
+    // Filter out empty / non-string entries
     const cleanFeatures = featuresArray.filter(f => f && typeof f === 'string' && f.trim() !== '');
 
     // Parse location string into object

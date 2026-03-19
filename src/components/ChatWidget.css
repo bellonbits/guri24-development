@@ -44,11 +44,10 @@
     animation: chatModalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Header Section */
-.chat-header {
+/* Header Section — scoped to .chat-widget to avoid conflicts */
+.chat-widget .chat-header {
     padding: 24px 28px !important;
     background: #1e293b !important;
-    /* Force dark navy */
     backdrop-filter: blur(12px) !important;
     color: white !important;
     display: flex !important;

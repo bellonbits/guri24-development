@@ -1,24 +1,29 @@
-/* Professional Agent Layout - Clean Design */
+/* =========================================================
+   AgentLayout.css — Guri24 Agent Dashboard Sidebar + Header
+   ========================================================= */
+
 .agent-layout {
     display: flex;
     min-height: 100vh;
-    background: #f8f9fa;
+    background: #f8fafc;
 }
 
-/* Sidebar - Professional Teal/Green */
+/* =========================================================
+   Sidebar
+   ========================================================= */
 .agent-sidebar {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 260px;
+    width: 256px;
     background: #ffffff;
-    border-right: 1px solid #e5e7eb;
+    border-right: 1px solid #e2e8f0;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
+    transition: transform 0.25s ease;
     z-index: 1000;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
 }
 
 .agent-sidebar.open {
@@ -30,23 +35,25 @@
     display: none;
     height: 60px;
     background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e2e8f0;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0 1.25rem;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .agent-brand {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 800;
-    color: #047857;
+    color: #1a5f9e;
+    text-decoration: none;
 }
 
 .brand-highlight {
-    color: #10b981;
+    color: #3b82f6;
 }
 
 .agent-menu-toggle {
@@ -55,16 +62,31 @@
     color: #64748b;
     cursor: pointer;
     padding: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Sidebar Header */
+.agent-menu-toggle:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Sidebar Header (mobile) */
 .sidebar-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 1.125rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
     display: none;
-    /* Only show in sidebar on mobile */
     justify-content: space-between;
     align-items: center;
+    min-height: 60px;
+}
+
+.sidebar-brand {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1a5f9e;
 }
 
 .sidebar-close {
@@ -72,7 +94,15 @@
     border: none;
     color: #64748b;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-close:hover {
+    background: #f1f5f9;
+    color: #1e293b;
 }
 
 .sidebar-content-scrollable {
@@ -80,26 +110,35 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    scrollbar-width: thin;
 }
 
 /* User Profile Summary */
 .user-profile-summary {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .avatar-circle {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+    background: linear-gradient(135deg, #1a5f9e 0%, #3b82f6 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .user-info {
@@ -107,60 +146,62 @@
 }
 
 .user-name {
-    font-weight: 600;
+    font-weight: 700;
     color: #1e293b;
-    margin-bottom: 0.25rem;
+    margin-bottom: 3px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .user-role {
-    font-size: 0.875rem;
+    font-size: 0.78rem;
     color: #64748b;
+    text-transform: capitalize;
 }
 
 /* Agent Navigation */
 .agent-nav {
     flex: 1;
-    padding: 1rem 0;
+    padding: 0.75rem 0;
     overflow-y: auto;
-    position: relative;
-    z-index: 5;
+    overflow-x: hidden;
 }
 
 .agent-nav-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.875rem 1.5rem;
-    color: #64748b;
+    padding: 0.75rem 1rem;
+    color: #475569;
     text-decoration: none;
-    transition: all 0.2s;
     font-weight: 500;
-    margin: 0 0.5rem;
-    border-radius: 8px;
-    position: relative;
-    z-index: 1;
+    font-size: 0.875rem;
+    margin: 2px 0.625rem;
+    border-radius: 10px;
+    transition: background 0.15s, color 0.15s;
 }
 
 .agent-nav-item svg {
     flex-shrink: 0;
-    position: relative;
-    z-index: 2;
 }
 
 .agent-nav-item:hover {
-    background: #f0fdf4;
-    color: #047857;
+    background: #f1f5f9;
+    color: #1a5f9e;
 }
 
 .agent-nav-item.active {
-    background: #d1fae5;
-    color: #047857;
+    background: #e8f1fb;
+    color: #1a5f9e;
+    font-weight: 600;
 }
 
 /* Sidebar Footer */
 .sidebar-footer {
     padding: 1rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid #e2e8f0;
 }
 
 .logout-btn {
@@ -168,44 +209,48 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
+    gap: 0.625rem;
+    padding: 0.625rem 0.75rem;
     background: transparent;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    color: #475569;
     cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 500;
+    transition: all 0.18s;
+    font-weight: 600;
+    font-size: 0.8125rem;
 }
 
 .logout-btn:hover {
-    background: #dc2626;
-    border-color: #dc2626;
-    color: #ffffff;
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #991b1b;
 }
 
-/* Main Content Area */
+/* =========================================================
+   Main Content Area
+   ========================================================= */
 .agent-main-content {
     flex: 1;
-    margin-left: 260px;
-    padding: clamp(1rem, 3vw, 2.5rem);
-    background: #f8f9fa;
+    margin-left: 256px;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: #f8fafc;
     min-height: 100vh;
-    width: calc(100% - 260px);
-    transition: margin-left 0.3s ease, width 0.3s ease;
+    width: calc(100% - 256px);
+    transition: margin-left 0.25s ease, width 0.25s ease;
 }
 
-/* Sidebar Overlay */
+/* Sidebar overlay (mobile) */
 .sidebar-overlay {
     position: fixed;
     inset: 0;
     background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
+    z-index: 999;
 }
 
-/* Responsive */
+/* =========================================================
+   Responsive
+   ========================================================= */
 @media (max-width: 1024px) {
     .agent-mobile-header {
         display: flex;
@@ -213,14 +258,11 @@
 
     .agent-sidebar {
         position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
         transform: translateX(-100%);
-        width: 280px;
+        width: 272px;
         z-index: 1100;
         height: 100vh;
-        box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.1), 10px 0 10px -5px rgba(0, 0, 0, 0.04);
+        box-shadow: 20px 0 30px rgba(0, 0, 0, 0.1);
     }
 
     .agent-sidebar.open {
@@ -231,18 +273,19 @@
         display: flex;
     }
 
-    .sidebar-close {
-        display: block;
-    }
-
     .agent-main-content {
         margin-left: 0 !important;
         width: 100% !important;
-        padding: 1.5rem 1rem;
-        padding-top: 1rem;
+        padding: 1.25rem 1rem;
     }
 
     .agent-layout {
         display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .agent-main-content {
+        padding: 1rem;
     }
 }

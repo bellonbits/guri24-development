@@ -1,108 +1,37 @@
+/* Global About Styling */
 .about-page {
+    background: var(--white);
+    min-height: 100vh;
+    margin-top: 0;
     padding-top: 0;
 }
 
-/* Hero */
-.about-hero {
-    position: relative;
-    height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920') center/cover;
-}
-
-.about-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
-}
-
-.about-hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: var(--white);
-}
-
-.about-hero-content h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    color: var(--white);
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.about-hero-content p {
-    font-size: 1.25rem;
-    opacity: 1;
-    color: var(--white);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* About Content */
-.about-content {
-    padding: 5rem 0;
-    background: var(--white);
-}
-
-.about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.about-image {
-    position: relative;
-}
-
-.about-image img {
-    width: 100%;
-    border-radius: 16px;
-    box-shadow: var(--shadow-xl);
-}
-
-.experience-badge {
-    position: absolute;
-    bottom: -2rem;
-    right: -2rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--white);
-    padding: 1.5rem 2rem;
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: var(--shadow-lg);
-}
-
-.experience-badge .years {
+.section-subtitle {
+    color: var(--primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     display: block;
-    font-size: 2.5rem;
-    font-weight: 800;
+    margin-bottom: 1rem;
 }
 
-.experience-badge .text {
-    font-size: 0.9rem;
-    opacity: 0.9;
+/* Hero & Page Header inherited/styled in GuriPageHeader or common classes */
+
+/* About Content (Mission Section) */
+.about-content {
+    padding: 56px 0;
 }
 
 .about-text h2 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: var(--primary-dark);
-    margin-bottom: 1.5rem;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 2rem;
 }
 
-.about-text .lead {
+.lead {
     font-size: 1.15rem;
-    color: var(--gray-600);
-    margin-bottom: 1rem;
-}
-
-.about-text p {
     color: var(--gray-500);
     line-height: 1.8;
     margin-bottom: 2rem;
@@ -110,202 +39,147 @@
 
 .about-features {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .feature-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: var(--gray-700);
-    font-weight: 500;
 }
 
 .feature-item svg {
-    color: var(--success);
+    color: var(--primary);
 }
 
-/* Stats */
+.about-image {
+    position: relative;
+    padding-left: 20px;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+}
+
+.experience-badge {
+    position: absolute;
+    bottom: -30px;
+    left: -20px;
+    background: var(--primary-dark);
+    color: var(--white);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-floating);
+    min-width: 200px;
+}
+
+.experience-badge .years {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.experience-badge .text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+/* Stats Section */
 .about-stats {
+    padding: 48px 0;
     background: var(--gray-50);
-    padding: 5rem 0;
-}
-
-.stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    border-top: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--gray-100);
 }
 
 .stat-box {
     text-align: center;
-    padding: 2.5rem 2rem;
-    background: var(--white);
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    transition: var(--transition);
 }
 
-.stat-box:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.stat-box svg {
+.stat-box .icon {
     color: var(--primary);
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
 }
 
 .stat-box .number {
     display: block;
-    font-size: 2.5rem;
+    font-size: 2.25rem;
     font-weight: 800;
-    color: var(--primary-dark);
+    color: var(--black);
+    margin-bottom: 4px;
 }
 
 .stat-box .label {
     color: var(--gray-500);
-}
-
-/* Mission */
-.mission-section {
-    padding: 6rem 0;
-}
-
-.mission-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-.mission-card {
-    padding: 3rem;
-    background: var(--white);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    text-align: center;
-    border: 1px solid var(--gray-100);
-}
-
-.mission-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--primary-lighter) 0%, var(--primary-accent) 100%);
-    border-radius: 50%;
-    color: var(--primary-dark);
-}
-
-.mission-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-dark);
-    margin-bottom: 1rem;
-}
-
-.mission-card p {
-    color: var(--gray-500);
-    line-height: 1.7;
-}
-
-/* Why Section */
-.why-section {
-    padding: 6rem 0;
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-}
-
-.why-section .section-title h2,
-.why-section .section-title p {
-    color: var(--white);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.why-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-}
-
-.why-card {
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    color: var(--white);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: var(--transition);
-}
-
-.why-card:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-4px);
-}
-
-.why-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    opacity: 0.4;
-    margin-bottom: 1rem;
-    color: var(--white);
-}
-
-.why-card h4 {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    color: var(--white);
-    font-weight: 700;
-}
-
-.why-card p {
-    opacity: 0.95;
-    line-height: 1.6;
+    font-weight: 600;
     font-size: 0.95rem;
-    color: var(--white);
+}
+
+/* Team Section */
+.team-section {
+    padding: 56px 0;
+    background: var(--white);
+}
+
+.agent-card {
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden;
+    border: 1px solid var(--gray-100) !important;
+    transition: var(--transition) !important;
+}
+
+.agent-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover) !important;
+}
+
+.agent-image-wrapper {
+    height: 320px;
+    overflow: hidden;
+}
+
+.agent-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.agent-card:hover .agent-image-wrapper img {
+    transform: scale(1.05);
+}
+
+.agent-card .ant-card-meta-title {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+}
+
+.agent-card .ant-card-meta-description {
+    color: var(--primary) !important;
+    font-weight: 600 !important;
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-    .about-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+@media (max-width: 991px) {
+    .about-image {
+        padding-left: 0;
+        margin-top: 40px;
     }
 
     .experience-badge {
         position: relative;
-        bottom: auto;
-        right: auto;
+        bottom: 0;
+        left: 0;
+        margin-top: 20px;
         display: inline-block;
-        margin-top: 1rem;
-    }
-
-    .stats-row,
-    .why-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .about-hero {
-        height: 300px;
-    }
-
-    .about-hero-content h1 {
-        font-size: 2.25rem;
-    }
-
-    .mission-grid,
-    .stats-row,
-    .why-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-features {
-        grid-template-columns: 1fr;
     }
 }

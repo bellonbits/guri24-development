@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -42,6 +42,8 @@ import AgentListings from './pages/agent/AgentListings';
 import AgentPropertyForm from './pages/agent/AgentPropertyForm';
 import AgentProfile from './pages/agent/AgentProfile';
 import AgentChat from './pages/agent/AgentChat';
+import NotFoundPage from './pages/NotFoundPage';
+import AgentPublicProfile from './pages/AgentPublicProfile';
 import AgentBookingDetails from './pages/agent/AgentBookingDetails';
 import './index.css';
 import './App.css';
@@ -76,6 +78,7 @@ function App() {
               <Route path="/property/:slug" element={<PropertyDetailPage />} />
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/agents/:id" element={<AgentPublicProfile />} />
 
               {/* Auth Routes */}
               <Route path="/login" element={<LoginPage />} />
@@ -158,6 +161,8 @@ function App() {
                 </AdminRoute>
               }
             />
+            {/* 404 */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </SocketProvider>
       </AuthProvider>

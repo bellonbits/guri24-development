@@ -1,6 +1,6 @@
 import re
 import logging
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+import asyncio
 from pathlib import Path
 from app.config import settings
 from app.models.user import User
@@ -49,8 +49,8 @@ class EmailService:
                         <p style="margin: 5px 0;">{self.company_address}</p>
                         <p style="margin: 5px 0;">{self.company_phone}</p>
                         <p style="margin: 10px 0;">
-                            <a href="{settings.FRONTEND_URL}" style="color: #6366f1; text-decoration: none; margin: 0 10px;">Visit Website</a> |
-                            <a href="mailto:{self.support_email}" style="color: #6366f1; text-decoration: none; margin: 0 10px;">Contact Support</a>
+                            <a href="{settings.FRONTEND_URL}" style="color: #1a5f9e; text-decoration: none; margin: 0 10px;">Visit Website</a> |
+                            <a href="mailto:{self.support_email}" style="color: #1a5f9e; text-decoration: none; margin: 0 10px;">Contact Support</a>
                         </p>
                         {unsubscribe_link}
                         <p style="margin: 15px 0 5px 0; color: #9ca3af; font-size: 11px;">
@@ -93,10 +93,13 @@ class EmailService:
                         <table role="presentation" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                             <!-- Header -->
                             <tr>
-                                <td style="padding: 40px 40px 30px; text-align: center; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 12px 12px 0 0;">
+                                <td style="padding: 40px 40px 30px; text-align: center; background: linear-gradient(135deg, #1a5f9e 0%, #0d3b6e 100%); border-radius: 12px 12px 0 0;">
                                     <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">
                                         {self.company_name}
                                     </h1>
+                                    <p style="margin: 6px 0 0; color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 500;">
+                                        Kenya's Premier Real Estate Platform
+                                    </p>
                                 </td>
                             </tr>
                             
@@ -117,7 +120,7 @@ class EmailService:
                         
                         <!-- Email client text -->
                         <p style="text-align: center; color: #9ca3af; font-size: 12px; margin-top: 20px;">
-                            If you're having trouble viewing this email, please contact <a href="mailto:{self.support_email}" style="color: #6366f1;">{self.support_email}</a>
+                            If you're having trouble viewing this email, please contact <a href="mailto:{self.support_email}" style="color: #1a5f9e;">{self.support_email}</a>
                         </p>
                     </td>
                 </tr>
@@ -131,42 +134,45 @@ class EmailService:
         to_email: str,
         subject: str,
         html_content: str,
-        preheader: str = ""
+        preheader: str = "",
+        unsubscribe_url: str = None,
     ):
-        """Send an email using Resend with proper headers"""
+        """Send an email using Resend"""
         if not settings.EMAILS_ENABLED:
             logger.info(f"Email sending disabled. Would send to {to_email}: {subject}")
             return
-        
-        try:
-            text_content = self._strip_html(html_content)
-            
-            # Unsubscribe URL (you should implement this endpoint)
-            unsubscribe_url = f"{settings.FRONTEND_URL}/unsubscribe?email={to_email}"
-            
-            params = {
-                "from": f"{self.from_name} <{self.from_email}>",
-                "to": [to_email],
-                "subject": subject,
-                "html": html_content,
-                "text": text_content,
-                "headers": {
-                    "Reply-To": self.support_email,
-                    "List-Unsubscribe": f"<{unsubscribe_url}>, <mailto:{self.support_email}?subject=Unsubscribe>",
-                    "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-                    "X-Mailer": f"{self.company_name} Email Service v1.0",
-                    "X-Priority": "3",
-                    "Importance": "Normal",
-                    "X-Entity-Ref-ID": to_email
-                }
-            }
 
-            r = resend.Emails.send(params)
-            logger.info(f"Email sent successfully to {to_email}. ID: {r.get('id')}")
+        # Always refresh the API key in case it was updated after startup
+        resend.api_key = settings.RESEND_API_KEY
+
+        # Build List-Unsubscribe headers — Gmail/Outlook require these to avoid spam
+        unsub = unsubscribe_url or f"{settings.FRONTEND_URL}/unsubscribe?email={to_email}"
+        headers = {
+            "List-Unsubscribe": f"<mailto:{self.support_email}?subject=unsubscribe>, <{unsub}>",
+            "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+            "Precedence": "bulk",
+            "X-Mailer": f"{self.company_name} Mailer 1.0",
+        }
+
+        params = {
+            "from": f"{self.from_name} <{self.from_email}>",
+            "to": [to_email],
+            "subject": subject,
+            "html": html_content,
+            "text": self._strip_html(html_content),
+            "reply_to": self.support_email,
+            "headers": headers,
+        }
+
+        logger.info(f"Sending email to {to_email} | subject: {subject} | from: {params['from']}")
+
+        try:
+            # resend SDK is synchronous — run in thread pool to avoid blocking the event loop
+            r = await asyncio.to_thread(resend.Emails.send, params)
+            logger.info(f"Email sent OK to {to_email}. Resend ID: {r.get('id')}")
             return r
-            
         except Exception as e:
-            logger.error(f"Failed to send email to {to_email}: {str(e)}")
+            logger.error(f"Resend error sending to {to_email}: {type(e).__name__}: {e}")
             raise
     
     async def send_verification_email(self, user: User, verification_code: str):
@@ -185,7 +191,7 @@ class EmailService:
         </p>
         <div style="text-align: center; margin: 35px 0;">
             <div style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); 
-                        border: 2px solid #6366f1; 
+                        border: 2px solid #1a5f9e; 
                         border-radius: 12px; 
                         padding: 20px 30px; 
                         display: inline-block;">
@@ -210,12 +216,13 @@ class EmailService:
         
         unsubscribe_url = f"{settings.FRONTEND_URL}/unsubscribe?email={user.email}"
         html_content = self._create_email_template(preheader, content, unsubscribe_url)
-        
+
         await self.send_email(
             to_email=user.email,
             subject=f"Verify your {self.company_name} account",
             html_content=html_content,
-            preheader=preheader
+            preheader=preheader,
+            unsubscribe_url=unsubscribe_url,
         )
     
     async def send_password_reset_email(self, user: User, reset_url: str):
@@ -234,7 +241,7 @@ class EmailService:
         </p>
         <div style="text-align: center; margin: 35px 0;">
             <a href="{reset_url}" 
-               style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); 
+               style="background: linear-gradient(135deg, #1a5f9e 0%, #155286 100%); 
                       color: #ffffff; 
                       padding: 16px 40px; 
                       text-decoration: none; 
@@ -242,7 +249,7 @@ class EmailService:
                       display: inline-block;
                       font-weight: 600;
                       font-size: 16px;
-                      box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);">
+                      box-shadow: 0 4px 6px rgba(26, 95, 158, 0.3);">
                 Reset My Password
             </a>
         </div>
@@ -252,7 +259,7 @@ class EmailService:
         <p style="margin: 15px 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
             If the button doesn't work, copy and paste this link into your browser:
         </p>
-        <p style="margin: 10px 0; padding: 12px; background-color: #f9fafb; border-radius: 6px; word-break: break-all; font-size: 13px; color: #6366f1;">
+        <p style="margin: 10px 0; padding: 12px; background-color: #f9fafb; border-radius: 6px; word-break: break-all; font-size: 13px; color: #1a5f9e;">
             {reset_url}
         </p>
         <div style="margin-top: 30px; padding: 15px; background-color: #fef2f2; border-left: 4px solid #ef4444; border-radius: 6px;">
@@ -264,12 +271,13 @@ class EmailService:
         
         unsubscribe_url = f"{settings.FRONTEND_URL}/unsubscribe?email={user.email}"
         html_content = self._create_email_template(preheader, content, unsubscribe_url)
-        
+
         await self.send_email(
             to_email=user.email,
             subject=f"Reset your {self.company_name} password",
             html_content=html_content,
-            preheader=preheader
+            preheader=preheader,
+            unsubscribe_url=unsubscribe_url,
         )
     
     async def send_welcome_email(self, user: User):
@@ -312,18 +320,19 @@ class EmailService:
             </ul>
         </div>
         <p style="margin: 25px 0 15px; color: #4b5563; font-size: 16px; line-height: 1.6;">
-            If you have any questions, our support team is here to help at <a href="mailto:{self.support_email}" style="color: #6366f1; text-decoration: none;">{self.support_email}</a>
+            If you have any questions, our support team is here to help at <a href="mailto:{self.support_email}" style="color: #1a5f9e; text-decoration: none;">{self.support_email}</a>
         </p>
         """
         
         unsubscribe_url = f"{settings.FRONTEND_URL}/unsubscribe?email={user.email}"
         html_content = self._create_email_template(preheader, content, unsubscribe_url)
-        
+
         await self.send_email(
             to_email=user.email,
             subject=f"Welcome to {self.company_name}! 🏡",
             html_content=html_content,
-            preheader=preheader
+            preheader=preheader,
+            unsubscribe_url=unsubscribe_url,
         )
 
     async def send_booking_notification(self, agent_email: str, booking_details: dict):
@@ -385,12 +394,13 @@ class EmailService:
         
         unsubscribe_url = f"{settings.FRONTEND_URL}/unsubscribe?email={agent_email}"
         html_content = self._create_email_template(preheader, content, unsubscribe_url)
-        
+
         await self.send_email(
             to_email=agent_email,
             subject=f"New Booking: {booking_details['property_title']}",
             html_content=html_content,
-            preheader=preheader
+            preheader=preheader,
+            unsubscribe_url=unsubscribe_url,
         )
 
     async def send_booking_confirmation(self, guest_email: str, booking_details: dict):
@@ -432,7 +442,7 @@ class EmailService:
         
         <div style="text-align: center; margin: 35px 0;">
             <a href="{settings.FRONTEND_URL}/my-bookings" 
-               style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); 
+               style="background: linear-gradient(135deg, #1a5f9e 0%, #155286 100%); 
                       color: #ffffff; 
                       padding: 16px 40px; 
                       text-decoration: none; 
@@ -440,7 +450,7 @@ class EmailService:
                       display: inline-block;
                       font-weight: 600;
                       font-size: 16px;
-                      box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);">
+                      box-shadow: 0 4px 6px rgba(26, 95, 158, 0.3);">
                 View My Bookings
             </a>
         </div>
@@ -454,12 +464,13 @@ class EmailService:
         
         unsubscribe_url = f"{settings.FRONTEND_URL}/unsubscribe?email={guest_email}"
         html_content = self._create_email_template(preheader, content, unsubscribe_url)
-        
+
         await self.send_email(
             to_email=guest_email,
             subject=f"Booking Confirmation - {booking_details['property_title']}",
             html_content=html_content,
-            preheader=preheader
+            preheader=preheader,
+            unsubscribe_url=unsubscribe_url,
         )
 
 # Create singleton instance

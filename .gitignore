@@ -17,3 +17,5 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+.env.local
+build_log.txt

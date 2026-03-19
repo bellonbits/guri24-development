@@ -35,6 +35,10 @@ api.interceptors.response.use(
     }
 );
 
+export const registerUser = async (userData) => {
+    return api.post('/auth/register', userData);
+};
+
 export const saveProperty = async (propertyId) => {
     return api.post(`/users/me/saved/${propertyId}`);
 };
@@ -52,7 +56,19 @@ export const getUserStats = async () => {
 };
 
 export const trackUserView = async (propertyId) => {
-    return api.post(`/users/me/viewed/${propertyId}`);
+    return api.post(`/properties/${propertyId}/view`);
+};
+
+export const getProperties = async (params) => {
+    return api.get('/properties', { params });
+};
+
+export const getPropertyBySlug = async (slug) => {
+    return api.get(`/properties/${slug}`);
+};
+
+export const getPropertyById = async (id) => {
+    return api.get(`/properties/id/${id}`);
 };
 
 export const createInquiry = async (inquiryData) => {
@@ -61,6 +77,35 @@ export const createInquiry = async (inquiryData) => {
 
 export const requestAgent = async () => {
     return api.post('/users/me/request-agent');
+};
+
+export const getPublicAgents = async () => {
+    return api.get('/users/agents');
+};
+
+export const getPublicAgentById = async (agentId) => {
+    return api.get(`/users/agents/${agentId}`);
+};
+
+export const applyAgent = async (formData) => {
+    return api.post('/users/me/apply-agent', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+};
+
+// Analytics
+export const getDashboardStats = async () => {
+    return api.get('/analytics/dashboard');
+};
+
+export const getTrafficData = async () => {
+    return api.get('/analytics/traffic');
+};
+
+export const getRecentActivity = async () => {
+    return api.get('/analytics/recent-activity');
 };
 
 export default api;

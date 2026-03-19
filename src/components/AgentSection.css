@@ -1,0 +1,111 @@
+/* AgentSection Styles */
+.agent-section {
+    padding: 56px 0;
+    background: var(--white);
+}
+
+.agent-intro-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.agent-intro-subtitle {
+    font-size: 1.15rem;
+    color: var(--gray-500);
+    margin-bottom: 2.5rem;
+}
+
+.agent-grid-container {
+    padding-top: 10px;
+}
+
+.agent-profile-card {
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid var(--gray-100) !important;
+    text-align: center;
+    padding: 2rem;
+    height: 100%;
+    transition: var(--transition) !important;
+    background: var(--white) !important;
+}
+
+.agent-profile-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover) !important;
+}
+
+.agent-avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.agent-rating-badge {
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    background: var(--white);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--gray-100);
+}
+
+.rating-number {
+    font-size: 0.825rem;
+    font-weight: 700;
+}
+
+.rating-star {
+    color: #faad14;
+    font-size: 0.75rem;
+}
+
+.agent-name {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+}
+
+.agent-property-count {
+    font-size: 0.875rem !important;
+    color: var(--gray-500) !important;
+    display: block;
+    margin-bottom: 1.5rem !important;
+}
+
+.agent-contact-btn {
+    font-weight: 700 !important;
+    height: 44px !important;
+    border-radius: var(--radius-md) !important;
+    border: 2px solid var(--gray-100) !important;
+    background: transparent !important;
+    transition: var(--transition) !important;
+}
+
+.agent-contact-btn:hover {
+    background: var(--primary) !important;
+    color: var(--white) !important;
+    border-color: var(--primary) !important;
+}
+
+@media (max-width: 1024px) {
+    .agent-intro-title {
+        text-align: center;
+    }
+
+    .agent-intro-subtitle {
+        text-align: center;
+    }
+
+    .agent-intro-btn {
+        display: block;
+        margin: 0 auto;
+    }
+}

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 import enum
@@ -8,7 +8,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy.orm.attributes import flag_modified
 from app.database import get_db, Base
-from app.models.user import User, AgentStatus
+from app.models.user import User, AgentStatus, UserRole, UserStatus
 from app.schemas.user import UserUpdate, UserResponse, PasswordChange, MessageResponse
 from app.core.dependencies import get_current_active_user
 from app.core.security import verify_password, get_password_hash
@@ -272,6 +272,83 @@ async def get_user_stats(
         "properties_viewed": len(current_user.viewed_properties),
         "scheduled_visits": inquiries_count
     }
+
+@router.get("/agents", response_model=List[UserResponse])
+async def list_public_agents(db: AsyncSession = Depends(get_db)):
+    """List verified agents publicly"""
+    stmt = select(User).where(User.role == UserRole.AGENT, User.status == UserStatus.ACTIVE)
+    result = await db.execute(stmt)
+    agents = result.scalars().all()
+    
+    # We use similar logic to read_users_me to populate verification_documents if needed,
+    # though usually public view doesn't need all docs.
+    return [UserResponse.from_orm(a) for a in agents]
+
+@router.get("/agents/{agent_id}", response_model=UserResponse)
+async def get_public_agent_profile(agent_id: str, db: AsyncSession = Depends(get_db)):
+    """Get a single agent's public profile"""
+    stmt = select(User).where(User.id == agent_id, User.role == UserRole.AGENT)
+    result = await db.execute(stmt)
+    agent = result.scalar_one_or_none()
+    if not agent:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    return UserResponse.from_orm(agent)
+
+@router.post("/me/apply-agent", response_model=MessageResponse)
+async def apply_to_be_agent(
+    national_id_number: str = Form(...),
+    date_of_birth: str = Form(...),
+    full_address: str = Form(...),
+    motivation: str = Form(...),
+    location: Optional[str] = Form(None),
+    phone: Optional[str] = Form(None),
+    file: Optional[UploadFile] = File(None),
+    current_user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Unified endpoint for agent application including document upload"""
+    
+    # Update profile fields
+    current_user.agent_status = AgentStatus.PENDING
+    if phone:
+        current_user.phone = phone
+    if location:
+        current_user.location = location
+    
+    # In some models we might store motivation/address in bio or other fields, 
+    # but here we'll just focus on getting the document and status right.
+    # For now, let's append motivation to bio or just rely on the logging.
+    if motivation:
+        current_user.bio = (current_user.bio or "") + f"\n\n[Agent Application Motivation]:\n{motivation}"
+
+    # Handle document upload if provided
+    if file:
+        # Re-use logic from upload_verification_document but integrated
+        from app.utils.s3 import s3_client
+        s3_client.ensure_bucket_exists()
+        
+        orig_filename = file.filename or "id_document.bin"
+        ext = orig_filename.split('.')[-1] if '.' in orig_filename else 'bin'
+        filename = f"{current_user.id}_app_{uuid.uuid4().hex}.{ext}"
+        object_name = f"verification/{current_user.id}/{filename}"
+        
+        success = s3_client.upload_file(file.file, object_name, content_type=file.content_type)
+        if success:
+            from app.models.verification_document import VerificationDocument, DocumentStatus
+            new_doc = VerificationDocument(
+                user_id=current_user.id,
+                name=f"Identity Document (Application - {national_id_number})",
+                url=s3_client.get_file_url(object_name),
+                category="Identity",
+                status=DocumentStatus.PENDING
+            )
+            db.add(new_doc)
+        else:
+            print(f"Warning: Failed to upload application document for user {current_user.id}")
+
+    await db.commit()
+    
+    return {"message": "Agent application submitted successfully. Please wait for admin verification."}
 
 @router.post("/me/request-agent", response_model=MessageResponse)
 async def request_agent_status(

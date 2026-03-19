@@ -1,0 +1,41 @@
+/* GuriPageHeader Styles */
+.guri-page-header {
+    background: linear-gradient(135deg, #0a1f3d 0%, #1a5f9e 100%);
+    padding: 56px 24px 48px;
+    margin: 0;
+    text-align: center;
+    border-bottom: none;
+    overflow: hidden; /* prevent margin collapse from inner h1 */
+}
+
+.guri-page-header .container-narrow {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.guri-page-header h1,
+.guri-page-header .ant-typography {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    margin-top: 0 !important;
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    line-height: 1.15;
+}
+
+.guri-page-header .subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 400;
+    max-width: 560px;
+    display: block;
+    margin: 0 auto;
+    line-height: 1.65;
+}
+
+@media (max-width: 768px) {
+    .guri-page-header {
+        padding: 40px 16px 36px;
+    }
+}

@@ -5,7 +5,6 @@ import chatApi from '../utils/chatApi';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import './ChatWidget.css';
-
 function ChatWidget({ propertyId, propertyTitle, agentName, agentId, externalOpen, setExternalOpen }) {
     const { user, isAuthenticated } = useAuth();
     const { socket, connected } = useSocket();

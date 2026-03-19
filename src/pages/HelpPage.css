@@ -1,0 +1,78 @@
+/* HelpCenter Styles */
+.help-page {
+    background: var(--white);
+}
+
+.help-collapse {
+    border-radius: var(--radius-lg);
+}
+
+.help-collapse .ant-collapse-item {
+    background: var(--gray-50);
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 16px;
+    border: 1px solid var(--gray-100);
+    overflow: hidden;
+}
+
+.help-collapse .ant-collapse-header {
+    padding: 24px !important;
+    align-items: center !important;
+}
+
+.help-collapse .ant-collapse-header-text {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--black);
+}
+
+.help-collapse .ant-collapse-content-box {
+    padding: 0 24px 24px 24px !important;
+    color: var(--gray-500);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.contact-card {
+    background: var(--primary-dark);
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    color: var(--white);
+    position: sticky;
+    top: 120px;
+}
+
+.contact-card h3 {
+    color: var(--white) !important;
+    margin-bottom: 1rem;
+}
+
+.contact-card .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+    margin-bottom: 2.5rem;
+}
+
+.contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-methods .method {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-weight: 600;
+}
+
+.contact-methods .method svg {
+    color: var(--primary-light);
+}
+
+@media (max-width: 768px) {
+    .contact-card {
+        padding: 30px;
+        position: static;
+        margin-top: 40px;
+    }
+}

@@ -1,194 +1,212 @@
 import { useState } from 'react';
-import { MapPin, Phone, Mail, Globe, Send, Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
-import Map from '../components/Map';
-import './ContactPage.css';
+import {
+    Phone,
+    Mail,
+    User,
+    Briefcase,
+    ChevronDown,
+    ArrowRight,
+    MapPin
+} from 'lucide-react';
+import SEO from '../components/SEO';
 
-function ContactPage() {
+const ContactPage = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
-        subject: '',
+        jobPosition: '',
+        services: [],
         message: ''
     });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        alert('Thank you for your message! We will get back to you soon.');
+    const services = [
+        'Property Management',
+        'Buying A Home',
+        'Selling Property',
+        'Consultation',
+        'Investment',
+        'Other'
+    ];
+
+    const toggleService = (service) => {
+        setFormData(prev => ({
+            ...prev,
+            services: prev.services.includes(service)
+                ? prev.services.filter(s => s !== service)
+                : [...prev.services, service]
+        }));
     };
 
-    // Westpark Towers approximate coordinates
-    const officeLocation = { lat: -1.2649, lng: 36.8066 };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        alert('Thank you! We will be in touch shortly.');
+    };
 
     return (
-        <div className="contact-page">
-            {/* Hero */}
-            <section className="contact-hero">
-                <div className="contact-hero-overlay"></div>
-                <div className="contact-hero-content">
-                    <h1>Contact Us</h1>
-                    <p>We'd love to hear from you! Get in touch with us today.</p>
-                </div>
-            </section>
+        <div className="contact-page-wrapper">
+            <SEO
+                title="Contact Us | Guri24"
+                description="Get in touch with Guri24."
+            />
 
-            {/* Contact Content */}
-            <section className="contact-content">
-                <div className="container">
-                    <div className="contact-grid">
-                        {/* Contact Info */}
-                        <div className="contact-info">
-                            <h2>Need More Information?</h2>
-                            <p>Have questions or need help finding the right property? Our team is here to assist you every step of the way.</p>
+            <div className="contact-container">
+                <div className="contact-grid">
 
-                            <div className="info-cards">
-                                <div className="info-card">
-                                    <div className="card-icon">
-                                        <Phone size={24} />
-                                    </div>
-                                    <div className="card-content">
-                                        <h4>Phone</h4>
-                                        <a href="tel:+254706070747">+254 706 070 747</a>
-                                    </div>
+                    {/* Left Column: Info */}
+                    <div className="contact-info">
+                        <div className="contact-badge">
+                            Contact Us
+                        </div>
+                        <h1 className="contact-heading">
+                            Let's Get In Touch.
+                        </h1>
+                        <p className="contact-subheading">
+                            We are here to help with your real estate needs. Whether you are buying, selling, or renting, reach out to us.
+                        </p>
+
+                        <div className="contact-details">
+                            <div className="contact-detail-item">
+                                <div className="detail-icon">
+                                    <Mail size={20} />
                                 </div>
-
-                                <div className="info-card">
-                                    <div className="card-icon">
-                                        <Mail size={24} />
-                                    </div>
-                                    <div className="card-content">
-                                        <h4>Email</h4>
-                                        <a href="mailto:support@guri24.com">support@guri24.com</a>
-                                    </div>
-                                </div>
-
-                                <div className="info-card">
-                                    <div className="card-icon">
-                                        <Globe size={24} />
-                                    </div>
-                                    <div className="card-content">
-                                        <h4>Website</h4>
-                                        <a href="https://guri24.com" target="_blank" rel="noopener noreferrer">www.guri24.com</a>
-                                    </div>
-                                </div>
-
-                                <div className="info-card">
-                                    <div className="card-icon">
-                                        <MapPin size={24} />
-                                    </div>
-                                    <div className="card-content">
-                                        <h4>Office</h4>
-                                        <span>Westpark Towers Suite 503<br />Off Muthithi Road, Nairobi</span>
-                                    </div>
+                                <div>
+                                    <p className="detail-label">Email Us</p>
+                                    <a href="mailto:hello@guri24.com" className="detail-link">hello@guri24.com</a>
                                 </div>
                             </div>
-
-                            <div className="social-section">
-                                <h4>Follow Us</h4>
-                                <div className="social-links">
-                                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                                        <Facebook size={20} />
-                                    </a>
-                                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                                        <Twitter size={20} />
-                                    </a>
-                                    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                                        <Youtube size={20} />
-                                    </a>
-                                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                                        <Instagram size={20} />
-                                    </a>
+                            <div className="contact-detail-item">
+                                <div className="detail-icon">
+                                    <Phone size={20} />
+                                </div>
+                                <div>
+                                    <p className="detail-label">Call Us</p>
+                                    <a href="tel:+254706070747" className="detail-link">+254 706 070 747</a>
+                                </div>
+                            </div>
+                            <div className="contact-detail-item">
+                                <div className="detail-icon">
+                                    <MapPin size={20} />
+                                </div>
+                                <div>
+                                    <p className="detail-label">Visit Us</p>
+                                    <p className="detail-text">Westpark Towers, Nairobi</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Contact Form */}
-                        <div className="contact-form-wrapper">
-                            <h2>Get In Touch</h2>
-                            <form className="contact-form" onSubmit={handleSubmit}>
-                                <div className="form-row">
-                                    <div className="form-group">
-                                        <label>Your Name</label>
+                    {/* Right Column: Form */}
+                    <div className="contact-form-card">
+                        <form onSubmit={handleSubmit} className="contact-form">
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label className="form-label">Full Name</label>
+                                    <div className="input-wrapper">
+                                        <User className="input-icon" size={18} />
                                         <input
                                             type="text"
-                                            placeholder="John Doe"
+                                            className="form-input"
+                                            placeholder="Enter your name"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Email Address</label>
-                                        <input
-                                            type="email"
-                                            placeholder="john@example.com"
-                                            value={formData.email}
-                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="form-row">
-                                    <div className="form-group">
-                                        <label>Phone Number</label>
-                                        <input
-                                            type="tel"
-                                            placeholder="+254 7XX XXX XXX"
-                                            value={formData.phone}
-                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Subject</label>
-                                        <input
-                                            type="text"
-                                            placeholder="How can we help?"
-                                            value={formData.subject}
-                                            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                                             required
                                         />
                                     </div>
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Your Message</label>
-                                    <textarea
-                                        rows="5"
-                                        placeholder="Tell us more about your inquiry..."
-                                        value={formData.message}
-                                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                        required
-                                    ></textarea>
+                                    <label className="form-label">Email Address</label>
+                                    <div className="input-wrapper">
+                                        <Mail className="input-icon" size={18} />
+                                        <input
+                                            type="email"
+                                            className="form-input"
+                                            placeholder="Enter your email"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label className="form-label">Phone Number</label>
+                                    <div className="input-wrapper">
+                                        <Phone className="input-icon" size={18} />
+                                        <input
+                                            type="tel"
+                                            className="form-input"
+                                            placeholder="Enter phone number"
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                        />
+                                    </div>
                                 </div>
 
-                                <button type="submit" className="btn btn-primary">
-                                    <Send size={18} />
-                                    Send Message
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                                <div className="form-group">
+                                    <label className="form-label">I am a...</label>
+                                    <div className="input-wrapper">
+                                        <Briefcase className="input-icon" size={18} />
+                                        <select
+                                            className="form-select"
+                                            value={formData.jobPosition}
+                                            onChange={(e) => setFormData({ ...formData, jobPosition: e.target.value })}
+                                        >
+                                            <option value="" disabled>Select option...</option>
+                                            <option value="Buyer">Property Buyer</option>
+                                            <option value="Seller">Property Seller</option>
+                                            <option value="Agent">Real Estate Agent</option>
+                                            <option value="Investor">Investor</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <ChevronDown className="select-icon" size={18} />
+                                    </div>
+                                </div>
+                            </div>
 
-            {/* Map Section */}
-            <section className="map-section">
-                <div className="container">
-                    <div className="map-header">
-                        <h2>Visit Our Office</h2>
-                        <p>Westpark Towers, Westlands, Nairobi</p>
+                            <div className="form-group">
+                                <label className="form-label">Services</label>
+                                <div className="services-grid">
+                                    {services.map((service) => (
+                                        <button
+                                            key={service}
+                                            type="button"
+                                            onClick={() => toggleService(service)}
+                                            className={`service-chip ${formData.services.includes(service) ? 'active' : ''}`}
+                                        >
+                                            {service}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Message</label>
+                                <textarea
+                                    className="form-textarea"
+                                    placeholder="Tell us about your needs..."
+                                    value={formData.message}
+                                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                    required
+                                ></textarea>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="submit-button"
+                            >
+                                Send Message
+                                <ArrowRight size={20} />
+                            </button>
+                        </form>
                     </div>
-                    <Map
-                        lat={officeLocation.lat}
-                        lng={officeLocation.lng}
-                        zoom={16}
-                        popupText="Guri24 Office - Westpark Towers"
-                        height="450px"
-                    />
                 </div>
-            </section>
+            </div>
         </div>
     );
-}
+};
 
 export default ContactPage;

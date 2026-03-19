@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Shield, Upload, Clock, XCircle, CheckCircle, FileText, AlertCircle } from 'lucide-react';
 import propertyApi from '../utils/propertyApi';
-import './VerificationGate.css';
-
 function VerificationGate({ children, onVerified }) {
     const { user, updateUser, refreshUser } = useAuth();
     const [uploading, setUploading] = useState(false);

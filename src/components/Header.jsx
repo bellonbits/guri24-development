@@ -1,43 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, User, Phone, X, Home, Info, ShoppingBag, Tag, Building2, Hotel, List, Shield } from 'lucide-react';
+import { Menu, X, Phone, Building2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { getProfileImageUrl } from '../utils/imageUtils';
-import { requestAgent } from '../utils/api';
-import './Header.css';
-
 import { createPortal } from 'react-dom';
 
-import { useTranslation } from 'react-i18next';
-
 function Header() {
-    const { t, i18n } = useTranslation();
-    const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
     const { user, isAuthenticated } = useAuth();
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState(null);
     const navigate = useNavigate();
-
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-    };
-
-    // Check if we are on the homepage
-    const isHomePage = location.pathname === '/';
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const isScrolled = window.scrollY > 50;
-            if (isScrolled !== scrolled) {
-                setScrolled(isScrolled);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [scrolled]);
 
     useEffect(() => {
         if (mobileMenuOpen) {
@@ -67,221 +38,153 @@ function Header() {
             return;
         }
 
-        if (user?.agent_status === 'PENDING') {
-            setMessage({ type: 'info', text: 'Your agent verification is already pending. Please wait for admin approval.' });
-            setTimeout(() => setMessage(null), 5000);
-            return;
-        }
+        navigate('/apply-agent');
+    };
 
-        try {
-            setLoading(true);
-            const response = await requestAgent();
-            setMessage({ type: 'success', text: response.message || 'Agent request submitted successfully!' });
-            // Optionally we would need to refresh user state here, but the message is enough for now
-            // or we could trigger a re-fetch of user data if useAuth provides it
-            setTimeout(() => setMessage(null), 8000);
-        } catch (err) {
-            setMessage({ type: 'error', text: err.message || 'Failed to submit agent request.' });
-            setTimeout(() => setMessage(null), 5000);
-        } finally {
-            setLoading(false);
-        }
+    const navLinks = [
+        { to: '/', label: 'Home' },
+        { to: '/about', label: 'About' },
+        { to: '/buy', label: 'Buy' },
+        { to: '/rent', label: 'Rent' },
+        { to: '/stays', label: 'StayHub' },
+        { to: '/listings', label: 'Listings' },
+    ];
+
+    const isActive = (path) => {
+        if (path === '/') return location.pathname === '/';
+        return location.pathname.startsWith(path);
     };
 
     return (
         <>
-            <header className={`header ${scrolled ? 'scrolled' : ''} ${isHomePage ? 'is-home' : ''}`}>
-                <div className="header-container">
+            <header className="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+                <div className="max-w-[1400px] mx-auto px-6 py-3 flex items-center justify-between">
                     {/* Logo */}
-                    <Link to="/" className="logo">
-                        <img src="/logo.png" alt="Guri24" />
+                    <Link to="/" className="flex items-center gap-2.5 group shrink-0">
+                        <div className="flex items-center justify-center w-9 h-9 bg-[#1a5f9e] rounded-xl text-white shadow-md transition-transform group-hover:scale-105">
+                            <Building2 size={18} strokeWidth={2.5} />
+                        </div>
+                        <span className="text-[1.2rem] font-extrabold tracking-tight text-gray-900">Guri<span style={{color:'#1a5f9e'}}>24</span></span>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="nav-desktop">
-                        <ul className="nav-list">
-                            <li><Link to="/" className="nav-link">{t('nav.home', 'Home')}</Link></li>
-                            <li><Link to="/about" className="nav-link">{t('nav.about', 'About')}</Link></li>
-                            <li><Link to="/buy" className="nav-link">{t('nav.buy', 'Buy')}</Link></li>
-                            <li><Link to="/rent" className="nav-link">{t('nav.rent', 'Rent')}</Link></li>
-                            <li><Link to="/stays" className="nav-link">StayHub</Link></li>
-                            <li><Link to="/listings" className="nav-link">Listings</Link></li>
-                            <li className="list-property-item">
-                                <button
-                                    onClick={handleListProperty}
-                                    className={`nav-link list-property-btn ${loading ? 'loading' : ''}`}
-                                    disabled={loading}
-                                >
-                                    {loading ? 'Processing...' : t('nav.sell', 'List Property')}
-                                </button>
-                            </li>
-                            {(user?.role === 'agent' || user?.role === 'admin' || user?.role === 'super_admin') && (
-                                <li>
-                                    <Link to={user.role === 'agent' ? "/agent" : "/admin"} className="nav-link">
-                                        {user.role === 'agent' ? t('nav.agent', 'Agent Portal') : 'Admin'}
-                                    </Link>
-                                </li>
-                            )}
-                        </ul>
+                    <nav className="hidden lg:flex items-center gap-1">
+                        {navLinks.map(({ to, label }) => (
+                            <Link
+                                key={to}
+                                to={to}
+                                className={`px-4 py-2 rounded-full text-[14px] font-semibold transition-all duration-200 ${
+                                    isActive(to)
+                                        ? 'text-[#1a5f9e] bg-blue-50'
+                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                                }`}
+                            >
+                                {label}
+                            </Link>
+                        ))}
                     </nav>
 
                     {/* Right Actions */}
-                    <div className="header-actions">
-                        <div className="lang-switcher">
-                            <button
-                                className={`lang-btn ${i18n.language === 'en' ? 'active' : ''}`}
-                                onClick={() => changeLanguage('en')}
+                    <div className="flex items-center gap-3">
+                        {/* Language Switch */}
+                        <div className="hidden xl:flex border border-gray-200 rounded-full px-3 py-1.5 text-[11px] font-bold text-gray-400 tracking-widest cursor-pointer hover:border-gray-300 transition-colors select-none">
+                            <span className="text-gray-800">EN</span>
+                            <span className="mx-1 text-gray-300">|</span>
+                            <span>SO</span>
+                        </div>
+
+                        {/* Phone */}
+                        <a href="tel:+254706070747" className="hidden xl:flex items-center gap-2 text-gray-800 font-semibold text-[13px] hover:text-[#1a5f9e] transition-colors">
+                            <div className="w-7 h-7 bg-blue-50 rounded-full flex items-center justify-center text-[#1a5f9e]">
+                                <Phone size={13} />
+                            </div>
+                            +254 706 070 747
+                        </a>
+
+                        {/* Buttons */}
+                        <div className="hidden md:flex items-center gap-2">
+                            <Link
+                                to="/login"
+                                className="border border-gray-200 text-gray-700 px-5 py-2 rounded-full text-[13px] font-semibold hover:border-gray-400 hover:text-gray-900 transition-all"
                             >
-                                EN
-                            </button>
-                            <span className="lang-divider">|</span>
+                                Sign In
+                            </Link>
                             <button
-                                className={`lang-btn ${i18n.language === 'so' ? 'active' : ''}`}
-                                onClick={() => changeLanguage('so')}
+                                onClick={handleListProperty}
+                                className="bg-[#1a5f9e] text-white px-5 py-2 rounded-full text-[13px] font-bold hover:bg-[#0d3b66] transition-all shadow-md shadow-blue-900/20"
                             >
-                                SO
+                                List Property
                             </button>
                         </div>
 
-                        <a href="tel:+254706070747" className="phone-link">
-                            <Phone size={18} />
-                            <span>+254 706 070 747</span>
-                        </a>
-
-                        {isAuthenticated ? (
-                            <Link to="/profile" className="btn-visit user-btn">
-                                <User size={18} />
-                                <span>{user?.name || 'Profile'}</span>
-                            </Link>
-                        ) : (
-                            <Link to="/login" className="btn-visit">
-                                <User size={18} />
-                                {t('nav.login', 'Sign In')}
-                            </Link>
-                        )}
+                        {/* Mobile Toggle */}
+                        <button
+                            className="lg:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-gray-700"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
                     </div>
-
-                    {/* Mobile Toggle (only visible on small screens) */}
-                    <button
-                        className={`mobile-toggle ${mobileMenuOpen ? 'open' : ''}`}
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    >
-                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
                 </div>
             </header>
 
-            {/* Mobile Menu Overlay - Portal to Body */}
+            {/* Mobile Menu */}
             {createPortal(
                 <>
                     {mobileMenuOpen && (
-                        <div className="mobile-menu-backdrop" onClick={() => setMobileMenuOpen(false)}></div>
+                        <div
+                            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
+                            onClick={() => setMobileMenuOpen(false)}
+                        />
                     )}
-                    <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-                        <div className="mobile-menu-header">
-                            {isAuthenticated && user ? (
-                                <div className="user-menu-trigger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                                    <div className="user-avatar">
-                                        {user.avatar_url ? (
-                                            <img
-                                                src={getProfileImageUrl(user.avatar_url)}
-                                                alt={user.name}
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                onError={(e) => { e.target.style.display = 'none'; }}
-                                            />
-                                        ) : (
-                                            <User size={20} />
-                                        )}
-                                    </div>
-                                    <span className="user-name">{user.name?.split(' ')[0] || 'User'}</span>
+                    <div className={`fixed top-0 right-0 bottom-0 w-72 bg-white z-50 shadow-2xl transform transition-transform duration-300 ease-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                        <div className="p-5 border-b border-gray-100 flex items-center justify-between">
+                            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+                                <div className="w-8 h-8 bg-[#1a5f9e] rounded-lg flex items-center justify-center text-white">
+                                    <Building2 size={16} strokeWidth={2.5} />
                                 </div>
-                            ) : (
-                                <span className="mobile-menu-title">Menu</span>
-                            )}
-                            <button className="mobile-close-btn" onClick={() => setMobileMenuOpen(false)}>
-                                <X size={24} />
+                                <span className="font-extrabold text-gray-900">Guri<span style={{color:'#1a5f9e'}}>24</span></span>
+                            </Link>
+                            <button
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                            >
+                                <X size={18} />
                             </button>
                         </div>
-                        <nav className="mobile-nav">
-                            <Link to="/" className="mobile-link">
-                                <Home size={20} />
-                                <span>Home</span>
+                        <nav className="p-5 space-y-1">
+                            {navLinks.map(({ to, label }) => (
+                                <Link
+                                    key={to}
+                                    to={to}
+                                    className={`flex items-center px-4 py-3 rounded-xl text-[15px] font-semibold transition-all ${
+                                        isActive(to)
+                                            ? 'bg-blue-50 text-[#1a5f9e]'
+                                            : 'text-gray-700 hover:bg-gray-50'
+                                    }`}
+                                >
+                                    {label}
+                                </Link>
+                            ))}
+                        </nav>
+                        <div className="px-5 pt-2 pb-6 border-t border-gray-100 space-y-3 mt-2">
+                            <Link
+                                to="/login"
+                                className="block w-full border border-gray-200 text-gray-700 px-6 py-3 rounded-full text-center font-semibold text-[14px] hover:border-gray-400 transition-all"
+                            >
+                                Sign In
                             </Link>
-                            <Link to="/about" className="mobile-link">
-                                <Info size={20} />
-                                <span>About</span>
-                            </Link>
-                            <Link to="/buy" className="mobile-link">
-                                <ShoppingBag size={20} />
-                                <span>Buy</span>
-                            </Link>
-                            <Link to="/sell" className="mobile-link">
-                                <Tag size={20} />
-                                <span>Sell</span>
-                            </Link>
-                            <Link to="/rent" className="mobile-link">
-                                <Building2 size={20} />
-                                <span>Rent</span>
-                            </Link>
-                            <Link to="/stays" className="mobile-link">
-                                <Hotel size={20} />
-                                <span>Stays</span>
-                            </Link>
-                            <Link to="/listings" className="mobile-link">
-                                <List size={20} />
-                                <span>Listings</span>
-                            </Link>
-
                             <button
                                 onClick={handleListProperty}
-                                className={`mobile-link list-property-mobile ${loading ? 'loading' : ''}`}
-                                disabled={loading}
+                                className="block w-full bg-[#1a5f9e] text-white px-6 py-3 rounded-full text-center font-bold text-[14px] hover:bg-[#0d3b66] transition-all"
                             >
-                                <Tag size={20} />
-                                <span>{loading ? 'Processing...' : 'List Property'}</span>
+                                List Property
                             </button>
-
-                            {(user?.role === 'agent' || user?.role === 'admin' || user?.role === 'super_admin') && (
-                                <Link
-                                    to={user.role === 'agent' ? "/agent" : "/admin"}
-                                    className={`mobile-link ${user.role === 'agent' ? 'agent-link' : 'admin-link'}`}
-                                >
-                                    {user.role === 'agent' ? <Building2 size={20} /> : <Shield size={20} />}
-                                    <span>{user.role === 'agent' ? 'Agent Portal' : 'Admin Dashboard'}</span>
-                                </Link>
-                            )}
-
-                            <div className="mobile-divider"></div>
-
-                            {isAuthenticated ? (
-                                <Link to="/profile" className="mobile-link user-link">
-                                    <User size={20} />
-                                    <span>{user?.name || 'My Profile'}</span>
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link to="/login" className="mobile-link">
-                                        <User size={20} />
-                                        <span>Sign In</span>
-                                    </Link>
-                                    <Link to="/register" className="mobile-link primary">
-                                        <User size={20} />
-                                        <span>Sign Up</span>
-                                    </Link>
-                                </>
-                            )}
-                        </nav>
+                        </div>
                     </div>
                 </>,
                 document.body
-            )}
-
-            {/* Notification Toast */}
-            {message && (
-                <div className={`header-notification ${message.type}`}>
-                    <p>{message.text}</p>
-                    <button onClick={() => setMessage(null)}><X size={16} /></button>
-                </div>
             )}
         </>
     );

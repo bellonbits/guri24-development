@@ -1,164 +1,169 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Typography, Row, Col, Input, Button, Space, Divider, message } from 'antd';
+import {
+    Mail,
+    Lock,
+    ArrowRight,
+    ShieldCheck,
+    Star,
+    Zap,
+    Users
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
 
-function LoginPage() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { login } = useAuth();
+const { Title, Text: AntText, Paragraph } = Typography;
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState('');
+const LoginPage = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-
-    const from = location.state?.from?.pathname || '/';
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
+        if (e) e.preventDefault();
         setLoading(true);
-
-        const result = await login(formData.email, formData.password);
-
-        if (result.success) {
-            // Check for admin role
-            if (['admin', 'super_admin'].includes(result.user?.role)) {
-                navigate('/admin', { replace: true });
-            } else {
-                navigate(from, { replace: true });
-            }
-        } else {
-            setError(result.error || 'Invalid email or password');
-        }
-
+        const result = await login(email, password);
         setLoading(false);
+        if (result.success) {
+            message.success('Welcome back to Guri24!');
+            navigate('/profile');
+        } else {
+            message.error(result.error || 'Failed to login. Please check your credentials.');
+        }
     };
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
+    const benefits = [
+        { icon: <ShieldCheck size={20} />, title: "Verified Listings", desc: "Access high-quality, pre-verified property listings." },
+        { icon: <Zap size={20} />, title: "Real-time Alerts", desc: "Get notified instantly about new property matches." },
+        { icon: <Users size={20} />, title: "Agent Connect", desc: "Direct communication with top-rated local agents." },
+        { icon: <Star size={20} />, title: "Exclusive Offers", desc: "Unlock premium deals available only to Guri24 members." }
+    ];
 
     return (
-        <div className="auth-page">
-            <div className="auth-container">
-                <div className="auth-card">
-                    <div className="auth-header">
-                        <h1>Welcome Back</h1>
-                        <p>Sign in to your Guri24 account</p>
+        <div className="login-page">
+            <Row className="w-full">
+                {/* Left Side: Form */}
+                <Col xs={24} lg={12} className="login-form-container">
+                    {/* Minimal Logo Header */}
+                    <div className="login-logo-link">
+                        <Link to="/">
+                            <img src="https://guri24.com/logo.png" alt="Guri24" className="login-logo" />
+                        </Link>
                     </div>
 
-                    {error && (
-                        <div className="error-message">
-                            {error}
+                    <div className="login-form-main">
+                        <div className="login-header-section">
+                            <Title level={1} className="login-title">
+                                Welcome Back
+                            </Title>
+                            <Paragraph className="login-subtitle">
+                                Sign in to manage your property journey and access exclusive listings.
+                            </Paragraph>
                         </div>
-                    )}
 
-                    <form onSubmit={handleSubmit} className="auth-form">
-                        <div className="form-group">
-                            <label htmlFor="email">Email Address</label>
-                            <div className="input-wrapper">
-                                <Mail size={20} className="input-icon" />
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="john@example.com"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
+                        <form onSubmit={handleSubmit}>
+                            <div className="login-input-group">
+                                <AntText className="login-input-label">Email Address</AntText>
+                                <Input
+                                    size="large"
+                                    placeholder="Enter your email"
+                                    prefix={<Mail size={20} className="mr-2 text-gray-400" />}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="login-input-field"
                                 />
                             </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <div className="input-wrapper">
-                                <Lock size={20} className="input-icon" />
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    id="password"
-                                    name="password"
+                            <div className="login-input-group">
+                                <div className="flex justify-between items-center pr-1 mb-2">
+                                    <AntText className="login-input-label ml-0">Password</AntText>
+                                    <Link to="/forgot-password" size="small" className="login-forgot-link">
+                                        Forgot Password?
+                                    </Link>
+                                </div>
+                                <Input.Password
+                                    size="large"
                                     placeholder="Enter your password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    required
+                                    prefix={<Lock size={20} className="mr-2 text-gray-400" />}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="login-input-field"
                                 />
-                                <button
-                                    type="button"
-                                    className="password-toggle"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    aria-label="Toggle password visibility"
-                                >
-                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                                </button>
                             </div>
-                        </div>
+                            <Button
+                                type="primary"
+                                size="large"
+                                block
+                                htmlType="submit"
+                                loading={loading}
+                                icon={!loading && <ArrowRight size={20} />}
+                                iconPlacement="end"
+                                className="login-submit-btn"
+                            >
+                                Sign In
+                            </Button>
+                        </form>
 
-                        <div className="form-options">
-                            <label className="checkbox-label">
-                                <input type="checkbox" />
-                                <span>Remember me</span>
-                            </label>
-                            <Link to="/forgot-password" className="forgot-link">
-                                Forgot password?
+                        <div className="login-signup-prompt">
+                            Don't have an account? {' '}
+                            <Link to="/register" className="login-signup-link">
+                                Sign up for free
                             </Link>
                         </div>
 
-                        <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
-                            {loading ? (
-                                'Signing in...'
-                            ) : (
-                                <>
-                                    <LogIn size={20} />
-                                    Sign In
-                                </>
-                            )}
-                        </button>
-                    </form>
+                        <Divider className="my-10 border-gray-100">
+                            <AntText className="login-divider-text">Or continue with</AntText>
+                        </Divider>
 
-                    <div className="auth-footer">
-                        <p>
-                            Don't have an account?{' '}
-                            <Link to="/register" className="auth-link">
-                                Sign up
-                            </Link>
-                        </p>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Button block size="large" className="social-auth-btn">
+                                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="h-[18px]" />
+                                    Google
+                                </Button>
+                            </Col>
+                            <Col span={12}>
+                                <Button block size="large" className="social-auth-btn">
+                                    <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="h-[18px]" />
+                                    Facebook
+                                </Button>
+                            </Col>
+                        </Row>
                     </div>
+                </Col>
 
-                    <div className="divider">
-                        <span>or continue with</span>
+                {/* Right Side: Showcase */}
+                <Col xs={0} lg={12} className="login-showcase">
+                    <div className="showcase-bg-image" />
+                    <div className="showcase-content">
+                        <Title level={2} className="showcase-title">
+                            Find your <span>dream home</span> with Guri24.
+                        </Title>
+                        <Paragraph className="showcase-desc">
+                            Experience a seamless property search with personalized tools designed for the modern lifestyle.
+                        </Paragraph>
+                        <div className="benefits-grid">
+                            {benefits.map((item, idx) => (
+                                <div key={idx} className="benefit-card">
+                                    <div className="benefit-icon-box">
+                                        {item.icon}
+                                    </div>
+                                    <Title level={5}>{item.title}</Title>
+                                    <AntText>{item.desc}</AntText>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-
-                    <div className="social-auth">
-                        <button className="social-btn google-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24">
-                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                            </svg>
-                            Google
-                        </button>
-                        <button className="social-btn facebook-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                            </svg>
-                            Facebook
-                        </button>
+                    {/* Decorative Elements */}
+                    <div className="showcase-footer">
+                        <AntText>© Guri24 Real Estate</AntText>
                     </div>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </div>
     );
-}
+};
 
 export default LoginPage;

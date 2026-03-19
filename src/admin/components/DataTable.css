@@ -1,10 +1,11 @@
-/* Data Table */
+/* DataTable.css — Guri24 Admin Data Table Component */
+
 .data-table-container {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 /* Table Search */
@@ -12,13 +13,13 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--gray-100);
-    background: var(--gray-50);
+    padding: 0.875rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
 }
 
 .table-search svg {
-    color: var(--gray-400);
+    color: #94a3b8;
     flex-shrink: 0;
 }
 
@@ -26,36 +27,38 @@
     flex: 1;
     background: transparent;
     border: none;
-    color: var(--gray-900);
+    color: #1e293b;
     font-size: 0.875rem;
     outline: none;
 }
 
 .table-search input::placeholder {
-    color: var(--gray-400);
+    color: #94a3b8;
 }
 
 /* Table Wrapper */
 .table-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.875rem;
 }
 
 .data-table thead {
-    background: var(--gray-50);
-    border-bottom: 1px solid var(--gray-200);
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .data-table th {
-    padding: 0.875rem 1.5rem;
+    padding: 11px 16px;
     text-align: left;
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--gray-500);
+    color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     white-space: nowrap;
@@ -64,11 +67,11 @@
 .data-table th.sortable {
     cursor: pointer;
     user-select: none;
-    transition: background 0.2s;
+    transition: background 0.15s;
 }
 
 .data-table th.sortable:hover {
-    background: var(--gray-100);
+    background: #f1f5f9;
 }
 
 .th-content {
@@ -78,8 +81,8 @@
 }
 
 .data-table tbody tr {
-    border-bottom: 1px solid var(--gray-100);
-    transition: background 0.2s;
+    border-bottom: 1px solid #e2e8f0;
+    transition: background 0.12s;
 }
 
 .data-table tbody tr:last-child {
@@ -87,7 +90,7 @@
 }
 
 .data-table tbody tr:hover {
-    background: var(--gray-50);
+    background: #f8fafc;
 }
 
 .data-table tbody tr.clickable {
@@ -95,43 +98,49 @@
 }
 
 .data-table td {
-    padding: 1rem 1.5rem;
-    color: var(--gray-700);
+    padding: 12px 16px;
+    color: #1e293b;
     font-size: 0.875rem;
+    vertical-align: middle;
 }
 
 .empty-state {
     text-align: center;
-    padding: 4rem 1.5rem !important;
-    color: var(--gray-500);
+    padding: 3rem 1.5rem !important;
+    color: #64748b;
     font-style: normal;
+}
+
+.empty-state svg {
+    color: #cbd5e1;
+    margin-bottom: 0.75rem;
 }
 
 /* Table Footer */
 .table-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--gray-200);
+    padding: 0.875rem 1.5rem;
+    border-top: 1px solid #e2e8f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--gray-50);
+    background: #f8fafc;
 }
 
 .table-count {
-    font-size: 0.875rem;
-    color: var(--gray-500);
+    font-size: 0.8125rem;
+    color: #64748b;
+    font-weight: 500;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-
     .data-table th,
     .data-table td {
-        padding: 0.75rem 1rem;
+        padding: 10px 12px;
         font-size: 0.8125rem;
     }
 
     .table-search {
-        padding: 0.875rem 1rem;
+        padding: 0.75rem 1rem;
     }
 }

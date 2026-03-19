@@ -1,6 +1,6 @@
 .documents-page {
     min-height: 100vh;
-    padding: 120px 1rem 3rem;
+    padding: 32px 1rem 3rem;
     position: relative;
     overflow-x: hidden;
     background: #0f172a;
@@ -448,7 +448,7 @@
 
 @media (max-width: 768px) {
     .documents-page {
-        padding: 100px 0.75rem 2rem;
+        padding: 32px 0.75rem 2rem;
     }
 
     .documents-header {
@@ -523,7 +523,7 @@
 
 @media (max-width: 480px) {
     .documents-page {
-        padding: 90px 0.5rem 1.5rem;
+        padding: 24px 0.5rem 1.5rem;
     }
 
     .documents-header {

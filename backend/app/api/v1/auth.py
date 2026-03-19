@@ -89,14 +89,8 @@ async def register(
     try:
         await email_service.send_verification_email(new_user, verification_token)
     except Exception as e:
-        # Log error but don't fail registration
-        print(f"Failed to send verification email: {e}")
-        # FALLBACK: Auto-verify if email service fails (for dev/demo)
-        new_user.email_verified = True
-        new_user.verification_token = None
-        new_user.verification_token_expires = None
-        db.add(new_user)
-        await db.commit()
+        # Log but don't block registration — user can resend verification
+        print(f"WARNING: Failed to send verification email to {new_user.email}: {e}")
     
     return {"message": "Registration successful. User auto-verified due to email service error (Dev Mode)."}
 

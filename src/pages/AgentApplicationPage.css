@@ -1,0 +1,402 @@
+/* AgentApplicationPage.css */
+
+.agent-application-page {
+    padding: 4rem 0;
+    background-color: var(--gray-50);
+    min-height: calc(100vh - 80px);
+}
+
+.application-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.application-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.application-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--primary-dark);
+}
+
+/* Stepper */
+.stepper-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--white);
+    border: 2px solid var(--gray-300);
+    color: var(--gray-400);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.step-title {
+    font-size: 0.9rem;
+    color: var(--gray-400);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.step-line {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: var(--gray-300);
+    z-index: -1;
+    transform: translateY(-50%);
+}
+
+.step-item:last-child .step-line {
+    display: none;
+}
+
+.step-item.active .step-circle {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+    box-shadow: 0 0 0 4px rgba(26, 95, 158, 0.15);
+}
+
+.step-item.active .step-title {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.step-item.active+.step-item .step-line {
+    /* Logic for coloring the line is usually easier with completed steps, 
+     but this basic active state is good */
+}
+
+/* Wizard Content */
+.wizard-content {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+    animation: slideInUp 0.5s ease-out;
+}
+
+.wizard-step h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--gray-800);
+}
+
+.step-subtitle {
+    color: var(--gray-500);
+    margin-bottom: 2rem;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group.full-width,
+.review-item.full,
+.item-full {
+    grid-column: span 2;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--gray-50);
+}
+
+.input-wrapper input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(26, 95, 158, 0.1);
+}
+
+.input-wrapper.disabled input {
+    background: var(--gray-100);
+    color: var(--gray-500);
+    cursor: not-allowed;
+}
+
+.input-wrapper svg {
+    position: absolute;
+    right: 16px;
+    color: var(--gray-400);
+    pointer-events: none;
+}
+
+/* Radio Group */
+.radio-group {
+    display: flex;
+    gap: 2rem;
+    padding: 10px 0;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* File Upload */
+.file-upload-zone {
+    border: 2px dashed var(--gray-300);
+    border-radius: var(--radius-md);
+    padding: 3rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--gray-50);
+}
+
+.file-upload-zone:hover {
+    border-color: var(--primary);
+    background: rgba(26, 95, 158, 0.05);
+}
+
+.file-upload-zone svg {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.file-info {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--gray-400);
+    margin-top: 0.5rem;
+}
+
+/* Review Section */
+.review-card {
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--gray-200);
+}
+
+.review-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 0.5rem;
+}
+
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.review-item strong {
+    color: var(--gray-600);
+    margin-right: 0.5rem;
+}
+
+/* Declaration */
+.declaration-section {
+    background: rgba(245, 158, 11, 0.1);
+    /* Warning/Info tint */
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.checkbox-container input {
+    margin-top: 4px;
+    accent-color: var(--primary);
+    width: 18px;
+    height: 18px;
+}
+
+.label-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Signature */
+.signature-input {
+    font-family: 'Cursive', serif;
+    /* Fallback */
+    font-style: italic;
+    font-size: 1.2rem !important;
+    color: var(--primary-dark) !important;
+}
+
+/* Actions */
+.wizard-actions {
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-100);
+}
+
+.spacer {
+    flex: 1;
+}
+
+.btn-back {
+    background: transparent;
+    color: var(--gray-500);
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+}
+
+.btn-back:hover {
+    background: var(--gray-100);
+    color: var(--gray-800);
+}
+
+.btn-next,
+.btn-submit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 14px 32px;
+    background: var(--primary);
+    color: var(--white);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(26, 95, 158, 0.25);
+}
+
+.btn-next:hover,
+.btn-submit:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(26, 95, 158, 0.35);
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Success State */
+.application-success {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.success-content {
+    text-align: center;
+    background: var(--white);
+    padding: 4rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    max-width: 600px;
+}
+
+.success-icon {
+    color: var(--success);
+    margin-bottom: 1.5rem;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stepper-container {
+        display: none;
+        /* Hide complex stepper on mobile, strictly simpler */
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width,
+    .review-item.full,
+    .item-full {
+        grid-column: span 1;
+    }
+
+    .wizard-content {
+        padding: 1.5rem;
+    }
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, UserPlus, Eye, CheckCircle2, MapPin, Building2, Mail, Phone, Calendar, MessageSquare } from 'lucide-react';
 import adminApi from '../../utils/adminApi';
 import './AdminInquiries.css';

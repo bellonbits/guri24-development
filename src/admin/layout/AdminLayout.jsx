@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getProfileImageUrl } from '../../utils/imageUtils';
 import './AdminLayout.css';
+import '../pages/AdminShared.css';
 
 function AdminLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(true);

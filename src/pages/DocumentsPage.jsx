@@ -18,8 +18,6 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { propertyApi } from '../utils/propertyApi';
 import api from '../utils/api';
-import './DocumentsPage.css';
-
 function DocumentsPage() {
     const { user, refreshUser } = useAuth();
     const navigate = useNavigate();

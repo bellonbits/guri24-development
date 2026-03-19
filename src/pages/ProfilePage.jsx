@@ -8,8 +8,6 @@ import { getProfileImageUrl } from '../utils/imageUtils';
 import PropertyCard from '../components/PropertyCard';
 import ChatWidget from '../components/ChatWidget';
 import HostContactModal from '../components/HostContactModal';
-import './ProfilePage.css';
-
 function ProfilePage() {
     const { user, logout, updateProfile } = useAuth();
     const navigate = useNavigate();
@@ -35,6 +33,8 @@ function ProfilePage() {
         phone: user?.phone || '',
         location: user?.location || '',
         bio: user?.bio || '',
+        company: user?.company || '',
+        specialization: user?.specialization || '',
     });
 
     const [bookings, setBookings] = useState([]);
@@ -137,6 +137,8 @@ function ProfilePage() {
             phone: user?.phone || '',
             location: user?.location || '',
             bio: user?.bio || '',
+            company: user?.company || '',
+            specialization: user?.specialization || '',
         });
         setIsEditing(false);
         setError('');
@@ -216,6 +218,8 @@ function ProfilePage() {
 
     return (
         <div className="profile-page">
+            {/* Blue gradient banner at top */}
+            <div className="profile-banner" />
             <div className="profile-container">
                 {/* Profile Header */}
                 <div className="profile-header">
@@ -374,6 +378,46 @@ function ProfilePage() {
                                 />
                             </div>
 
+                            {/* Professional Details */}
+                            <div className="professional-details-section">
+                                <h3 className="section-subtitle">Professional Details</h3>
+                                <p className="section-hint">Share your professional background and expertise</p>
+
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label htmlFor="company">Company / Agency</label>
+                                        <div className="input-wrapper">
+                                            <Shield size={20} className="input-icon" />
+                                            <input
+                                                type="text"
+                                                id="company"
+                                                name="company"
+                                                placeholder="e.g., Guri24 Real Estate"
+                                                value={formData.company}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="specialization">Specialization</label>
+                                        <div className="input-wrapper">
+                                            <Award size={20} className="input-icon" />
+                                            <input
+                                                type="text"
+                                                id="specialization"
+                                                name="specialization"
+                                                placeholder="e.g., Luxury Villas, Commercial"
+                                                value={formData.specialization}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {isEditing && (
                                 <div className="form-actions">
                                     <button type="submit" className="btn btn-primary" disabled={loading}>
@@ -436,7 +480,68 @@ function ProfilePage() {
                         </div>
                     </div>
 
-                    {/* Verification Section - Only for Agents */}
+                    {/* Agent Application Section - For non-agents */}
+                    {user?.role !== 'agent' && user?.role !== 'admin' && user?.role !== 'super_admin' && (
+                        <div className="profile-section agent-application-section">
+                            <div className="section-header">
+                                <h2>
+                                    <Shield size={24} />
+                                    Become a Guri24 Agent
+                                </h2>
+                                <p>Submit a formal application to list and manage properties on our platform.</p>
+                            </div>
+
+                            <div className="application-status-container">
+                                {user?.agent_status === 'PENDING' ? (
+                                    <div className="status-notice pending">
+                                        <Clock size={32} />
+                                        <div>
+                                            <h3>Application Under Review</h3>
+                                            <p>Your formal application is currently being reviewed by our team. We'll get back to you within 24-48 hours.</p>
+                                        </div>
+                                    </div>
+                                ) : user?.agent_status === 'REJECTED' ? (
+                                    <div className="status-notice rejected">
+                                        <X size={32} />
+                                        <div>
+                                            <h3>Application Rejected</h3>
+                                            <p>Unfortunately, your application was not approved at this time.</p>
+                                            {user?.rejection_reason && (
+                                                <div className="rejection-reason">
+                                                    <strong>Reason:</strong> {user.rejection_reason}
+                                                </div>
+                                            )}
+                                            <button className="btn btn-outline-primary mt-2" onClick={() => navigate('/apply-agent')}>
+                                                Re-apply with Updates
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="apply-promo">
+                                        <div className="promo-features">
+                                            <div className="feature">
+                                                <CheckCircle size={18} />
+                                                <span>List unlimited properties</span>
+                                            </div>
+                                            <div className="feature">
+                                                <CheckCircle size={18} />
+                                                <span>Access agent dashboard</span>
+                                            </div>
+                                            <div className="feature">
+                                                <CheckCircle size={18} />
+                                                <span>Professional verification badge</span>
+                                            </div>
+                                        </div>
+                                        <button className="btn btn-primary" onClick={() => navigate('/apply-agent')}>
+                                            Start Application
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Verification Section - Only for Verified Agents */}
                     {user?.role === 'agent' && (
                         <div className="profile-section verification-section">
                             <h2>

@@ -1,15 +1,39 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import './PropertyDetailPage.css';
 import analytics from '../utils/analytics';
-import { MapPin, Bed, Bath, Square, Phone, Mail, ChevronLeft, ChevronRight, Heart, Share2, Check, Calendar, Star, ShieldCheck, MessageSquare } from 'lucide-react';
+import { MapPin, ChevronLeft, ChevronRight, Share2, Building2, ExternalLink, Check } from 'lucide-react';
 import { propertyApi, transformProperty, formatPrice } from '../utils/propertyApi';
 import PropertyCard from '../components/PropertyCard';
 import Map from '../components/Map';
 import ChatWidget from '../components/ChatWidget';
 import { useAuth } from '../context/AuthContext';
 import { trackUserView, createInquiry } from '../utils/api';
+import { Row, Col, Spin, Tag, message } from 'antd';
 import { getProfileImageUrl } from '../utils/imageUtils';
-import './PropertyDetailPage.css';
+
+const getAmenityEmoji = (feature) => {
+    const f = feature.toLowerCase();
+    if (f.includes('wifi') || f.includes('internet')) return '📶';
+    if (f.includes('pool') || f.includes('swimming')) return '🏊';
+    if (f.includes('parking') || f.includes('garage')) return '🚗';
+    if (f.includes('security') || f.includes('guarded') || f.includes('cctv')) return '🛡️';
+    if (f.includes('ac') || f.includes('air') || f.includes('conditioning')) return '❄️';
+    if (f.includes('tv') || f.includes('television')) return '📺';
+    if (f.includes('gym') || f.includes('fitness')) return '💪';
+    if (f.includes('kitchen') || f.includes('cooking')) return '🍳';
+    if (f.includes('coffee') || f.includes('cafe')) return '☕';
+    if (f.includes('garden') || f.includes('park') || f.includes('trees')) return '🌳';
+    if (f.includes('balcony') || f.includes('terrace') || f.includes('rooftop')) return '🌅';
+    if (f.includes('workspace') || f.includes('office')) return '💻';
+    if (f.includes('water') || f.includes('borehole')) return '💧';
+    if (f.includes('power') || f.includes('generator') || f.includes('solar')) return '⚡';
+    if (f.includes('laundry') || f.includes('wash')) return '🧺';
+    if (f.includes('elevator') || f.includes('lift')) return '🛗';
+    if (f.includes('pets') || f.includes('pet')) return '🐾';
+    if (f.includes('bar') || f.includes('lounge')) return '🍷';
+    return '✨';
+};
 
 function PropertyDetailPage() {
     const { slug } = useParams();
@@ -17,76 +41,43 @@ function PropertyDetailPage() {
     const [loading, setLoading] = useState(true);
     const [relatedProperties, setRelatedProperties] = useState([]);
     const [currentImage, setCurrentImage] = useState(0);
-    const [showContactForm, setShowContactForm] = useState(false);
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [showInquiry, setShowInquiry] = useState(false);
 
-    // Auth & Form State
     const { user } = useAuth();
     const [inquiryForm, setInquiryForm] = useState({ name: '', email: '', phone: '', message: '' });
     const [submitting, setSubmitting] = useState(false);
 
-    // Booking State
-    const [bookingDates, setBookingDates] = useState({ checkIn: '', checkOut: '' });
-    const [guests, setGuests] = useState(1);
-    const [totalPrice, setTotalPrice] = useState(0);
-
-    // Fetch property by slug
     useEffect(() => {
         const fetchProperty = async () => {
             try {
                 setLoading(true);
                 const data = await propertyApi.getPropertyBySlug(slug);
-                console.log("Property Detail Response:", data);
+                if (!data) throw new Error('Property not found');
 
-                if (!data) {
-                    console.error("No data received for property:", slug);
-                    throw new Error("Property not found");
-                }
-
-                // Robust extraction for single property
                 let propertyData = data;
+                if (data.items) propertyData = data.items;
+                else if (data.property) propertyData = data.property;
+                else if (data.properties) propertyData = data.properties;
 
-                // Check if data is wrapped
-                if (data.items) {
-                    propertyData = data.items;
-                } else if (data.property) {
-                    propertyData = data.property;
-                } else if (data.properties) {
-                    propertyData = data.properties;
-                }
-
-                // If the single get returns an array, take first
-                if (Array.isArray(propertyData)) {
-                    propertyData = propertyData[0];
-                }
-
-                if (!propertyData) {
-                    console.error("Could not extract property data from response:", data);
-                    throw new Error("Invalid property data format");
-                }
+                if (Array.isArray(propertyData)) propertyData = propertyData[0];
+                if (!propertyData) throw new Error('Invalid property data');
 
                 const transformed = transformProperty(propertyData);
                 setProperty(transformed);
 
-                // Fetch related properties (safe check)
                 if (propertyData.type) {
                     try {
                         const relatedResponse = await propertyApi.getPropertiesByType(propertyData.type, 1, 4);
-                        // Safe extraction for related
                         let relatedList = [];
-                        if (Array.isArray(relatedResponse)) { relatedList = relatedResponse; }
-                        else if (relatedResponse && Array.isArray(relatedResponse.items)) { relatedList = relatedResponse.items; }
-                        else if (relatedResponse && Array.isArray(relatedResponse.properties)) { relatedList = relatedResponse.properties; }
-                        else if (relatedResponse?.items?.properties && Array.isArray(relatedResponse.items.properties)) { relatedList = relatedResponse.items.properties; }
+                        if (Array.isArray(relatedResponse)) relatedList = relatedResponse;
+                        else if (relatedResponse?.items && Array.isArray(relatedResponse.items)) relatedList = relatedResponse.items;
+                        else if (relatedResponse?.properties && Array.isArray(relatedResponse.properties)) relatedList = relatedResponse.properties;
 
-                        const relatedTransformed = relatedList
-                            .filter(p => p.slug !== slug)
-                            .map(transformProperty)
-                            .slice(0, 3);
-                        setRelatedProperties(relatedTransformed);
-                    } catch (relatedError) {
-                        console.warn("Failed to fetch related properties", relatedError);
-                    }
+                        setRelatedProperties(
+                            relatedList.filter(p => p.slug !== slug).map(transformProperty).slice(0, 3)
+                        );
+                    } catch (_) {}
                 }
             } catch (error) {
                 console.error('Failed to fetch property:', error);
@@ -98,21 +89,13 @@ function PropertyDetailPage() {
         fetchProperty();
     }, [slug]);
 
-    // Track property view (Analytics + User History)
     useEffect(() => {
         if (property) {
             analytics.trackPropertyView(property);
-
-            // Track for user history only if authenticated to avoid 401s
-            if (user && property.id) {
-                trackUserView(property.id).catch(err => {
-                    // Silent fail for optional tracking
-                });
-            }
+            if (user && property.id) trackUserView(property.id).catch(() => {});
         }
     }, [property, user]);
 
-    // Pre-fill form if user exists
     useEffect(() => {
         if (user) {
             setInquiryForm(prev => ({
@@ -124,463 +107,362 @@ function PropertyDetailPage() {
         }
     }, [user]);
 
-    // Booking Handlers
-    const handleBookingSubmit = async (e) => {
-        e.preventDefault();
-        if (!user) {
-            alert("Please login to book this property.");
-            return;
-        }
-
-        if (!bookingDates.checkIn || !bookingDates.checkOut) {
-            alert("Please select both check-in and check-out dates.");
-            return;
-        }
-
-        const payload = {
-            property_id: property.id,
-            check_in: new Date(bookingDates.checkIn).toISOString(),
-            check_out: new Date(bookingDates.checkOut).toISOString(),
-            guest_count: guests
-        };
-
-        console.log("Sending Booking Payload:", payload);
-
-        setSubmitting(true);
-        try {
-            await propertyApi.createBooking(payload);
-            alert('Booking confirmed! Check your dashboard for details.');
-            setBookingDates({ checkIn: '', checkOut: '' });
-        } catch (error) {
-            console.error("Booking failed", error);
-
-            let errorMessage = "Booking failed. Please try again.";
-            if (error.response) {
-                if (error.response.status === 422 && Array.isArray(error.response.data.detail)) {
-                    // Pydantic validation error
-                    errorMessage = "Validation Error: " + error.response.data.detail.map(err => `${err.loc.join('.')}: ${err.msg}`).join('\n');
-                } else if (error.response.data.detail) {
-                    errorMessage = error.response.data.detail;
-                }
-            }
-            alert(errorMessage);
-        } finally {
-            setSubmitting(false);
-        }
-    };
-
-    // Calculate total price when dates change
-    useEffect(() => {
-        if (bookingDates.checkIn && bookingDates.checkOut && property?.price) {
-            const start = new Date(bookingDates.checkIn);
-            const end = new Date(bookingDates.checkOut);
-            const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-            if (nights > 0) {
-                setTotalPrice(nights * property.price);
-            } else {
-                setTotalPrice(0);
-            }
-        }
-    }, [bookingDates, property]);
-
-    const handleInquiryChange = (e) => {
-        const { name, value } = e.target;
-        setInquiryForm(prev => ({ ...prev, [name]: value }));
-    };
-
     const handleInquirySubmit = async (e) => {
         e.preventDefault();
-
         if (inquiryForm.message.length < 10) {
-            alert("Message must be at least 10 characters long.");
+            message.error('Message must be at least 10 characters.');
             return;
         }
-
         setSubmitting(true);
         try {
-            await createInquiry({
-                property_id: property.id,
-                ...inquiryForm
-            });
-            alert('Your request has been sent! An agent will contact you soon.');
+            await createInquiry({ property_id: property.id, ...inquiryForm });
+            message.success('Inquiry sent! An agent will contact you soon.');
             setInquiryForm({ name: user?.name || '', email: user?.email || '', phone: user?.phone || '', message: '' });
-            setShowContactForm(false);
-        } catch (error) {
-            console.error('Inquiry failed:', error);
-            alert('Failed to send inquiry. Please try again.');
+            setShowInquiry(false);
+        } catch {
+            message.error('Failed to send inquiry. Please try again.');
         } finally {
             setSubmitting(false);
         }
     };
+
+    const handleShare = () => {
+        navigator.clipboard.writeText(window.location.href);
+        message.success('Link copied!');
+    };
+
+    if (loading) {
+        return (
+            <div className="pd-loading-screen">
+                <Spin size="large" />
+                <p>Loading property...</p>
+            </div>
+        );
+    }
 
     if (!property) {
         return (
-            <div className="not-found">
-                <div className="container">
+            <div className="pd-not-found-screen">
+                <div className="pd-not-found-card">
+                    <div className="pd-nf-icon">
+                        <Building2 size={40} color="#ef4444" />
+                    </div>
                     <h1>Property Not Found</h1>
-                    <p>The property you're looking for doesn't exist.</p>
-                    <Link to="/listings" className="btn btn-primary">View All Listings</Link>
+                    <p>The property you're looking for doesn't exist or has been removed.</p>
+                    <Link to="/listings" className="pd-nf-btn">Back to Listings</Link>
                 </div>
             </div>
         );
     }
 
+    const images = property.images?.length > 0 ? property.images : ['/placeholder-property.jpg'];
+    const nextImage = () => setCurrentImage(p => (p + 1) % images.length);
+    const prevImage = () => setCurrentImage(p => (p - 1 + images.length) % images.length);
 
-
-    // ... helper functions ...
-    const nextImage = () => {
-        setCurrentImage((prev) => (prev + 1) % property.images.length);
-    };
-
-    const prevImage = () => {
-        setCurrentImage((prev) => (prev - 1 + property.images.length) % property.images.length);
-    };
+    const purposeLabel = property.purpose ? property.purpose.charAt(0).toUpperCase() + property.purpose.slice(1) : 'For Sale';
+    const typeLabel = property.type ? property.type.charAt(0).toUpperCase() + property.type.slice(1) : 'Property';
+    const statusLabel = property.status ? property.status.charAt(0).toUpperCase() + property.status.slice(1) : 'Available';
 
     return (
         <div className="property-detail-page">
-            {/* Image Gallery */}
-            <section className="gallery-section">
-                <div className="gallery-main">
-                    <img src={property.images[currentImage]} alt={property.title} />
-                    <div className="gallery-nav">
-                        <button onClick={prevImage} aria-label="Previous image">
-                            <ChevronLeft size={24} />
-                        </button>
-                        <span>{currentImage + 1} / {property.images.length}</span>
-                        <button onClick={nextImage} aria-label="Next image">
-                            <ChevronRight size={24} />
-                        </button>
+            <div className="pd-container">
+
+                {/* Breadcrumbs */}
+                <nav className="pd-breadcrumb">
+                    <Link to="/">Home</Link>
+                    <span>/</span>
+                    <Link to="/listings">Properties</Link>
+                    <span>/</span>
+                    <span>{property.title}</span>
+                </nav>
+
+                {/* Page Title Row */}
+                <div className="pd-title-row">
+                    <div>
+                        <h1 className="pd-title">{property.title}</h1>
+                        <div className="pd-meta-row">
+                            <MapPin size={15} color="#6b7280" />
+                            <span>{property.location.city}{property.location.area ? `, ${property.location.area}` : ''}</span>
+                            <Tag color="blue" style={{ marginLeft: 8 }}>{purposeLabel}</Tag>
+                            <Tag color="default">{typeLabel}</Tag>
+                            <Tag color={property.status === 'available' ? 'green' : 'orange'}>{statusLabel}</Tag>
+                        </div>
                     </div>
-                    <div className="gallery-actions">
-                        <button className="action-btn" aria-label="Add to favorites">
-                            <Heart size={20} />
+                    <div className="pd-title-actions">
+                        <button className="pd-action-btn" onClick={handleShare}>
+                            <Share2 size={18} />
+                            <span>Share</span>
                         </button>
-                        <button className="action-btn" aria-label="Share">
-                            <Share2 size={20} />
-                        </button>
-                    </div>
-                    <div className="gallery-badge">
-                        <span className={property.purpose.toLowerCase()}>{property.purpose}</span>
+                        <div className="pd-price-pill">
+                            {formatPrice(property.price, property.currency)}
+                        </div>
                     </div>
                 </div>
-                <div className="gallery-thumbs">
-                    {property.images.map((img, index) => (
-                        <button
-                            key={index}
-                            className={`thumb ${index === currentImage ? 'active' : ''}`}
-                            onClick={() => setCurrentImage(index)}
-                        >
-                            <img src={img} alt={`${property.title} ${index + 1}`} />
-                        </button>
-                    ))}
+
+                {/* Gallery */}
+                <div className="pd-gallery">
+                    <div className="pd-gallery-main">
+                        <img src={images[currentImage]} alt={property.title} />
+                        {images.length > 1 && (
+                            <>
+                                <button className="pd-gallery-btn pd-gallery-prev" onClick={prevImage}>
+                                    <ChevronLeft size={22} />
+                                </button>
+                                <button className="pd-gallery-btn pd-gallery-next" onClick={nextImage}>
+                                    <ChevronRight size={22} />
+                                </button>
+                                <div className="pd-image-counter">{currentImage + 1} / {images.length}</div>
+                            </>
+                        )}
+                    </div>
+                    {images.length > 1 && (
+                        <div className="pd-gallery-thumbs">
+                            {images.map((img, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`pd-thumb ${currentImage === idx ? 'active' : ''}`}
+                                    onClick={() => setCurrentImage(idx)}
+                                >
+                                    <img src={img} alt="" />
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            </section>
 
-            {/* Content */}
-            <section className="detail-content">
-                <div className="container">
-                    <div className="detail-grid">
-                        <div className="detail-main">
-                            <div className="bnb-detail-header">
-                                <h1>{property.title}</h1>
-                                <div className="bnb-detail-subheader">
-                                    <div className="bnb-subheader-item">
-                                        <Star size={14} fill="currentColor" />
-                                        <span className="rating-value">{property.rating || '4.9'}</span>
-                                        <span className="review-count">· 12 reviews</span>
-                                    </div>
-                                    <span className="divider">·</span>
-                                    <div className="bnb-subheader-item">
-                                        <MapPin size={14} />
-                                        <span className="location-text">
-                                            {typeof property.location === 'object'
-                                                ? `${property.location.area}, ${property.location.city}`
-                                                : property.location}
-                                        </span>
-                                    </div>
-                                </div>
+                {/* Body: 2-column layout */}
+                <div className="pd-body">
+                    {/* Left: Content */}
+                    <div className="pd-content">
+
+                        {/* Quick Specs */}
+                        <div className="pd-specs-bar">
+                            <div className="pd-spec">
+                                <span className="pd-spec-val">{property.bedrooms ?? 0}</span>
+                                <span className="pd-spec-lbl">Bedrooms</span>
                             </div>
-
-                            <div className="property-stats">
-                                {property.bedrooms > 0 && (
-                                    <div className="stat">
-                                        <Bed size={22} />
-                                        <span>{property.bedrooms} Bedrooms</span>
-                                    </div>
-                                )}
-                                {property.bathrooms > 0 && (
-                                    <div className="stat">
-                                        <Bath size={22} />
-                                        <span>{property.bathrooms} Bathrooms</span>
-                                    </div>
-                                )}
-                                <div className="stat">
-                                    <Square size={22} />
-                                    <span>{property.size}</span>
-                                </div>
+                            <div className="pd-spec-divider" />
+                            <div className="pd-spec">
+                                <span className="pd-spec-val">{property.bathrooms ?? 0}</span>
+                                <span className="pd-spec-lbl">Bathrooms</span>
                             </div>
-
-                            <div className="detail-section">
-                                <h2>Description</h2>
-                                <p>{property.description}</p>
+                            <div className="pd-spec-divider" />
+                            <div className="pd-spec">
+                                <span className="pd-spec-val">{property.size || 'N/A'}</span>
+                                <span className="pd-spec-lbl">Area</span>
                             </div>
-
-                            <div className="detail-section">
-                                <h2>Features & Amenities</h2>
-                                <div className="features-grid">
-                                    {property.features.map((feature, index) => (
-                                        <div key={index} className="feature-item">
-                                            <Check size={18} />
-                                            <span>{feature}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {(property.purpose === 'Stay' || property.purpose === 'stay') && (
+                            {property.floors && (
                                 <>
-                                    <div className="detail-section">
-                                        <h2>House Rules</h2>
-                                        <div className="rules-grid">
-                                            <div className="rule-item">
-                                                <Calendar size={18} />
-                                                <span>Check-in: 2:00 PM - 10:00 PM</span>
-                                            </div>
-                                            <div className="rule-item">
-                                                <Calendar size={18} />
-                                                <span>Checkout before 11:00 AM</span>
-                                            </div>
-                                            <div className="rule-item">
-                                                <Star size={18} />
-                                                <span>No pets allowed</span>
-                                            </div>
-                                            <div className="rule-item">
-                                                <Star size={18} />
-                                                <span>No smoking</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="detail-section">
-                                        <h2>Safety & Property</h2>
-                                        <div className="safety-grid">
-                                            <div className="safety-item">
-                                                <ShieldCheck size={18} />
-                                                <span>Smoke alarm installed</span>
-                                            </div>
-                                            <div className="safety-item">
-                                                <ShieldCheck size={18} />
-                                                <span>Carbon monoxide alarm</span>
-                                            </div>
-                                            <div className="safety-item">
-                                                <ShieldCheck size={18} />
-                                                <span>Fire extinguisher</span>
-                                            </div>
-                                        </div>
+                                    <div className="pd-spec-divider" />
+                                    <div className="pd-spec">
+                                        <span className="pd-spec-val">{property.floors}</span>
+                                        <span className="pd-spec-lbl">Floors</span>
                                     </div>
                                 </>
                             )}
-
-                            {(property.coordinates || property.location) && (
-                                <div className="detail-section">
-                                    <h2>Location</h2>
-                                    <div className="map-container">
-                                        <Map
-                                            center={property.coordinates}
-                                            address={typeof property.location === 'string' ? property.location : property.location.address}
-                                            zoom={15}
-                                        />
-                                    </div>
-                                </div>
-                            )}
                         </div>
 
-                        <div className="detail-sidebar">
-                            {(property.purpose === 'Stay' || property.purpose === 'stay') ? (
-                                <div className="booking-widget">
-                                    <div className="booking-header">
-                                        <div className="booking-price">
-                                            <span className="amount">{formatPrice(property.price, property.currency)}</span>
-                                            <span className="unit"> / night</span>
-                                        </div>
-                                        <div className="booking-rating">
-                                            <Star size={14} fill="currentColor" />
-                                            <span>4.9 (12 reviews)</span>
-                                        </div>
+                        {/* About */}
+                        <section className="pd-section">
+                            <h2 className="pd-section-title">About this property</h2>
+                            <p className="pd-description">{property.description || 'No description available. Contact the agent for more details.'}</p>
+                        </section>
+
+                        {/* Property Details */}
+                        <section className="pd-section">
+                            <h2 className="pd-section-title">Property Details</h2>
+                            <div className="pd-details-grid">
+                                {[
+                                    { label: 'Type', value: typeLabel },
+                                    { label: 'Purpose', value: purposeLabel },
+                                    { label: 'Status', value: statusLabel },
+                                    { label: 'Address', value: property.address || `${property.location.city}, Kenya` },
+                                    ...(property.bedrooms != null ? [{ label: 'Bedrooms', value: property.bedrooms }] : []),
+                                    ...(property.bathrooms != null ? [{ label: 'Bathrooms', value: property.bathrooms }] : []),
+                                    ...(property.area_sqft ? [{ label: 'Area', value: `${property.area_sqft.toLocaleString()} sq ft` }] : []),
+                                    ...(property.year_built ? [{ label: 'Year Built', value: property.year_built }] : []),
+                                ].map((row, i) => (
+                                    <div className="pd-detail-row" key={i}>
+                                        <span className="pd-detail-label">{row.label}</span>
+                                        <span className="pd-detail-value">{row.value}</span>
                                     </div>
+                                ))}
+                            </div>
+                        </section>
 
-                                    <form className="booking-form" onSubmit={handleBookingSubmit}>
-                                        <div className="date-picker-group">
-                                            <div className="date-input">
-                                                <label>CHECK-IN</label>
-                                                <input
-                                                    type="date"
-                                                    value={bookingDates.checkIn}
-                                                    min={new Date().toISOString().split('T')[0]}
-                                                    onChange={(e) => setBookingDates({ ...bookingDates, checkIn: e.target.value })}
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="date-input">
-                                                <label>CHECK-OUT</label>
-                                                <input
-                                                    type="date"
-                                                    value={bookingDates.checkOut}
-                                                    min={bookingDates.checkIn || new Date().toISOString().split('T')[0]}
-                                                    onChange={(e) => setBookingDates({ ...bookingDates, checkOut: e.target.value })}
-                                                    required
-                                                />
-                                            </div>
+                        {/* Amenities */}
+                        <section className="pd-section">
+                            <h2 className="pd-section-title">
+                                Amenities
+                                {property.features?.length > 0 && (
+                                    <span className="pd-amenity-count">{property.features.length} features</span>
+                                )}
+                            </h2>
+                            {property.features?.length > 0 ? (
+                                <div className="pd-amenities-grid">
+                                    {property.features.map((feature, i) => (
+                                        <div className="pd-amenity-item" key={i}>
+                                            <span className="pd-amenity-emoji">{getAmenityEmoji(feature)}</span>
+                                            <span className="pd-amenity-name">{feature}</span>
                                         </div>
-
-                                        <div className="guest-picker">
-                                            <label>GUESTS</label>
-                                            <select value={guests} onChange={(e) => setGuests(parseInt(e.target.value))}>
-                                                {[1, 2, 3, 4, 5, 6].map(n => (
-                                                    <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-
-                                        <button type="submit" className="btn btn-primary booking-btn" disabled={submitting}>
-                                            {submitting ? 'Confirming...' : 'Reserve'}
-                                        </button>
-
-                                        <p className="no-charge-note">You won't be charged yet</p>
-
-                                        {totalPrice > 0 && (
-                                            <div className="price-breakdown">
-                                                <div className="price-row">
-                                                    <span>{formatPrice(property.price, property.currency)} x {Math.ceil((new Date(bookingDates.checkOut) - new Date(bookingDates.checkIn)) / (1000 * 60 * 60 * 24))} nights</span>
-                                                    <span>{formatPrice(totalPrice, property.currency)}</span>
-                                                </div>
-                                                <div className="price-row">
-                                                    <span>Service fee</span>
-                                                    <span>{formatPrice(totalPrice * 0.05, property.currency)}</span>
-                                                </div>
-                                                <hr />
-                                                <div className="price-row total">
-                                                    <span>Total</span>
-                                                    <span>{formatPrice(totalPrice * 1.05, property.currency)}</span>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </form>
+                                    ))}
                                 </div>
                             ) : (
-                                <div className="agent-card">
-                                    <h3>Contact Agent</h3>
-                                    <div className="agent-profile-header">
-                                        <div className="agent-avatar-large">
-                                            {property.agent?.avatar_url ? (
-                                                <img
-                                                    src={getProfileImageUrl(property.agent.avatar_url)}
-                                                    alt={property.agent.name}
-                                                    onError={(e) => { e.target.style.display = 'none'; }}
-                                                />
-                                            ) : (
-                                                property.agent?.name?.charAt(0) || 'A'
-                                            )}
-                                        </div>
-                                        <div className="agent-info-centered">
-                                            <h4>{property.agent?.name}</h4>
-                                            {property.agent?.agent_status === 'verified' && (
-                                                <div className="agent-badge verified">
-                                                    <ShieldCheck size={14} />
-                                                    Verified Agent
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="agent-contacts">
-                                        <a href={`tel:${property.agent.phone}`} className="btn btn-primary">
-                                            <Phone size={18} />
-                                            Call Now
-                                        </a>
-                                        <a href={`mailto:${property.agent.email}`} className="btn btn-secondary">
-                                            <Mail size={18} />
-                                            Email
-                                        </a>
-                                        <button
-                                            className="btn btn-outline-primary chat-now-btn"
-                                            onClick={() => setIsChatOpen(true)}
-                                        >
-                                            <MessageSquare size={18} />
-                                            Chat Now
-                                        </button>
-                                    </div>
-                                    <button
-                                        className="btn btn-outline-primary schedule-btn"
-                                        onClick={() => setShowContactForm(!showContactForm)}
-                                    >
-                                        <Calendar size={18} />
-                                        Schedule a Visit
-                                    </button>
-
-                                    {showContactForm && (
-                                        <form className="contact-form" onSubmit={handleInquirySubmit}>
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                placeholder="Your Name"
-                                                value={inquiryForm.name}
-                                                onChange={handleInquiryChange}
-                                                required
-                                            />
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                placeholder="Your Email"
-                                                value={inquiryForm.email}
-                                                onChange={handleInquiryChange}
-                                                required
-                                            />
-                                            <input
-                                                type="tel"
-                                                name="phone"
-                                                placeholder="Your Phone"
-                                                value={inquiryForm.phone}
-                                                onChange={handleInquiryChange}
-                                                required
-                                            />
-                                            <textarea
-                                                name="message"
-                                                placeholder="Message"
-                                                rows="3"
-                                                value={inquiryForm.message}
-                                                onChange={handleInquiryChange}
-                                            ></textarea>
-                                            <button type="submit" className="btn btn-primary" disabled={submitting}>
-                                                {submitting ? 'Sending...' : 'Send Request'}
-                                            </button>
-                                        </form>
-                                    )}
+                                <div className="pd-amenities-empty">
+                                    <Check size={20} color="#9ca3af" />
+                                    <span>Standard amenities included. Contact agent for full list.</span>
                                 </div>
                             )}
-                        </div>
+                        </section>
+
+                        {/* Location / Map */}
+                        <section className="pd-section">
+                            <h2 className="pd-section-title">Location</h2>
+                            <div className="pd-map-box">
+                                <Map
+                                    center={property.coordinates}
+                                    address={property.address || property.title}
+                                />
+                            </div>
+                            <div className="pd-map-footer">
+                                <MapPin size={15} />
+                                <span>{property.location.city}{property.location.area ? `, ${property.location.area}` : ''}, Kenya</span>
+                                {!property.coordinates && (
+                                    <a
+                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((property.address || property.title) + ' ' + property.location.city)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="pd-map-link"
+                                    >
+                                        <ExternalLink size={14} />
+                                        Open in Maps
+                                    </a>
+                                )}
+                            </div>
+                        </section>
                     </div>
+
+                    {/* Right: Sticky Sidebar */}
+                    <aside className="pd-sidebar">
+                        {/* Price Card */}
+                        <div className="pd-sidebar-card">
+                            <div className="pd-sidebar-price">
+                                <span className="pd-price-label">Price</span>
+                                <span className="pd-price-value">{formatPrice(property.price, property.currency)}</span>
+                                {property.priceUnit && property.priceUnit !== '/ month' ? null : (
+                                    property.purpose === 'rent' && <span className="pd-price-unit">/ month</span>
+                                )}
+                            </div>
+
+                            <button className="pd-cta-btn" onClick={() => setIsChatOpen(true)}>
+                                Request a Tour
+                                <span className="pd-cta-sub">Earliest available tomorrow</span>
+                            </button>
+
+                            <button
+                                className="pd-secondary-btn"
+                                onClick={() => setShowInquiry(prev => !prev)}
+                            >
+                                {showInquiry ? 'Hide Form' : 'Send Inquiry'}
+                            </button>
+
+                            {showInquiry && (
+                                <form className="pd-inquiry-form" onSubmit={handleInquirySubmit}>
+                                    <input
+                                        className="pd-input"
+                                        placeholder="Your name"
+                                        value={inquiryForm.name}
+                                        onChange={e => setInquiryForm(p => ({ ...p, name: e.target.value }))}
+                                        required
+                                    />
+                                    <input
+                                        className="pd-input"
+                                        type="email"
+                                        placeholder="Email address"
+                                        value={inquiryForm.email}
+                                        onChange={e => setInquiryForm(p => ({ ...p, email: e.target.value }))}
+                                        required
+                                    />
+                                    <input
+                                        className="pd-input"
+                                        placeholder="Phone number"
+                                        value={inquiryForm.phone}
+                                        onChange={e => setInquiryForm(p => ({ ...p, phone: e.target.value }))}
+                                    />
+                                    <textarea
+                                        className="pd-input pd-textarea"
+                                        placeholder="I'm interested in this property..."
+                                        value={inquiryForm.message}
+                                        onChange={e => setInquiryForm(p => ({ ...p, message: e.target.value }))}
+                                        rows={3}
+                                        required
+                                    />
+                                    <button className="pd-cta-btn" type="submit" disabled={submitting}>
+                                        {submitting ? 'Sending...' : 'Send Message'}
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+
+                        {/* Agent Card */}
+                        <div className="pd-sidebar-card pd-agent-card">
+                            <p className="pd-agent-label">Listed by</p>
+                            <Link
+                                to={property.agent?.id ? `/agents/${property.agent.id}` : '#'}
+                                className="pd-agent-link"
+                            >
+                                <div className="pd-agent-row">
+                                    <img
+                                        className="pd-agent-avatar"
+                                        src={getProfileImageUrl(property.agent?.avatar_url)}
+                                        alt={property.agent?.name}
+                                    />
+                                    <div style={{ flex: 1 }}>
+                                        <div className="pd-agent-name">{property.agent?.name || 'Guri Agent'}</div>
+                                        <div className="pd-agent-role">
+                                            {property.agent?.specialization || 'Professional Agent'}
+                                        </div>
+                                    </div>
+                                    <span className="pd-agent-view">View →</span>
+                                </div>
+                            </Link>
+                            {property.agent?.phone && (
+                                <a href={`tel:${property.agent.phone}`} className="pd-agent-phone">
+                                    {property.agent.phone}
+                                </a>
+                            )}
+                        </div>
+                    </aside>
                 </div>
-            </section>
+            </div>
 
             {/* Similar Properties */}
             {relatedProperties.length > 0 && (
-                <section className="similar-section">
-                    <div className="container">
-                        <h2>Similar Properties</h2>
-                        <div className="similar-grid">
-                            {relatedProperties.map(prop => (
-                                <PropertyCard key={prop.id} property={prop} />
-                            ))}
+                <div className="pd-similar-section">
+                    <div className="pd-container">
+                        <div className="pd-similar-header">
+                            <div>
+                                <div className="pd-similar-label">You might also like</div>
+                                <h2 className="pd-similar-title">Similar Properties</h2>
+                            </div>
+                            <Link to="/listings" className="pd-view-all">View All</Link>
                         </div>
+                        <Row gutter={[28, 28]}>
+                            {relatedProperties.map(prop => (
+                                <Col xs={24} md={12} lg={8} key={prop.id}>
+                                    <PropertyCard property={prop} />
+                                </Col>
+                            ))}
+                        </Row>
                     </div>
-                </section>
+                </div>
             )}
-            {/* Chat Widget for all properties */}
+
             <ChatWidget
                 propertyId={property.id}
                 propertyTitle={property.title}
-                agentName={property.agent.name}
-                agentId={property.agent.id}
+                agentName={property.agent?.name}
+                agentId={property.agent?.id}
                 externalOpen={isChatOpen}
                 setExternalOpen={setIsChatOpen}
             />

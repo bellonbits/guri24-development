@@ -1,17 +1,23 @@
-import { Outlet } from 'react-router-dom';
-import Header from './Header';
+import { Outlet, useLocation } from 'react-router-dom';
+import Header from './GuriNav';
 import Footer from './Footer';
 import CompareWidget from './CompareWidget';
+import BottomNav from './BottomNav';
 
 const PublicLayout = () => {
+    const location = useLocation();
+    const authRoutes = ['/login', '/register', '/forgot-password', '/reset-password'];
+    const isAuthRoute = authRoutes.includes(location.pathname);
+
     return (
         <>
-            <Header />
-            <main>
+            {!isAuthRoute && <Header />}
+            <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
                 <Outlet />
             </main>
-            <CompareWidget />
-            <Footer />
+            {!isAuthRoute && <CompareWidget />}
+            {!isAuthRoute && <Footer />}
+            {!isAuthRoute && <BottomNav />}
         </>
     );
 };

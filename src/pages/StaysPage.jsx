@@ -1,19 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Search, MapPin, Star, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Typography, Input, DatePicker, Button, Badge, Spin, Empty } from 'antd';
+import {
+    Search,
+    MapPin,
+    Calendar,
+    Users,
+    Loader2
+} from 'lucide-react';
 import PropertyCard from '../components/PropertyCard';
+import GuriPageHeader from '../components/GuriPageHeader';
 import { propertyApi, transformProperty } from '../utils/propertyApi';
-import './StaysPage.css';
 
-function StaysPage() {
-    const { t } = useTranslation();
+const { Title, Text: AntText } = Typography;
+const { RangePicker } = DatePicker;
+
+const StaysPage = () => {
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
-    const [checkIn, setCheckIn] = useState('');
-    const [checkOut, setCheckOut] = useState('');
-    const [guests, setGuests] = useState(1);
-    const [showGuestPicker, setShowGuestPicker] = useState(false);
 
     useEffect(() => {
         const fetchStays = async () => {
@@ -24,7 +28,6 @@ function StaysPage() {
                     page_size: 100
                 });
 
-                // Robust extraction of the array
                 let propertiesList = [];
                 if (Array.isArray(response)) {
                     propertiesList = response;
@@ -48,141 +51,94 @@ function StaysPage() {
         fetchStays();
     }, []);
 
-    const handleSearch = () => {
-        // Logic for advanced search can go here if backend supports it
-        // For now, it filters the current local properties list
-        console.log('Searching for:', { searchQuery, checkIn, checkOut, guests });
-    };
-
     const filteredStays = properties.filter(stay => {
-        // Handle potential undefined values
-        const title = stay.title || '';
-        const area = stay.location?.area || '';
-        const city = stay.location?.city || '';
-
-        const matchesQuery = title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            area.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            city.toLowerCase().includes(searchQuery.toLowerCase());
-
-        // Normalize purpose for comparison
-        const normalizedPurpose = stay.purpose?.toLowerCase();
-        return matchesQuery && normalizedPurpose === 'stay';
+        const matchesQuery = stay.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            stay.location?.area?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            stay.location?.city?.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesQuery;
     });
 
     return (
-        <div className="stays-page">
-            <header className="stays-hero">
-                <div className="stays-hero-bg"></div>
-                <div className="container">
-                    <div className="stays-hero-content">
-                        <span className="stays-badge">{t('stays.badge', 'Short-Term Stays')}</span>
-                        <h1>{t('stays.hero_title', 'Find unique places to stay')}</h1>
-                        <p>{t('stays.hero_subtitle', 'Book homes, apartments or villas for your next getaway.')}</p>
+        <div style={{ background: '#fff', minHeight: '100vh' }}>
+            <GuriPageHeader
+                title="Find Unique Stays"
+                subtitle="Book incredible homes, apartments, or villas for your next getaway or business trip."
+            />
+
+            {/* Pill Search Bar */}
+            <div style={{ marginTop: '-45px', position: 'relative', zIndex: 10, padding: '0 40px' }}>
+                <div style={{
+                    maxWidth: '1100px', margin: '0 auto', background: '#fff',
+                    padding: '12px', borderRadius: '100px',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    border: '1px solid #f0f0f0'
+                }}>
+                    <div style={{ flex: 1.5, display: 'flex', alignItems: 'center', gap: '12px', padding: '0 24px', borderRight: '1px solid #eee' }}>
+                        <MapPin size={20} color="#0052cc" />
+                        <Input
+                            variant="borderless"
+                            placeholder="Where are you going?"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            style={{ fontWeight: 600, fontSize: '15px' }}
+                        />
                     </div>
 
-                    <div className="stays-search-container">
-                        <div className="stays-search-bar">
-                            <div className="search-section location-input">
-                                <label>{t('stays.location', 'Location')}</label>
-                                <div className="input-with-icon">
-                                    <MapPin size={18} />
-                                    <input
-                                        type="text"
-                                        placeholder={t('stays.search_placeholder', 'Where are you going?')}
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="search-divider"></div>
-                            <div className="search-section date-section">
-                                <label>{t('stays.check_in', 'Check in')}</label>
-                                <div className="input-with-icon">
-                                    <Calendar size={18} />
-                                    <input
-                                        type="date"
-                                        className="date-input"
-                                        value={checkIn}
-                                        onChange={(e) => setCheckIn(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="search-divider"></div>
-                            <div className="search-section date-section">
-                                <label>{t('stays.check_out', 'Check out')}</label>
-                                <div className="input-with-icon">
-                                    <Calendar size={18} />
-                                    <input
-                                        type="date"
-                                        className="date-input"
-                                        value={checkOut}
-                                        onChange={(e) => setCheckOut(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="search-divider"></div>
-                            <div className="search-section guests-input" onClick={() => setShowGuestPicker(!showGuestPicker)}>
-                                <label>{t('stays.guests', 'Guests')}</label>
-                                <div className="guest-selector-wrapper">
-                                    <Star size={18} />
-                                    <div className="guest-selector">
-                                        {guests} {t('stays.guest_count', 'guest')}{guests > 1 ? 's' : ''}
-                                    </div>
-                                </div>
-                                {showGuestPicker && (
-                                    <div className="guest-dropdown" onClick={(e) => e.stopPropagation()}>
-                                        <div className="guest-row">
-                                            <span>Adults</span>
-                                            <div className="counter">
-                                                <button onClick={() => setGuests(Math.max(1, guests - 1))}>-</button>
-                                                <span>{guests}</span>
-                                                <button onClick={() => setGuests(guests + 1)}>+</button>
-                                            </div>
-                                        </div>
-                                        <button className="done-btn" onClick={() => setShowGuestPicker(false)}>Apply</button>
-                                    </div>
-                                )}
-                            </div>
-                            <button className="search-booking-btn" onClick={handleSearch}>
-                                <Search size={20} color="white" />
-                                <span>{t('stays.search_btn', 'Search')}</span>
-                            </button>
-                        </div>
+                    <div style={{ flex: 1.2, display: 'flex', alignItems: 'center', gap: '12px', padding: '0 24px', borderRight: '1px solid #eee' }}>
+                        <Calendar size={20} color="#0052cc" />
+                        <RangePicker
+                            variant="borderless"
+                            style={{ width: '100%', fontWeight: 600 }}
+                            placeholder={['Check In', 'Check Out']}
+                        />
                     </div>
+
+                    <div style={{ flex: 0.8, display: 'flex', alignItems: 'center', gap: '12px', padding: '0 24px' }}>
+                        <Users size={20} color="#0052cc" />
+                        <AntText style={{ fontWeight: 600, color: '#666', whiteSpace: 'nowrap' }}>1 Guest</AntText>
+                    </div>
+
+                    <Button
+                        type="primary"
+                        size="large"
+                        icon={<Search size={18} />}
+                        style={{
+                            background: '#0052cc', height: '60px', borderRadius: '50px',
+                            padding: '0 40px', fontWeight: 700, border: 'none'
+                        }}
+                    >
+                        Search
+                    </Button>
                 </div>
-            </header>
+            </div>
 
-            <main className="container stays-main">
-                <div className="stays-category-bar">
-                    <div className="category-item active">
-                        <MapPin size={22} />
-                        <span>All Stays</span>
+            <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '80px 40px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '48px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <Badge count={filteredStays.length} color="#0052cc" style={{ fontWeight: 700 }} overflowCount={999} />
+                        <Title level={3} style={{ margin: 0, fontSize: '24px', fontWeight: 600 }}>Available Stays</Title>
                     </div>
                 </div>
 
                 {loading ? (
-                    <div className="stays-grid">
-                        {[1, 2, 3, 4, 5, 6].map(i => <div key={i} className="skeleton-card"></div>)}
+                    <div style={{ padding: '100px 0', textAlign: 'center' }}>
+                        <Spin indicator={<Loader2 className="animate-spin" size={32} />} />
+                    </div>
+                ) : filteredStays.length > 0 ? (
+                    <div className="grid grid-cols-4 gap-8 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1">
+                        {filteredStays.map((stay) => (
+                            <PropertyCard key={stay.id} property={stay} />
+                        ))}
                     </div>
                 ) : (
-                    <>
-                        {filteredStays.length > 0 ? (
-                            <div className="stays-grid">
-                                {filteredStays.map((stay) => (
-                                    <PropertyCard key={stay.id} property={stay} />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="no-stays">
-                                <h2>No stays available</h2>
-                                <p>We couldn't find any stays matching your criteria. Try adjusting your search.</p>
-                            </div>
-                        )}
-                    </>
+                    <div style={{ padding: '100px 0', textAlign: 'center', background: '#f8f9fa', borderRadius: '40px' }}>
+                        <Empty description="No stays found matching your search" />
+                    </div>
                 )}
             </main>
         </div>
     );
-}
+};
 
 export default StaysPage;

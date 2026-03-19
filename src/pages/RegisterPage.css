@@ -1,0 +1,209 @@
+/* RegisterPage Styles */
+.register-page {
+    min-height: 100vh;
+    background: var(--white);
+    display: flex;
+}
+
+.register-form-container {
+    padding: 80px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow-y: auto;
+}
+
+.register-logo-link {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+}
+
+.register-logo {
+    height: 48px;
+    object-fit: contain;
+}
+
+.register-form-main {
+    max-width: 500px;
+    margin: 40px auto;
+    width: 100%;
+}
+
+.register-title {
+    font-size: clamp(28px, 4vw, 42px) !important;
+    font-weight: 800 !important;
+    letter-spacing: -1px !important;
+    color: var(--black) !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.register-subtitle {
+    font-size: 1rem !important;
+    color: var(--gray-500) !important;
+    margin-bottom: 2.5rem !important;
+}
+
+.register-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.register-input-label {
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: var(--black) !important;
+    margin-left: 4px !important;
+}
+
+.register-input-field {
+    height: 54px !important;
+    border-radius: var(--radius-md) !important;
+    font-size: 0.9375rem !important;
+    background: var(--gray-50) !important;
+    border: 1px solid var(--gray-100) !important;
+}
+
+.register-submit-btn {
+    height: 60px !important;
+    border-radius: var(--radius-md) !important;
+    font-size: 1.0625rem !important;
+    font-weight: 800 !important;
+    background: var(--primary) !important;
+    margin-top: 24px !important;
+    box-shadow: 0 8px 20px rgba(0, 82, 204, 0.15) !important;
+}
+
+.register-login-prompt {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 0.9375rem;
+    color: var(--gray-500);
+}
+
+.register-login-link {
+    font-weight: 800;
+    color: var(--black);
+    border-bottom: 2px solid var(--primary);
+}
+
+/* Agent Toggle Section */
+.agent-apply-box {
+    background: var(--gray-50);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-100);
+    margin-top: 10px;
+}
+
+.agent-apply-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.agent-switch-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.agent-switch-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--black);
+}
+
+.agent-switch-desc {
+    font-size: 0.8125rem;
+    color: var(--gray-400);
+}
+
+/* Showcase Section */
+.register-showcase {
+    background: linear-gradient(160deg, #071a35 0%, #0d3b66 60%, #1a5f9e 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.register-showcase-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.18;
+}
+
+.register-showcase-footer {
+    position: absolute;
+    bottom: 40px;
+    left: 80px;
+}
+
+.register-showcase-content {
+    position: relative;
+    z-index: 10;
+}
+
+.register-feature-list {
+    margin-top: 3rem;
+    display: grid;
+    gap: 20px;
+}
+
+.register-feature-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(12px);
+    transition: background 0.2s;
+}
+
+.register-feature-item:hover {
+    background: rgba(255, 255, 255, 0.13);
+}
+
+.register-feature-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    flex-shrink: 0;
+}
+
+.register-feature-text h4 {
+    color: var(--white) !important;
+    font-size: 1.125rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+}
+
+.register-feature-text p {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.9375rem !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 1024px) {
+    .register-form-container {
+        padding: 40px 24px 60px;
+    }
+}

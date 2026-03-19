@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useCompare } from '../context/CompareContext';
 import { X, ChevronUp, ChevronDown, Check, Scale } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import './CompareWidget.css';
-
 function CompareWidget() {
     const { compareList, removeFromCompare, clearCompare } = useCompare();
     const [isExpanded, setIsExpanded] = useState(false);
