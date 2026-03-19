@@ -330,3 +330,92 @@ img {
     padding: 0 16px;
   }
 }
+/* ============================================================
+   MOBILE RESPONSIVE FIXES
+   ============================================================ */
+
+/* Header: hide extras on mobile/tablet */
+@media (max-width: 1279px) {
+  .header-lang-switch,
+  .header-phone {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .header-action-btns {
+    display: none !important;
+  }
+}
+
+/* Body: pad bottom for BottomNav on mobile */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 80px;
+  }
+
+  /* Tighten section padding on mobile */
+  .section {
+    padding: 2.5rem 0;
+  }
+
+  .section-title h2 {
+    font-size: 1.5rem;
+  }
+
+  /* Container horizontal padding */
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Fix hero min-height on mobile */
+  .guri-hero-section {
+    min-height: 520px !important;
+  }
+}
+
+/* Prevent horizontal scroll globally */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Fix pages that use fixed background causing overflow */
+.profile-page::before,
+.profile-page::after {
+  max-width: 100vw;
+}
+
+/* Ensure images and embeds don't overflow */
+img, video, iframe, embed, object {
+  max-width: 100%;
+}
+
+/* Cards grid responsive */
+@media (max-width: 640px) {
+  .card-minimal {
+    padding: 1.5rem !important;
+  }
+
+  .btn-large {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* Fix filter bar on very small screens */
+@media (max-width: 480px) {
+  .filter-bar-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .filter-bar-grid > div:nth-child(2),
+  .filter-bar-grid > div:nth-child(4) {
+    display: none !important;
+  }
+}
+
+/* Fix page top padding (header is fixed ~65px tall) */
+.public-layout-content {
+  padding-top: 65px;
+}

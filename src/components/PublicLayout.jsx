@@ -12,7 +12,7 @@ const PublicLayout = () => {
     return (
         <>
             {!isAuthRoute && <Header />}
-            <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, paddingTop: '68px' }}>
                 <Outlet />
             </main>
             {!isAuthRoute && <CompareWidget />}

@@ -12,15 +12,17 @@ const GuriHero = ({ onSearch, loading }) => {
 
     return (
         <section
+            className="guri-hero-section"
             style={{
                 position: 'relative',
-                minHeight: '600px',
+                minHeight: '560px',
                 backgroundColor: '#0a1f3d',
                 backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
                 alignItems: 'center',
+                padding: '40px 0',
             }}
         >
             {/* Overlay */}

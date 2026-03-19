@@ -87,14 +87,14 @@ function Header() {
                     {/* Right Actions */}
                     <div className="flex items-center gap-3">
                         {/* Language Switch */}
-                        <div className="hidden xl:flex border border-gray-200 rounded-full px-3 py-1.5 text-[11px] font-bold text-gray-400 tracking-widest cursor-pointer hover:border-gray-300 transition-colors select-none">
+                        <div className="header-lang-switch border border-gray-200 rounded-full px-3 py-1.5 text-[11px] font-bold text-gray-400 tracking-widest cursor-pointer hover:border-gray-300 transition-colors select-none">
                             <span className="text-gray-800">EN</span>
                             <span className="mx-1 text-gray-300">|</span>
                             <span>SO</span>
                         </div>
 
                         {/* Phone */}
-                        <a href="tel:+254706070747" className="hidden xl:flex items-center gap-2 text-gray-800 font-semibold text-[13px] hover:text-[#1a5f9e] transition-colors">
+                        <a href="tel:+254706070747" className="header-phone flex items-center gap-2 text-gray-800 font-semibold text-[13px] hover:text-[#1a5f9e] transition-colors">
                             <div className="w-7 h-7 bg-blue-50 rounded-full flex items-center justify-center text-[#1a5f9e]">
                                 <Phone size={13} />
                             </div>
@@ -102,7 +102,7 @@ function Header() {
                         </a>
 
                         {/* Buttons */}
-                        <div className="hidden md:flex items-center gap-2">
+                        <div className="header-action-btns flex items-center gap-2">
                             <Link
                                 to="/login"
                                 className="border border-gray-200 text-gray-700 px-5 py-2 rounded-full text-[13px] font-semibold hover:border-gray-400 hover:text-gray-900 transition-all"

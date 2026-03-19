@@ -104,8 +104,53 @@
     border-color: var(--primary-dark) !important;
 }
 
-@media (max-width: 1024px) {
+/* ── Mobile: hide desktop nav & actions ── */
+@media (max-width: 1023px) {
     .guri-nav {
         padding: 0 !important;
     }
+
+    /* Hide desktop nav links and right-side actions */
+    .guri-nav .hidden.lg\:flex,
+    .guri-nav [class*="lg:flex"] {
+        display: none !important;
+    }
+
+    /* Ensure the container stays as row with just logo + toggle */
+    .guri-nav .container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 0 !important;
+    }
+}
+
+/* ── Tablet tweaks ── */
+@media (max-width: 768px) {
+    .guri-nav {
+        height: 60px !important;
+        line-height: 60px !important;
+    }
+
+    .guri-nav .container {
+        padding: 0 16px !important;
+    }
+}
+
+/* Drawer nav links on mobile */
+.ant-drawer-body .nav-link {
+    font-size: 1rem;
+    padding: 12px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #1e293b;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.ant-drawer-body .nav-link:hover {
+    background: #f0f7ff;
+    color: #1a5f9e;
 }
