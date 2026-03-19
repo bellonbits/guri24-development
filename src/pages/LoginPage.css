@@ -19,6 +19,23 @@
     left: 40px;
 }
 
+@media (max-width: 768px) {
+    .login-logo-link {
+        position: static;
+        display: block;
+        margin-bottom: 24px;
+    }
+
+    .login-form-container {
+        padding: 32px 24px 48px;
+        justify-content: flex-start;
+    }
+
+    .login-header-section {
+        margin-bottom: 2rem;
+    }
+}
+
 .login-logo {
     height: 48px;
     object-fit: contain;
