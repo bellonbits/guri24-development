@@ -415,7 +415,4 @@ img, video, iframe, embed, object {
   }
 }
 
-/* Fix page top padding (header is fixed ~65px tall) */
-.public-layout-content {
-  padding-top: 65px;
 }
