@@ -175,44 +175,40 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Search bar: collapse to card style on mobile */
+    /* Search bar: stay horizontal pill on mobile */
     .listings-search-wrap {
         margin-top: 16px;
         padding: 0 16px;
     }
 
     .listings-search-bar {
-        flex-direction: column;
-        border-radius: 20px;
-        padding: 12px;
-        gap: 0;
-        align-items: stretch;
+        flex-direction: row;
+        border-radius: 50px;
+        padding: 8px 8px 8px 16px;
+        gap: 8px;
+        align-items: center;
+    }
+
+    /* Hide type & beds on mobile — location + search only */
+    .listings-search-type,
+    .listings-search-beds {
+        display: none !important;
     }
 
     .listings-search-location {
         border-right: none;
-        border-bottom: 1px solid #eee;
-        padding: 10px 12px;
-    }
-
-    .listings-search-type {
-        border-right: none;
-        border-bottom: 1px solid #eee;
-        padding: 4px 0;
-    }
-
-    .listings-search-beds {
-        border-right: none;
-        border-bottom: 1px solid #eee;
-        padding: 10px 12px;
+        padding: 8px 0;
+        flex: 1;
+        min-width: 0;
     }
 
     .listings-search-btn {
-        height: 48px !important;
-        border-radius: 12px !important;
-        padding: 0 !important;
-        width: 100% !important;
-        margin-top: 4px;
+        height: 44px !important;
+        border-radius: 50px !important;
+        padding: 0 20px !important;
+        flex-shrink: 0;
+        width: auto !important;
+        margin-top: 0;
     }
 
     .listings-search-label {
@@ -220,13 +216,19 @@
     }
 
     .listings-main {
-        padding: 24px 16px 60px;
+        padding: 24px 16px 80px;
     }
 
     .listings-toolbar {
         flex-wrap: wrap;
         gap: 10px;
         margin-bottom: 20px;
+    }
+
+    /* Keep toolbar text on one line */
+    .listings-toolbar > div:first-child {
+        flex: 1;
+        min-width: 0;
     }
 }
 

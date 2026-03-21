@@ -152,7 +152,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
             {/* Results */}
             <main className="listings-main">
                 <div className="listings-toolbar">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
                         <span style={{
                             background: '#0052cc', color: 'white',
                             fontWeight: 800, fontSize: '12px',
@@ -160,7 +160,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                         }}>
                             {filteredProperties.length}
                         </span>
-                        <AntText style={{ fontWeight: 600, color: '#6b7280', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
+                        <AntText style={{ fontWeight: 600, color: '#6b7280', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {loading ? 'Loading...' : `Propert${filteredProperties.length !== 1 ? 'ies' : 'y'} found`}
                         </AntText>
                     </div>
