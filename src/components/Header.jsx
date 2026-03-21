@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './Header.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone, Building2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';

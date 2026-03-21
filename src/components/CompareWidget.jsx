@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './CompareWidget.css';
 import { useCompare } from '../context/CompareContext';
 import { X, ChevronUp, ChevronDown, Check, Scale } from 'lucide-react';
 import { Link } from 'react-router-dom';

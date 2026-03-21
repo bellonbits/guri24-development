@@ -1,4 +1,5 @@
 import React from 'react';
+import './HostContactModal.css';
 import { Phone, Mail, MessageSquare, X } from 'lucide-react';
 import { getProfileImageUrl } from '../utils/imageUtils';
 const HostContactModal = ({ isOpen, onClose, host, onStartChat }) => {

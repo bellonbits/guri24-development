@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './VerificationGate.css';
 import { useAuth } from '../context/AuthContext';
 import { Shield, Upload, Clock, XCircle, CheckCircle, FileText, AlertCircle } from 'lucide-react';
 import propertyApi from '../utils/propertyApi';
