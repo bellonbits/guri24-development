@@ -42,6 +42,7 @@ const GuriNav = () => {
                         src="https://guri24.com/logo.png"
                         alt="Guri24"
                         className="h-12 object-contain"
+                        onError={(e) => { e.target.src = '/logo.png'; }}
                     />
                 </Link>
 
@@ -107,7 +108,7 @@ const GuriNav = () => {
                 {/* Mobile Drawer */}
                 <Drawer
                     title={
-                        <img src="https://guri24.com/logo.png" alt="Guri24" className="h-9" />
+                        <img src="https://guri24.com/logo.png" alt="Guri24" className="h-9" onError={(e) => { e.target.src = '/logo.png'; }} />
                     }
                     closeIcon={<X size={20} />}
                     placement="right"

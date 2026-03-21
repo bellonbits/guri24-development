@@ -50,7 +50,7 @@ const LoginPage = () => {
                     {/* Minimal Logo Header */}
                     <div className="login-logo-link">
                         <Link to="/">
-                            <img src="https://guri24.com/logo.png" alt="Guri24" className="login-logo" />
+                            <img src="https://guri24.com/logo.png" alt="Guri24" className="login-logo" onError={(e) => { e.target.src = '/logo.png'; }} />
                         </Link>
                     </div>
 

@@ -49,7 +49,8 @@ function AdminLayout() {
             <aside className={`admin-sidebar ${sidebarOpen ? 'open' : 'closed'} ${mobileMenuOpen ? 'mobile-open' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-logo">
-                        {sidebarOpen && <span>Guri24 Admin</span>}
+                        <img src="https://guri24.com/logo.png" alt="Guri24" style={{ height: '32px', objectFit: 'contain' }} onError={(e) => { e.target.src = '/logo.png'; }} />
+                        {sidebarOpen && <span style={{ marginLeft: '8px', fontWeight: 700, fontSize: '15px' }}>Admin</span>}
                     </div>
                 </div>
 

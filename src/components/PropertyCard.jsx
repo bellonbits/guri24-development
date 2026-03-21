@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Bed, Bath, Maximize, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { scaleIn, viewportOnce } from '../utils/animations';
 import './PropertyCard.css';
 
 const PURPOSE_LABELS = {
@@ -14,7 +16,7 @@ const PURPOSE_LABELS = {
     buy: 'For Sale',
 };
 
-const PropertyCard = ({ property }) => {
+const PropertyCard = ({ property, index = 0 }) => {
     const {
         slug,
         title,
@@ -70,14 +72,24 @@ const PropertyCard = ({ property }) => {
     })();
 
     return (
-        <div className="property-card-wrapper" onClick={() => navigate(`/property/${slug}`)}>
+        <motion.div
+            className="property-card-wrapper"
+            onClick={() => navigate(`/property/${slug}`)}
+            variants={scaleIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            custom={index}
+            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+        >
             {/* Image */}
             <div className="property-card-image-box">
                 <span className="property-card-badge">{getBadgeLabel()}</span>
-                <img
+                <motion.img
                     src={images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'}
                     alt={title}
                     loading="lazy"
+                    whileHover={{ scale: 1.06, transition: { duration: 0.45 } }}
                 />
             </div>
 
@@ -130,7 +142,7 @@ const PropertyCard = ({ property }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

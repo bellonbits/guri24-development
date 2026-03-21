@@ -83,29 +83,23 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
             <GuriPageHeader title={title} subtitle={subtitle} />
 
             {/* Pill Search Bar */}
-            <div style={{ marginTop: '-45px', position: 'relative', zIndex: 10, padding: '0 40px' }}>
-                <div style={{
-                    maxWidth: '1100px', margin: '0 auto', background: '#fff',
-                    padding: '12px', borderRadius: '100px',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
-                    display: 'flex', alignItems: 'center', gap: '8px',
-                    border: '1px solid #f0f0f0'
-                }}>
+            <div className="listings-search-wrap">
+                <div className="listings-search-bar">
                     {/* Location */}
-                    <div style={{ flex: 1.5, display: 'flex', alignItems: 'center', gap: '12px', padding: '0 24px', borderRight: '1px solid #eee' }}>
-                        <MapPin size={20} color="#0052cc" />
+                    <div className="listings-search-location">
+                        <MapPin size={18} color="#0052cc" style={{ flexShrink: 0 }} />
                         <Input
                             variant="borderless"
                             placeholder="Search location..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onPressEnter={applyFilters}
-                            style={{ fontWeight: 600, fontSize: '15px' }}
+                            style={{ fontWeight: 600, fontSize: '14px' }}
                         />
                     </div>
 
                     {/* Property Type */}
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 8px', borderRight: '1px solid #eee' }}>
+                    <div className="listings-search-type">
                         <Select
                             variant="borderless"
                             value={propertyType}
@@ -123,19 +117,19 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                         />
                     </div>
 
-                    {/* Bedrooms */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0 16px', borderRight: '1px solid #eee' }}>
+                    {/* Bedrooms — hidden on mobile */}
+                    <div className="listings-search-beds">
                         {['Any', '1', '2', '3+'].map(num => (
                             <button
                                 key={num}
                                 onClick={() => setPropertyBedrooms(num)}
                                 style={{
-                                    height: '34px', minWidth: '38px', borderRadius: '50px',
+                                    height: '34px', minWidth: '36px', borderRadius: '50px',
                                     border: propertyBedrooms === num ? '2px solid #0052cc' : '1.5px solid #e5e7eb',
                                     background: propertyBedrooms === num ? '#0052cc' : '#fff',
                                     color: propertyBedrooms === num ? '#fff' : '#555',
-                                    fontWeight: 700, fontSize: '13px', cursor: 'pointer',
-                                    padding: '0 10px', transition: 'all 0.2s',
+                                    fontWeight: 700, fontSize: '12px', cursor: 'pointer',
+                                    padding: '0 8px', transition: 'all 0.2s',
                                 }}
                             >
                                 {num}
@@ -146,39 +140,36 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                     <Button
                         type="primary"
                         size="large"
-                        icon={<Search size={18} />}
+                        icon={<Search size={17} />}
                         onClick={applyFilters}
-                        style={{
-                            background: '#0052cc', height: '60px', borderRadius: '50px',
-                            padding: '0 40px', fontWeight: 700, border: 'none'
-                        }}
+                        className="listings-search-btn"
                     >
-                        Search
+                        <span className="listings-search-label">Search</span>
                     </Button>
                 </div>
             </div>
 
             {/* Results */}
-            <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '80px 40px 60px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <main className="listings-main">
+                <div className="listings-toolbar">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
                         <span style={{
                             background: '#0052cc', color: 'white',
                             fontWeight: 800, fontSize: '12px',
-                            padding: '3px 10px', borderRadius: '6px',
+                            padding: '3px 10px', borderRadius: '6px', flexShrink: 0,
                         }}>
                             {filteredProperties.length}
                         </span>
-                        <AntText style={{ fontWeight: 600, color: '#6b7280', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        <AntText style={{ fontWeight: 600, color: '#6b7280', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
                             {loading ? 'Loading...' : `Propert${filteredProperties.length !== 1 ? 'ies' : 'y'} found`}
                         </AntText>
                     </div>
 
-                    <Space size="middle">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
                         <Select
                             defaultValue="newest"
                             onChange={(val) => setSortBy(val)}
-                            style={{ width: 175 }}
+                            style={{ width: 150 }}
                             options={[
                                 { label: 'Sort by: Newest', value: 'newest' },
                                 { label: 'Price: Low-High', value: 'price-low' },
@@ -188,16 +179,16 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                         <div className="view-mode-toggle">
                             <Button
                                 className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                                icon={<Grid size={18} />}
+                                icon={<Grid size={17} />}
                                 onClick={() => setViewMode('grid')}
                             />
                             <Button
                                 className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                                icon={<List size={18} />}
+                                icon={<List size={17} />}
                                 onClick={() => setViewMode('list')}
                             />
                         </div>
-                    </Space>
+                    </div>
                 </div>
 
                 {loading ? (
@@ -241,5 +232,6 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
         </div>
     );
 };
+
 
 export default ListingsPage;

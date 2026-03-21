@@ -95,10 +95,138 @@
     gap: 20px;
 }
 
+/* ── Search Bar ─────────────────────────────── */
+.listings-search-wrap {
+    margin-top: -45px;
+    position: relative;
+    z-index: 10;
+    padding: 0 24px;
+}
+
+.listings-search-bar {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 100px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #f0f0f0;
+}
+
+.listings-search-location {
+    flex: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px;
+    border-right: 1px solid #eee;
+    min-width: 0;
+}
+
+.listings-search-type {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    border-right: 1px solid #eee;
+    min-width: 0;
+}
+
+.listings-search-beds {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 12px;
+    border-right: 1px solid #eee;
+}
+
+.listings-search-btn {
+    background: #0052cc !important;
+    height: 52px !important;
+    border-radius: 50px !important;
+    padding: 0 28px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    flex-shrink: 0;
+}
+
+/* ── Main / Toolbar ─────────────────────────── */
+.listings-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 24px 60px;
+}
+
+.listings-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 /* ── Responsive ────────────────────────────── */
 @media (max-width: 768px) {
     .properties-grid.grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Search bar: collapse to card style on mobile */
+    .listings-search-wrap {
+        margin-top: 16px;
+        padding: 0 16px;
+    }
+
+    .listings-search-bar {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 12px;
+        gap: 0;
+        align-items: stretch;
+    }
+
+    .listings-search-location {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding: 10px 12px;
+    }
+
+    .listings-search-type {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding: 4px 0;
+    }
+
+    .listings-search-beds {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding: 10px 12px;
+    }
+
+    .listings-search-btn {
+        height: 48px !important;
+        border-radius: 12px !important;
+        padding: 0 !important;
+        width: 100% !important;
+        margin-top: 4px;
+    }
+
+    .listings-search-label {
+        display: inline !important;
+    }
+
+    .listings-main {
+        padding: 24px 16px 60px;
+    }
+
+    .listings-toolbar {
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
     }
 }
 

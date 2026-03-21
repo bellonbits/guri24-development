@@ -72,7 +72,7 @@ const RegisterPage = () => {
                 <Col xs={24} lg={12} className="register-form-container">
                     <div className="register-logo-link">
                         <Link to="/">
-                            <img src="https://guri24.com/logo.png" alt="Guri24" className="register-logo" />
+                            <img src="https://guri24.com/logo.png" alt="Guri24" className="register-logo" onError={(e) => { e.target.src = '/logo.png'; }} />
                         </Link>
                     </div>
 

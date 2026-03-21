@@ -43,6 +43,7 @@ import AgentPropertyForm from './pages/agent/AgentPropertyForm';
 import AgentProfile from './pages/agent/AgentProfile';
 import AgentChat from './pages/agent/AgentChat';
 import NotFoundPage from './pages/NotFoundPage';
+import BookingConfirmPage from './pages/BookingConfirmPage';
 import AgentPublicProfile from './pages/AgentPublicProfile';
 import AgentBookingDetails from './pages/agent/AgentBookingDetails';
 import './index.css';
@@ -109,6 +110,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <DocumentsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/booking-confirmed"
+                element={
+                  <ProtectedRoute>
+                    <BookingConfirmPage />
                   </ProtectedRoute>
                 }
               />

@@ -64,7 +64,7 @@ function ForgotPasswordPage() {
                 {/* Logo */}
                 <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                     <Link to="/">
-                        <img src="https://guri24.com/logo.png" alt="Guri24" style={{ height: '44px', objectFit: 'contain', margin: '0 auto' }} />
+                        <img src="https://guri24.com/logo.png" alt="Guri24" style={{ height: '44px', objectFit: 'contain', margin: '0 auto' }} onError={(e) => { e.target.src = '/logo.png'; }} />
                     </Link>
                 </div>
 

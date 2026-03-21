@@ -11,6 +11,7 @@ import { useAuth } from '../context/AuthContext';
 import { trackUserView, createInquiry } from '../utils/api';
 import { Row, Col, Spin, Tag, message } from 'antd';
 import { getProfileImageUrl } from '../utils/imageUtils';
+import StayBookingWidget from '../components/StayBookingWidget';
 
 const getAmenityEmoji = (feature) => {
     const f = feature.toLowerCase();
@@ -344,7 +345,15 @@ function PropertyDetailPage() {
 
                     {/* Right: Sticky Sidebar */}
                     <aside className="pd-sidebar">
-                        {/* Price Card */}
+                        {/* Price Card / Booking Widget */}
+                        {(property.purpose === 'stay' || property.purpose === 'short_stay') ? (
+                            <StayBookingWidget
+                                propertyId={property.id}
+                                price={property.price}
+                                currency={property.currency}
+                                title={property.title}
+                            />
+                        ) : (
                         <div className="pd-sidebar-card">
                             <div className="pd-sidebar-price">
                                 <span className="pd-price-label">Price</span>
@@ -403,6 +412,7 @@ function PropertyDetailPage() {
                                 </form>
                             )}
                         </div>
+                        )}
 
                         {/* Agent Card */}
                         <div className="pd-sidebar-card pd-agent-card">

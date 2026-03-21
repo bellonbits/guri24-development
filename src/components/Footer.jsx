@@ -84,10 +84,10 @@ const Footer = () => {
                     <div className="footer-brand-col">
                         <Link to="/" className="footer-logo-link">
                             <img
-                                src="/logo.png"
+                                src="https://guri24.com/logo.png"
                                 alt="Guri24"
                                 className="footer-logo"
-                                onError={(e) => { e.target.style.display = 'none'; }}
+                                onError={(e) => { e.target.src = '/logo.png'; }}
                             />
                         </Link>
                         <p className="footer-brand-desc">

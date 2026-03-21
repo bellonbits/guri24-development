@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { Typography, Button, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Home, TrendingUp, Key, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import PropertyCard from '../components/PropertyCard';
 import GuriHero from '../components/GuriHero';
 import StatsSection from '../components/StatsSection';
 import BlogSection from '../components/BlogSection';
 import { propertyApi, transformProperty } from '../utils/propertyApi';
+import { fadeUp, scaleIn, staggerContainer, slideLeft, viewportOnce } from '../utils/animations';
 import SEO from '../components/SEO';
 import './HomePage.css';
 
@@ -103,36 +105,41 @@ const HomePage = () => {
             {/* Featured Properties Section */}
             <section className="section bg-white">
                 <div className="container">
-                    <div className="home-section-header flex justify-between items-end">
+                    <motion.div
+                        className="home-section-header flex justify-between items-end"
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={viewportOnce}
+                    >
                         <div>
                             <span className="section-subtitle">★ Featured</span>
                             <Title level={2} className="m-0">Featured Properties</Title>
                         </div>
-                        <Button
-                            shape="round"
-                            size="large"
-                            className="btn-outline px-8"
-                            onClick={() => navigate('/listings')}
-                        >
+                        <Button shape="round" size="large" className="btn-outline px-8" onClick={() => navigate('/listings')}>
                             Explore All
                         </Button>
-                    </div>
+                    </motion.div>
 
                     {loading ? (
-                        <div className="flex justify-center py-20">
-                            <Spin size="large" />
-                        </div>
+                        <div className="flex justify-center py-20"><Spin size="large" /></div>
                     ) : featuredProperties.length === 0 ? (
                         <div className="text-center py-20 bg-gray-50 rounded-[32px]">
                             <AntText type="secondary" className="text-lg block mb-4">No properties found at the moment.</AntText>
                             <Button type="link" onClick={() => navigate('/listings')}>View all listings</Button>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                            {featuredProperties.map((property) => (
-                                <PropertyCard key={property.id} property={property} />
+                        <motion.div
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+                            variants={staggerContainer}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={viewportOnce}
+                        >
+                            {featuredProperties.map((property, i) => (
+                                <PropertyCard key={property.id} property={property} index={i} />
                             ))}
-                        </div>
+                        </motion.div>
                     )}
                 </div>
             </section>
@@ -140,33 +147,43 @@ const HomePage = () => {
             {/* Services Section */}
             <section className="section bg-gray-50">
                 <div className="container">
-                    <div className="home-section-header text-center">
+                    <motion.div
+                        className="home-section-header text-center"
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={viewportOnce}
+                    >
                         <span className="section-subtitle">★ Our Services</span>
                         <Title level={2} className="m-0">Comprehensive Real Estate Solutions</Title>
-                    </div>
+                    </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <motion.div
+                        className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                        variants={staggerContainer}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={viewportOnce}
+                    >
                         {services.map((service, index) => (
-                            <div key={index} className="card-minimal">
-                                <div className="service-icon-wrapper">
-                                    {service.icon}
-                                </div>
-                                <Title level={3} className="text-2xl mb-4">
-                                    {service.title}
-                                </Title>
+                            <motion.div
+                                key={index}
+                                className="card-minimal"
+                                variants={fadeUp}
+                                custom={index}
+                                whileHover={{ y: -6, boxShadow: '0 16px 40px rgba(0,0,0,0.12)', transition: { duration: 0.2 } }}
+                            >
+                                <div className="service-icon-wrapper">{service.icon}</div>
+                                <Title level={3} className="text-2xl mb-4">{service.title}</Title>
                                 <AntText className="text-gray-500 text-base leading-relaxed mb-6 block">
                                     {service.description}
                                 </AntText>
-                                <Button
-                                    type="link"
-                                    onClick={() => navigate(service.link)}
-                                    className="service-link"
-                                >
+                                <Button type="link" onClick={() => navigate(service.link)} className="service-link">
                                     {service.linkText} <ArrowRight size={18} />
                                 </Button>
-                            </div>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 

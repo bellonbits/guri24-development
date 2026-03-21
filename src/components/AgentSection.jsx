@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Typography, Card, Avatar, Button, Spin } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
+import { motion } from 'framer-motion';
 import { getPublicAgents } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { fadeUp, scaleIn, slideLeft, staggerContainer, viewportOnce } from '../utils/animations';
 import './AgentSection.css';
 
 const { Title, Text: AntText, Paragraph } = Typography;
@@ -67,9 +69,16 @@ const AgentSection = ({ title, subtitle }) => {
                                 <Spin size="large" />
                             </div>
                         ) : (
+                            <motion.div
+                                variants={staggerContainer}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={viewportOnce}
+                            >
                             <Row gutter={[24, 24]} className="agent-grid-container">
                                 {displayAgents.map((agent, idx) => (
                                     <Col xs={24} sm={12} xl={6} key={agent.id || idx}>
+                                        <motion.div variants={scaleIn} custom={idx} whileHover={{ y: -8, transition: { duration: 0.2 } }}>
                                         <Card
                                             variant="borderless"
                                             className="agent-profile-card"
@@ -112,9 +121,11 @@ const AgentSection = ({ title, subtitle }) => {
                                                 </Button>
                                             )}
                                         </Card>
+                                        </motion.div>
                                     </Col>
                                 ))}
                             </Row>
+                            </motion.div>
                         )}
                     </Col>
                 </Row>

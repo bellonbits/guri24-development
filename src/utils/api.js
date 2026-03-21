@@ -80,11 +80,16 @@ export const requestAgent = async () => {
 };
 
 export const getPublicAgents = async () => {
-    return api.get('/users/agents');
+    return api.get('/users/agents/public');
 };
 
 export const getPublicAgentById = async (agentId) => {
-    return api.get(`/users/agents/${agentId}`);
+    // No individual endpoint exists — fetch list and find by id
+    const agents = await api.get('/users/agents/public');
+    const list = Array.isArray(agents) ? agents : (agents?.items || []);
+    const agent = list.find(a => String(a.id) === String(agentId));
+    if (!agent) throw new Error('Agent not found');
+    return agent;
 };
 
 export const applyAgent = async (formData) => {
@@ -94,6 +99,12 @@ export const applyAgent = async (formData) => {
         }
     });
 };
+
+// Bookings
+export const createBooking = async (data) => api.post('/bookings', data);
+export const getMyBookings = async () => api.get('/bookings/me');
+export const getBookingById = async (id) => api.get(`/bookings/${id}`);
+export const getPropertyAvailability = async (propertyId) => api.get(`/bookings/property/${propertyId}/availability`);
 
 // Analytics
 export const getDashboardStats = async () => {

@@ -273,7 +273,7 @@ async def get_user_stats(
         "scheduled_visits": inquiries_count
     }
 
-@router.get("/agents", response_model=List[UserResponse])
+@router.get("/agents/public", response_model=List[UserResponse])
 async def list_public_agents(db: AsyncSession = Depends(get_db)):
     """List verified agents publicly"""
     from app.models.property import Property
@@ -287,7 +287,6 @@ async def list_public_agents(db: AsyncSession = Depends(get_db)):
 
     agent_list = []
     for a in agents:
-        # Count published properties for this agent
         count_stmt = select(func.count()).select_from(Property).where(Property.agent_id == a.id)
         count_result = await db.execute(count_stmt)
         prop_count = count_result.scalar() or 0
@@ -313,14 +312,18 @@ async def list_public_agents(db: AsyncSession = Depends(get_db)):
         })
     return agent_list
 
-@router.get("/agents/{agent_id}", response_model=UserResponse)
+@router.get("/agents/public/{agent_id}", response_model=UserResponse)
 async def get_public_agent_profile(agent_id: str, db: AsyncSession = Depends(get_db)):
     """Get a single agent's public profile"""
     from app.models.property import Property
-    stmt = select(User).where(User.id == agent_id, User.role == UserRole.AGENT)
+    # Match by role=AGENT OR agent_status=VERIFIED to be flexible
+    stmt = select(User).where(
+        User.id == agent_id,
+        User.status == UserStatus.ACTIVE
+    )
     result = await db.execute(stmt)
     agent = result.scalar_one_or_none()
-    if not agent:
+    if not agent or (agent.role != UserRole.AGENT and agent.agent_status != AgentStatus.VERIFIED):
         raise HTTPException(status_code=404, detail="Agent not found")
 
     count_stmt = select(func.count()).select_from(Property).where(Property.agent_id == agent.id)
