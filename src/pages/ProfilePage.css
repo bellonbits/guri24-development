@@ -1190,17 +1190,40 @@
 
 @media (max-width: 480px) {
   .profile-container {
-    padding: 0 1rem 2rem;
+    padding: 0 1rem 5rem;
   }
 
   .profile-header {
     padding: 1.25rem;
+    margin-top: -30px;
+  }
+
+  .profile-banner {
+    height: 80px;
   }
 
   .avatar-circle {
-    width: 80px;
-    height: 80px;
-    font-size: 2rem;
+    width: 72px;
+    height: 72px;
+    font-size: 1.75rem;
+  }
+
+  .profile-header-info h1 {
+    font-size: 1.2rem;
+  }
+
+  .profile-section {
+    padding: 1.25rem 1rem;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .profile-actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .ticket-specs {
@@ -1210,5 +1233,14 @@
   .ticket-pricing {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .activity-stats {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }

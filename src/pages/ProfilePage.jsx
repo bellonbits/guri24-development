@@ -8,6 +8,7 @@ import { getProfileImageUrl } from '../utils/imageUtils';
 import PropertyCard from '../components/PropertyCard';
 import ChatWidget from '../components/ChatWidget';
 import HostContactModal from '../components/HostContactModal';
+import './ProfilePage.css';
 function ProfilePage() {
     const { user, logout, updateProfile } = useAuth();
     const navigate = useNavigate();
