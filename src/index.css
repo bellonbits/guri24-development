@@ -5,6 +5,8 @@
   --primary-dark: #0d3b66;
   --primary: #1a5f9e;
   --primary-light: #3498db;
+  --primary-lighter: #e8f1fa;
+  --primary-accent: #d0e4f4;
   --accent-blue: #2563eb;
 
   /* Modern Neutral Palette - Airbnb inspired */
@@ -201,6 +203,45 @@ img {
   padding: 16px 32px;
   font-size: 1.1rem;
 }
+
+/* Alerts */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.alert-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+.alert-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #14532d;
+}
+.alert-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.35s ease-out; }
 
 /* Cards */
 .card {
