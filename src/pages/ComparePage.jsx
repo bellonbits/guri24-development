@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import './ComparePage.css';
 import { useCompare } from '../context/CompareContext';
 import { Check, X, ArrowLeft, Trash2, MapPin, Bed, Bath, Square } from 'lucide-react';
 import { formatPrice } from '../utils/propertyApi';

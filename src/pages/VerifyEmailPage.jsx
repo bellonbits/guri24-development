@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './VerifyEmailPage.css';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { CheckCircle, Loader2, ArrowRight, Mail } from 'lucide-react';

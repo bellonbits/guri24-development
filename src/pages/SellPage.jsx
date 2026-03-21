@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './SellPage.css';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Row, Col, Card, Button, Input, Select, Space, Form, message } from 'antd';
 import {

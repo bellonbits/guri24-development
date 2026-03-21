@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './AgentApplicationPage.css';
 import { User, Shield, Info, Phone, MapPin, Calendar, FileText, CheckCircle, ArrowLeft, Upload } from 'lucide-react';
 import { applyAgent } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
