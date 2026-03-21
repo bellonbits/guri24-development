@@ -12,7 +12,9 @@ import {
     User,
     Phone,
     Menu as MenuIcon,
-    X
+    X,
+    LayoutDashboard,
+    ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './GuriNav.css';
@@ -21,7 +23,9 @@ const { Header } = Layout;
 
 const GuriNav = () => {
     const navigate = useNavigate();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
+    const isAdmin = ['admin', 'super_admin'].includes(user?.role);
+    const isAgent = ['agent', 'admin', 'super_admin'].includes(user?.role);
     const [mobileVisible, setMobileVisible] = useState(false);
 
     const navItems = [
@@ -84,6 +88,28 @@ const GuriNav = () => {
                             <span>+254 706 070 747</span>
                         </div>
                     </Space>
+
+                    {/* Portal buttons */}
+                    {isAdmin && (
+                        <Button
+                            shape="round"
+                            icon={<ShieldCheck size={16} />}
+                            className="nav-portal-btn admin-portal-btn"
+                            onClick={() => navigate('/admin')}
+                        >
+                            Admin
+                        </Button>
+                    )}
+                    {isAgent && !isAdmin && (
+                        <Button
+                            shape="round"
+                            icon={<LayoutDashboard size={16} />}
+                            className="nav-portal-btn agent-portal-btn"
+                            onClick={() => navigate('/agent')}
+                        >
+                            Agent
+                        </Button>
+                    )}
 
                     {/* Sign In / Profile */}
                     <Button
@@ -148,6 +174,30 @@ const GuriNav = () => {
                         >
                             {isAuthenticated ? 'My Account' : 'Sign In'}
                         </Button>
+                        {isAdmin && (
+                            <Button
+                                block
+                                shape="round"
+                                size="large"
+                                className="nav-portal-btn admin-portal-btn"
+                                icon={<ShieldCheck size={16} />}
+                                onClick={() => { setMobileVisible(false); navigate('/admin'); }}
+                            >
+                                Admin Portal
+                            </Button>
+                        )}
+                        {isAgent && !isAdmin && (
+                            <Button
+                                block
+                                shape="round"
+                                size="large"
+                                className="nav-portal-btn agent-portal-btn"
+                                icon={<LayoutDashboard size={16} />}
+                                onClick={() => { setMobileVisible(false); navigate('/agent'); }}
+                            >
+                                Agent Portal
+                            </Button>
+                        )}
                     </div>
                 </Drawer>
             </div>

@@ -104,6 +104,37 @@
     border-color: var(--primary-dark) !important;
 }
 
+/* ── Portal Buttons ───────────────────── */
+.nav-portal-btn {
+    height: 40px !important;
+    padding: 0 18px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    transition: var(--transition) !important;
+}
+
+.admin-portal-btn {
+    background: #7c3aed !important;
+    border-color: #7c3aed !important;
+    color: #fff !important;
+}
+
+.admin-portal-btn:hover {
+    background: #6d28d9 !important;
+    border-color: #6d28d9 !important;
+}
+
+.agent-portal-btn {
+    background: #0052cc !important;
+    border-color: #0052cc !important;
+    color: #fff !important;
+}
+
+.agent-portal-btn:hover {
+    background: #0041a3 !important;
+    border-color: #0041a3 !important;
+}
+
 /* ── Mobile: hide desktop nav & actions ── */
 @media (max-width: 1023px) {
     .guri-nav {
