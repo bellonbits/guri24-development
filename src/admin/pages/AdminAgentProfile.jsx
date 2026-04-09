@@ -7,11 +7,13 @@ import {
 } from 'lucide-react';
 import adminApi from '../../utils/adminApi';
 import { getProfileImageUrl } from '../../utils/imageUtils';
+import { useTranslation } from 'react-i18next';
 import './AdminAgentProfile.css';
 
 const AdminAgentProfile = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [userData, setUserData] = useState(null);
     const [editing, setEditing] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -106,7 +108,7 @@ const AdminAgentProfile = () => {
         return (
             <div className="admin-profile-loading">
                 <Loader className="animate-spin" size={48} />
-                <p>Loading agent profile...</p>
+                <p>{t('common.loading', 'Loading...')}</p>
             </div>
         );
     }
@@ -154,12 +156,12 @@ const AdminAgentProfile = () => {
                         {!editing ? (
                             <button onClick={() => setEditing(true)} className="btn-edit-profile">
                                 <Edit2 size={18} />
-                                <span>Edit Profile</span>
+                                <span>{t('profile.edit_profile', 'Edit Profile')}</span>
                             </button>
                         ) : (
                             <button onClick={handleCancel} className="btn-cancel-profile">
                                 <X size={18} />
-                                <span>Cancel</span>
+                                <span>{t('profile.cancel', 'Cancel')}</span>
                             </button>
                         )}
                     </div>
@@ -175,7 +177,7 @@ const AdminAgentProfile = () => {
                 {/* Left Column - Stats & Quick Info */}
                 <aside className="profile-sidebar">
                     <div className="info-card">
-                        <h3>Quick Info</h3>
+                        <h3>{t('agent_profile.quick_info', 'Quick Info')}</h3>
                         <div className="info-list">
                             <div className="info-item">
                                 <div>
@@ -229,7 +231,7 @@ const AdminAgentProfile = () => {
                     </div>
 
                     <div className="info-card">
-                        <h3>Account Status</h3>
+                        <h3>{t('agent_profile.account_status', 'Account Status')}</h3>
                         <div className="status-list">
                             <div className="status-item">
                                 <span className="status-label">Email Verified</span>
@@ -244,7 +246,7 @@ const AdminAgentProfile = () => {
                                 </span>
                             </div>
                             <div className="status-item">
-                                <span className="status-label">Account Type</span>
+                                <span className="status-label">{t('agent_profile.account_type', 'Account Type')}</span>
                                 <select
                                     name="role"
                                     value={formData.role}
@@ -267,8 +269,8 @@ const AdminAgentProfile = () => {
                     <form onSubmit={handleSubmit} className="profile-edit-form">
                         <div className="form-section">
                             <div className="section-header">
-                                <h2>Personal Information</h2>
-                                <p>Update user's personal details and contact information</p>
+                                <h2>{t('profile.personal_info', 'Personal Information')}</h2>
+                                <p>{t('agent_profile.admin_info_desc', "Update user's personal details and contact information")}</p>
                             </div>
 
                             <div className="form-grid">
@@ -342,8 +344,8 @@ const AdminAgentProfile = () => {
 
                         <div className="form-section">
                             <div className="section-header">
-                                <h2>Professional Details</h2>
-                                <p>User's professional background and expertise</p>
+                                <h2>{t('profile.professional_details', 'Professional Details')}</h2>
+                                <p>{t('agent_profile.admin_prof_desc', "User's professional background and expertise")}</p>
                             </div>
 
                             <div className="form-grid">
@@ -399,8 +401,8 @@ const AdminAgentProfile = () => {
 
                         <div className="form-section">
                             <div className="section-header">
-                                <h2>Verification Documents</h2>
-                                <p>Documents submitted for agent verification</p>
+                                <h2>{t('agent_profile.verification_docs', 'Verification Documents')}</h2>
+                                <p>{t('agent_profile.admin_docs_desc', 'Documents submitted for agent verification')}</p>
                             </div>
 
                             {userData?.verification_documents?.length > 0 ? (
@@ -415,24 +417,24 @@ const AdminAgentProfile = () => {
                                                 <span className="doc-meta">{new Date(doc.uploaded_at).toLocaleDateString()}</span>
                                             </div>
                                             <a href={normalizeDocUrl(doc.url)} target="_blank" rel="noreferrer" className="btn-view-doc">
-                                                View Document
+                                                {t('agent_profile.view_doc', 'View Document')}
                                             </a>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <p className="no-docs-text">No documents uploaded.</p>
+                                <p className="no-docs-text">{t('agent_profile.no_docs', 'No documents uploaded.')}</p>
                             )}
                         </div>
 
                         {editing && (
                             <div className="form-actions">
                                 <button type="button" onClick={handleCancel} className="btn-secondary">
-                                    Cancel
+                                    {t('profile.cancel', 'Cancel')}
                                 </button>
                                 <button type="submit" disabled={saveLoading} className="btn-primary">
                                     <Save size={18} />
-                                    <span>{saveLoading ? 'Saving...' : 'Save Changes'}</span>
+                                    <span>{saveLoading ? t('profile.saving', 'Saving...') : t('profile.save_changes', 'Save Changes')}</span>
                                 </button>
                             </div>
                         )}

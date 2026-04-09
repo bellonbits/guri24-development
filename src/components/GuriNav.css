@@ -19,13 +19,14 @@
 .nav-link {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     color: var(--black);
-    font-size: 0.9375rem;
+    font-size: 0.875rem; /* slightly smaller to fit more tabs */
     font-weight: 700;
-    padding: 8px 12px;
+    padding: 6px 12px;
     transition: var(--transition);
     border-radius: var(--radius-md);
+    white-space: nowrap; /* prevent text wrapping */
 }
 
 .nav-link:hover {
@@ -33,10 +34,10 @@
     background: var(--gray-50);
 }
 
-.nav-actions {
+.desktop-nav-actions {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 12px; /* reduced from 24px */
 }
 
 .list-property-btn {
@@ -65,6 +66,42 @@
     font-weight: 700;
     height: 38px;
     border: 1px solid var(--gray-100);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: border-color 0.18s, background 0.18s;
+}
+
+.nav-lang-picker:hover {
+    border-color: var(--primary);
+    background: var(--primary-lighter);
+}
+
+/* Mobile-only lang button — shown between logo and hamburger */
+.mobile-lang-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: var(--gray-50);
+    border-radius: var(--radius-pill);
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    height: 34px;
+    border: 1px solid var(--gray-200);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: border-color 0.18s;
+    flex-shrink: 0;
+}
+
+.mobile-lang-btn:hover { border-color: var(--primary); }
+
+/* Drawer lang button — full width */
+.drawer-lang-btn {
+    width: 100%;
+    justify-content: center;
+    height: 44px;
+    font-size: 0.875rem;
 }
 
 .lang-primary {
@@ -87,6 +124,7 @@
     color: var(--black);
     font-weight: 700;
     font-size: 0.875rem;
+    white-space: nowrap;
 }
 
 .nav-auth-btn {
@@ -136,23 +174,52 @@
 }
 
 /* ── Mobile: hide desktop nav & actions ── */
-@media (max-width: 1023px) {
+.mobile-nav-toggle {
+    display: none !important;
+}
+
+.desktop-nav-main {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-left: 2rem;
+    gap: 4px; /* tightly pack main tabs */
+}
+
+/* Bump breakpoint to 1250px so it collapses before running out of real estate */
+@media (max-width: 1250px) {
     .guri-nav {
         padding: 0 !important;
     }
 
+    .mobile-nav-toggle {
+        display: inline-flex !important;
+    }
+
+    /* Show mobile lang button */
+    .mobile-lang-btn {
+        display: flex !important;
+    }
+
     /* Hide desktop nav links and right-side actions */
-    .guri-nav .hidden.lg\:flex,
-    .guri-nav [class*="lg:flex"] {
+    .guri-nav .desktop-nav-main,
+    .guri-nav .desktop-nav-actions {
         display: none !important;
     }
 
-    /* Ensure the container stays as row with just logo + toggle */
+    /* Ensure the container stays as row with logo + lang + toggle */
     .guri-nav .container {
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
-        gap: 0 !important;
+        gap: 8px !important;
+    }
+}
+
+/* On desktop, hide the mobile-only lang button */
+@media (min-width: 1251px) {
+    .mobile-lang-btn {
+        display: none !important;
     }
 }
 

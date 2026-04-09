@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { fadeUp, staggerContainer } from '../utils/animations';
 import GuriFilterBar from './GuriFilterBar';
+import { useTranslation } from 'react-i18next';
 
 const GuriHero = ({ onSearch, loading }) => {
+    const { t } = useTranslation();
     if (loading) {
         return (
             <section style={{ height: '680px', background: 'linear-gradient(135deg, #0d3b66 0%, #1a5f9e 100%)' }}
@@ -54,7 +56,7 @@ const GuriHero = ({ onSearch, loading }) => {
                         backdropFilter: 'blur(8px)',
                         letterSpacing: '0.04em',
                     }}>
-                        East Africa's #1 Real Estate Platform
+                        {t('home.hero_badge', "East Africa's #1 Real Estate Platform")}
                     </span>
                 </motion.div>
 
@@ -73,8 +75,8 @@ const GuriHero = ({ onSearch, loading }) => {
                         textShadow: '0 2px 20px rgba(0,0,0,0.3)',
                     }}
                 >
-                    Find Your Dream Home<br />
-                    <span style={{ color: '#7eb8f7' }}>with Guri24</span>
+                    {t('home.hero_title_p1', 'Find Your Dream Home')}<br />
+                    <span style={{ color: '#7eb8f7' }}>{t('home.hero_title_p2', 'with Guri24')}</span>
                 </motion.h1>
 
                 {/* Subheadline */}
@@ -90,7 +92,7 @@ const GuriHero = ({ onSearch, loading }) => {
                         lineHeight: 1.6,
                     }}
                 >
-                    Thousands of verified properties across Kenya &amp; East Africa
+                    {t('home.hero_subtitle', 'Thousands of verified properties across Kenya & East Africa')}
                 </motion.p>
 
                 {/* Search Bar */}
@@ -111,9 +113,9 @@ const GuriHero = ({ onSearch, loading }) => {
                     }}
                 >
                     {[
-                        { num: '10+', text: 'Years Experience' },
-                        { num: '2,000+', text: 'Happy Clients' },
-                        { num: '1,500+', text: 'Properties' },
+                        { num: '10+', text: t('home.stats_exp', 'Years Experience') },
+                        { num: '2,000+', text: t('home.stats_clients', 'Happy Clients') },
+                        { num: '1,500+', text: t('home.stats_props', 'Properties') },
                     ].map(({ num, text }) => (
                         <motion.div
                             key={text}

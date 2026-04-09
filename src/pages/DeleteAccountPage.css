@@ -1,0 +1,355 @@
+/* =========================================================
+   DeleteAccountPage.css — Guri24 Data Deletion Page
+   ========================================================= */
+
+.dap-page {
+    min-height: 100vh;
+    background: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.dap-hero {
+    background: linear-gradient(135deg, #0d3b66 0%, #1a5f9e 60%, #2271b8 100%);
+    padding: 72px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.dap-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.dap-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.dap-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+}
+
+.dap-hero h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0 0 16px;
+}
+
+.dap-hero p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ── Container ─────────────────────────────────────────── */
+.dap-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* ── Section ───────────────────────────────────────────── */
+.dap-section h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0a0f1a;
+    letter-spacing: -0.025em;
+    margin: 0 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* ── Steps ─────────────────────────────────────────────── */
+.dap-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.dap-steps::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #1a5f9e, #e2e8f0);
+    z-index: 0;
+}
+
+.dap-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px 24px 20px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.dap-step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1a5f9e;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 3px solid #f8fafc;
+    box-shadow: 0 0 0 2px #1a5f9e;
+}
+
+.dap-step-body h3 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #0a0f1a;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+}
+
+.dap-step-body p {
+    font-size: 0.875rem;
+    color: #475569;
+    margin: 0 0 8px;
+    line-height: 1.65;
+}
+
+.dap-step-body ul {
+    margin: 8px 0 0 16px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dap-step-body ul li {
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* ── CTA Button ────────────────────────────────────────── */
+.dap-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1a5f9e;
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    padding: 13px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    box-shadow: 0 4px 16px rgba(26,95,158,0.28);
+    transition: background 0.2s cubic-bezier(0.2,0,0,1), transform 0.2s, box-shadow 0.2s;
+}
+
+.dap-cta-btn:hover {
+    background: #0d3b66;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(26,95,158,0.36);
+}
+
+.dap-cta-btn:active { transform: scale(0.98); }
+
+/* ── Data Grid ─────────────────────────────────────────── */
+.dap-data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.dap-data-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    border: 1.5px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(26,95,158,0.06);
+}
+
+.dap-data-card.deleted { border-top: 3px solid #dc2626; }
+.dap-data-card.retained { border-top: 3px solid #1a5f9e; }
+
+.dap-data-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.dap-data-card.deleted .dap-data-card-header svg { color: #dc2626; }
+.dap-data-card.retained .dap-data-card-header svg { color: #1a5f9e; }
+
+.dap-data-card-header h3 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #0a0f1a;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.dap-data-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dap-data-card ul li {
+    font-size: 0.8125rem;
+    color: #475569;
+    line-height: 1.5;
+    padding-left: 16px;
+    position: relative;
+}
+
+.dap-data-card ul li::before {
+    content: '•';
+    position: absolute;
+    left: 4px;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+.dap-retention-period {
+    display: inline-block;
+    background: #eff6ff;
+    color: #1a5f9e;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 99px;
+    border: 1px solid #bfdbfe;
+    margin: 0 3px;
+}
+
+.dap-note {
+    font-size: 0.8rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+    font-style: italic;
+}
+
+/* ── Warning Box ───────────────────────────────────────── */
+.dap-warning-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #fff7ed;
+    border: 1.5px solid #fed7aa;
+    border-left: 4px solid #ea580c;
+    border-radius: 12px;
+    padding: 18px 20px;
+    font-size: 0.875rem;
+    color: #7c2d12;
+    line-height: 1.65;
+}
+
+.dap-warning-box svg { color: #ea580c; flex-shrink: 0; margin-top: 1px; }
+.dap-warning-box strong { color: #9a3412; }
+
+/* ── FAQ ───────────────────────────────────────────────── */
+.dap-faqs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dap-faq {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dap-faq:hover { border-color: #93c5fd; box-shadow: 0 2px 12px rgba(26,95,158,0.08); }
+.dap-faq.open  { border-color: #1a5f9e; box-shadow: 0 4px 18px rgba(26,95,158,0.1); }
+
+.dap-faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0a0f1a;
+    letter-spacing: -0.01em;
+    user-select: none;
+}
+
+.dap-faq-q svg { flex-shrink: 0; color: #64748b; }
+
+.dap-faq-a {
+    padding: 0 20px 16px;
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.7;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+}
+
+/* ── Contact Strip ─────────────────────────────────────── */
+.dap-contact-strip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #eff6ff;
+    border: 1.5px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 0.875rem;
+    color: #1e3a5f;
+    line-height: 1.6;
+}
+
+.dap-contact-strip svg { color: #1a5f9e; flex-shrink: 0; }
+.dap-contact-strip a { color: #1a5f9e; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.dap-contact-strip a:hover { color: #0d3b66; }
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .dap-hero { padding: 56px 20px 48px; }
+    .dap-container { padding: 32px 16px 60px; gap: 28px; }
+    .dap-data-grid { grid-template-columns: 1fr; }
+    .dap-steps::before { left: 17px; }
+    .dap-step { padding-right: 0; }
+    .dap-step-num { width: 36px; height: 36px; font-size: 0.8125rem; }
+}

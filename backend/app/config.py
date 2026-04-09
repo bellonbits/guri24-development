@@ -46,7 +46,7 @@ class Settings(BaseSettings):
     # Security
     RATE_LIMIT_PER_MINUTE: int = 60
     RATE_LIMIT_PER_HOUR: int = 1000
-    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,https://guri24.com,https://www.guri24.com,https://api.guri24.com,https://guri24.vercel.app"
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000,https://guri24.com,https://www.guri24.com,https://api.guri24.com,https://guri24.vercel.app,https://localhost,capacitor://localhost"
     COOKIE_SECURE: bool = True
     COOKIE_SAMESITE: str = "none"
     

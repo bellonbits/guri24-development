@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Button, Input, Select } from 'antd';
 import { Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const SearchBar = ({ onSearch }) => {
+    const { t } = useTranslation();
     const [location, setLocation] = useState('');
     const [propertyType, setPropertyType] = useState('');
     const [priceRange, setPriceRange] = useState('');
@@ -25,9 +27,9 @@ const SearchBar = ({ onSearch }) => {
             flexWrap: 'wrap'
         }}>
             <div style={{ flex: '1 1 200px', minWidth: '150px' }}>
-                <div style={{ fontSize: '11px', color: '#999', marginBottom: '4px', paddingLeft: '12px' }}>Location</div>
+                <div style={{ fontSize: '11px', color: '#999', marginBottom: '4px', paddingLeft: '12px' }}>{t('searchbar.location_label')}</div>
                 <Input
-                    placeholder="Westlands"
+                    placeholder={t('searchbar.location_placeholder')}
                     variant="borderless"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
@@ -38,18 +40,19 @@ const SearchBar = ({ onSearch }) => {
             <div style={{ width: '1px', height: '40px', background: '#e5e5e5', display: 'none', '@media (min-width: 768px)': { display: 'block' } }} />
 
             <div style={{ flex: '1 1 150px', minWidth: '120px' }}>
-                <div style={{ fontSize: '11px', color: '#999', marginBottom: '4px', paddingLeft: '12px' }}>Type</div>
+                <div style={{ fontSize: '11px', color: '#999', marginBottom: '4px', paddingLeft: '12px' }}>{t('searchbar.type_label')}</div>
                 <Select
-                    placeholder="Apartment"
+                    placeholder={t('searchbar.type_placeholder')}
                     variant="borderless"
                     value={propertyType}
                     onChange={setPropertyType}
                     style={{ width: '100%', fontSize: '14px', fontWeight: 500 }}
                     options={[
-                        { label: 'Apartment', value: 'apartment' },
-                        { label: 'House', value: 'house' },
-                        { label: 'Villa', value: 'villa' },
-                        { label: 'Land', value: 'land' }
+                        { label: t('categories.apartment'), value: 'apartment' },
+                        { label: t('categories.house'), value: 'house' },
+                        { label: t('categories.villa'), value: 'villa' },
+                        { label: t('categories.land'), value: 'land' },
+                        { label: t('categories.commercial'), value: 'commercial' }
                     ]}
                 />
             </div>
@@ -57,18 +60,18 @@ const SearchBar = ({ onSearch }) => {
             <div style={{ width: '1px', height: '40px', background: '#e5e5e5' }} />
 
             <div style={{ flex: '1 1 150px', minWidth: '120px' }}>
-                <div style={{ fontSize: '11px', color: '#999', marginBottom: '4px', paddingLeft: '12px' }}>Price</div>
+                <div style={{ fontSize: '11px', color: '#999', marginBottom: '4px', paddingLeft: '12px' }}>{t('searchbar.price_label')}</div>
                 <Select
-                    placeholder="10M - 50M"
+                    placeholder={t('searchbar.price_placeholder')}
                     variant="borderless"
                     value={priceRange}
                     onChange={setPriceRange}
                     style={{ width: '100%', fontSize: '14px', fontWeight: 500 }}
                     options={[
-                        { label: 'Under 10M', value: '0-10000000' },
-                        { label: '10M - 50M', value: '10000000-50000000' },
-                        { label: '50M - 100M', value: '50000000-100000000' },
-                        { label: 'Above 100M', value: '100000000-999999999' }
+                        { label: t('searchbar.under_10m'), value: '0-10000000' },
+                        { label: t('searchbar.10m_50m'), value: '10000000-50000000' },
+                        { label: t('searchbar.50m_100m'), value: '50000000-100000000' },
+                        { label: t('searchbar.above_100m'), value: '100000000-999999999' }
                     ]}
                 />
             </div>
@@ -91,7 +94,7 @@ const SearchBar = ({ onSearch }) => {
                     gap: '8px'
                 }}
             >
-                Search Property
+                {t('searchbar.search_property')}
             </Button>
         </div>
     );

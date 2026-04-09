@@ -1,15 +1,34 @@
 import { useState, useEffect } from 'react';
 import './Header.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Phone, Building2 } from 'lucide-react';
+import { Menu, X, Phone, Building2, LayoutDashboard, UserCircle, Plus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const { user, isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language === 'so' ? 'so' : 'en';
+
+    const isAgent = user?.role === 'agent';
+    const isAdmin = user?.role === 'admin' || user?.role === 'super_admin';
+
+    const toggleLanguage = () => {
+        const next = currentLang === 'en' ? 'so' : 'en';
+        i18n.changeLanguage(next);
+        localStorage.setItem('guri24_lang', next);
+    };
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 10);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     useEffect(() => {
         if (mobileMenuOpen) {
@@ -17,38 +36,32 @@ function Header() {
         } else {
             document.body.style.overflow = 'unset';
         }
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
+        return () => { document.body.style.overflow = 'unset'; };
     }, [mobileMenuOpen]);
 
-    useEffect(() => {
-        setMobileMenuOpen(false);
-    }, [location]);
+    useEffect(() => { setMobileMenuOpen(false); }, [location]);
 
-    const handleListProperty = async (e) => {
+    const handleListProperty = (e) => {
         if (e) e.preventDefault();
-
         if (!isAuthenticated) {
-            navigate('/login?redirect=/listings');
+            navigate('/login?redirect=/agent/properties/add');
             return;
         }
-
-        if (user?.role === 'agent' || user?.role === 'admin' || user?.role === 'super_admin') {
+        if (isAgent || isAdmin) {
             navigate('/agent/properties/add');
-            return;
+        } else {
+            // Regular users must apply to become an agent first
+            navigate('/apply-agent');
         }
-
-        navigate('/apply-agent');
     };
 
     const navLinks = [
-        { to: '/', label: 'Home' },
-        { to: '/about', label: 'About' },
-        { to: '/buy', label: 'Buy' },
-        { to: '/rent', label: 'Rent' },
-        { to: '/stays', label: 'StayHub' },
-        { to: '/listings', label: 'Listings' },
+        { to: '/', label: t('nav.home') },
+        { to: '/about', label: t('nav.about') },
+        { to: '/buy', label: t('nav.buy') },
+        { to: '/rent', label: t('nav.rent') },
+        { to: '/stays', label: t('nav.stays') },
+        { to: '/listings', label: t('nav.listings') },
     ];
 
     const isActive = (path) => {
@@ -56,71 +69,88 @@ function Header() {
         return location.pathname.startsWith(path);
     };
 
+    const avatarLetter = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
+
     return (
         <>
-            <header className="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
-                <div className="max-w-[1400px] mx-auto px-6 py-3 flex items-center justify-between">
+            <header className={`header-root${scrolled ? ' header-scrolled' : ''}`}>
+                <div className="header-inner">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-                        <div className="flex items-center justify-center w-9 h-9 bg-[#1a5f9e] rounded-xl text-white shadow-md transition-transform group-hover:scale-105">
-                            <Building2 size={18} strokeWidth={2.5} />
-                        </div>
-                        <span className="text-[1.2rem] font-extrabold tracking-tight text-gray-900">Guri<span style={{color:'#1a5f9e'}}>24</span></span>
+                    <Link to="/" className="header-logo">
+                        <img src="/logo.png" alt="Guri24" className="header-logo-img" />
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center gap-1">
+                    {/* Desktop Nav */}
+                    <nav className="header-nav">
                         {navLinks.map(({ to, label }) => (
                             <Link
                                 key={to}
                                 to={to}
-                                className={`px-4 py-2 rounded-full text-[14px] font-semibold transition-all duration-200 ${
-                                    isActive(to)
-                                        ? 'text-[#1a5f9e] bg-blue-50'
-                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                                }`}
+                                className={`header-nav-link${isActive(to) ? ' active' : ''}`}
                             >
                                 {label}
                             </Link>
                         ))}
                     </nav>
 
-                    {/* Right Actions */}
-                    <div className="flex items-center gap-3">
-                        {/* Language Switch */}
-                        <div className="header-lang-switch border border-gray-200 rounded-full px-3 py-1.5 text-[11px] font-bold text-gray-400 tracking-widest cursor-pointer hover:border-gray-300 transition-colors select-none">
-                            <span className="text-gray-800">EN</span>
-                            <span className="mx-1 text-gray-300">|</span>
-                            <span>SO</span>
-                        </div>
+                    {/* Lang toggle — direct flex child so it NEVER gets squeezed */}
+                    <button type="button" onClick={toggleLanguage} className="header-lang" aria-label="Switch language">
+                        <span className={currentLang === 'en' ? 'lang-active' : 'lang-inactive'}>EN</span>
+                        <span className="lang-sep">|</span>
+                        <span className={currentLang === 'so' ? 'lang-active' : 'lang-inactive'}>SO</span>
+                    </button>
 
-                        {/* Phone */}
-                        <a href="tel:+254706070747" className="header-phone flex items-center gap-2 text-gray-800 font-semibold text-[13px] hover:text-[#1a5f9e] transition-colors">
-                            <div className="w-7 h-7 bg-blue-50 rounded-full flex items-center justify-center text-[#1a5f9e]">
-                                <Phone size={13} />
-                            </div>
-                            +254 706 070 747
+                    {/* Right side */}
+                    <div className="header-right">
+                        {/* Phone — hidden on small desktop */}
+                        <a href="tel:+254706070747" className="header-phone">
+                            <div className="header-phone-icon"><Phone size={13} /></div>
+                            <span>+254 706 070 747</span>
                         </a>
 
-                        {/* Buttons */}
-                        <div className="header-action-btns flex items-center gap-2">
-                            <Link
-                                to="/login"
-                                className="border border-gray-200 text-gray-700 px-5 py-2 rounded-full text-[13px] font-semibold hover:border-gray-400 hover:text-gray-900 transition-all"
-                            >
-                                Sign In
-                            </Link>
-                            <button
-                                onClick={handleListProperty}
-                                className="bg-[#1a5f9e] text-white px-5 py-2 rounded-full text-[13px] font-bold hover:bg-[#0d3b66] transition-all shadow-md shadow-blue-900/20"
-                            >
-                                List Property
-                            </button>
+                        {/* Auth-aware action buttons — hidden on mobile */}
+                        <div className="header-actions">
+                            {isAuthenticated ? (
+                                <>
+                                    {/* Portal button */}
+                                    {isAdmin && (
+                                        <Link to="/admin" className="btn-portal btn-admin">
+                                            <LayoutDashboard size={14} />
+                                            <span>{t('nav.admin_dashboard')}</span>
+                                        </Link>
+                                    )}
+                                    {isAgent && (
+                                        <button onClick={handleListProperty} className="btn-portal btn-agent">
+                                            <Plus size={14} />
+                                            <span>{t('nav.add_property')}</span>
+                                        </button>
+                                    )}
+                                    {!isAgent && !isAdmin && (
+                                        <button onClick={handleListProperty} className="btn-list-property">
+                                            <Plus size={14} />
+                                            <span>{t('nav.list_property')}</span>
+                                        </button>
+                                    )}
+                                    {/* Profile */}
+                                    <Link to={isAdmin ? '/admin' : isAgent ? '/agent/profile' : '/profile'} className="btn-profile">
+                                        <div className="btn-profile-avatar">{avatarLetter}</div>
+                                        <span className="btn-profile-name">{user?.name?.split(' ')[0]}</span>
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/login" className="btn-signin">{t('nav.login')}</Link>
+                                    <button onClick={handleListProperty} className="btn-list-property">
+                                        <Plus size={14} />
+                                        <span>{t('nav.list_property')}</span>
+                                    </button>
+                                </>
+                            )}
                         </div>
 
-                        {/* Mobile Toggle */}
+                        {/* Mobile toggle */}
                         <button
-                            className="lg:hidden w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-gray-700"
+                            className="header-mobile-toggle"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             aria-label="Toggle menu"
                         >
@@ -130,57 +160,86 @@ function Header() {
                 </div>
             </header>
 
-            {/* Mobile Menu */}
+            {/* Mobile Drawer */}
             {createPortal(
                 <>
                     {mobileMenuOpen && (
-                        <div
-                            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
-                            onClick={() => setMobileMenuOpen(false)}
-                        />
+                        <div className="mobile-backdrop" onClick={() => setMobileMenuOpen(false)} />
                     )}
-                    <div className={`fixed top-0 right-0 bottom-0 w-72 bg-white z-50 shadow-2xl transform transition-transform duration-300 ease-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                        <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-                            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
-                                <div className="w-8 h-8 bg-[#1a5f9e] rounded-lg flex items-center justify-center text-white">
-                                    <Building2 size={16} strokeWidth={2.5} />
-                                </div>
-                                <span className="font-extrabold text-gray-900">Guri<span style={{color:'#1a5f9e'}}>24</span></span>
+                    <div className={`mobile-drawer${mobileMenuOpen ? ' open' : ''}`}>
+                        {/* Drawer header */}
+                        <div className="mobile-drawer-header">
+                            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="header-logo">
+                                <img src="/logo.png" alt="Guri24" className="header-logo-img" />
                             </Link>
-                            <button
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-                            >
+                            <button className="mobile-close-btn" onClick={() => setMobileMenuOpen(false)}>
                                 <X size={18} />
                             </button>
                         </div>
-                        <nav className="p-5 space-y-1">
+
+                        {/* User badge if logged in */}
+                        {isAuthenticated && (
+                            <div className="mobile-user-badge">
+                                <div className="mobile-user-avatar">{avatarLetter}</div>
+                                <div>
+                                    <div className="mobile-user-name">{user?.name}</div>
+                                    <div className="mobile-user-role">{user?.role || 'User'}</div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Nav links */}
+                        <nav className="mobile-nav">
                             {navLinks.map(({ to, label }) => (
                                 <Link
                                     key={to}
                                     to={to}
-                                    className={`flex items-center px-4 py-3 rounded-xl text-[15px] font-semibold transition-all ${
-                                        isActive(to)
-                                            ? 'bg-blue-50 text-[#1a5f9e]'
-                                            : 'text-gray-700 hover:bg-gray-50'
-                                    }`}
+                                    className={`mobile-nav-link${isActive(to) ? ' active' : ''}`}
                                 >
                                     {label}
                                 </Link>
                             ))}
                         </nav>
-                        <div className="px-5 pt-2 pb-6 border-t border-gray-100 space-y-3 mt-2">
-                            <Link
-                                to="/login"
-                                className="block w-full border border-gray-200 text-gray-700 px-6 py-3 rounded-full text-center font-semibold text-[14px] hover:border-gray-400 transition-all"
-                            >
-                                Sign In
-                            </Link>
-                            <button
-                                onClick={handleListProperty}
-                                className="block w-full bg-[#1a5f9e] text-white px-6 py-3 rounded-full text-center font-bold text-[14px] hover:bg-[#0d3b66] transition-all"
-                            >
-                                List Property
+
+                        {/* Bottom actions */}
+                        <div className="mobile-drawer-footer">
+                            {isAuthenticated ? (
+                                <>
+                                    {isAdmin && (
+                                        <Link to="/admin" className="mobile-btn mobile-btn-primary">
+                                            <LayoutDashboard size={16} /> {t('nav.admin_portal')}
+                                        </Link>
+                                    )}
+                                    {isAgent && (
+                                        <button onClick={handleListProperty} className="mobile-btn mobile-btn-primary">
+                                            <Plus size={16} /> {t('nav.add_property')}
+                                        </button>
+                                    )}
+                                    {!isAgent && !isAdmin && (
+                                        <button onClick={handleListProperty} className="mobile-btn mobile-btn-primary">
+                                            <Plus size={16} /> {t('nav.list_property')}
+                                        </button>
+                                    )}
+                                    <Link
+                                        to={isAdmin ? '/admin' : isAgent ? '/agent/profile' : '/profile'}
+                                        className="mobile-btn mobile-btn-outline"
+                                    >
+                                        <UserCircle size={16} /> {t('nav.my_profile')}
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/login" className="mobile-btn mobile-btn-outline">{t('nav.login')}</Link>
+                                    <button onClick={handleListProperty} className="mobile-btn mobile-btn-primary">
+                                        <Plus size={16} /> {t('nav.list_property')}
+                                    </button>
+                                </>
+                            )}
+                            {/* Lang toggle in mobile */}
+                            <button type="button" onClick={toggleLanguage} className="mobile-lang-toggle" aria-label="Switch language">
+                                <span className={currentLang === 'en' ? 'lang-active' : 'lang-inactive'}>EN</span>
+                                <span className="lang-sep">|</span>
+                                <span className={currentLang === 'so' ? 'lang-active' : 'lang-inactive'}>SO</span>
                             </button>
                         </div>
                     </div>

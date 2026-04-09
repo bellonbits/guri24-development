@@ -201,6 +201,55 @@ function AdminVerifications() {
                         </div>
 
                         <div className="modal-body">
+                            {/* Agent Info Section */}
+                            <div className="agent-info-section">
+                                <h3 className="section-label"><User size={16} /> Agent Information</h3>
+                                <div className="agent-info-grid">
+                                    <div className="info-item">
+                                        <span className="info-label">Full Name</span>
+                                        <span className="info-value">{docModal.name || '—'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="info-label">Email</span>
+                                        <span className="info-value">{docModal.email || '—'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="info-label">Phone</span>
+                                        <span className="info-value">{docModal.phone || '—'}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <span className="info-label">Requested On</span>
+                                        <span className="info-value">{docModal.created_at ? new Date(docModal.created_at).toLocaleDateString() : '—'}</span>
+                                    </div>
+                                    {docModal.national_id_number && (
+                                        <div className="info-item">
+                                            <span className="info-label">National ID</span>
+                                            <span className="info-value">{docModal.national_id_number}</span>
+                                        </div>
+                                    )}
+                                    {docModal.date_of_birth && (
+                                        <div className="info-item">
+                                            <span className="info-label">Date of Birth</span>
+                                            <span className="info-value">{docModal.date_of_birth}</span>
+                                        </div>
+                                    )}
+                                    {docModal.location && (
+                                        <div className="info-item">
+                                            <span className="info-label">Location</span>
+                                            <span className="info-value">{docModal.location}</span>
+                                        </div>
+                                    )}
+                                    {docModal.motivation && (
+                                        <div className="info-item full-width">
+                                            <span className="info-label">Motivation</span>
+                                            <span className="info-value motivation-text">{docModal.motivation}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Documents Section */}
+                            <h3 className="section-label"><FileText size={16} /> Uploaded Documents</h3>
                             <div className="docs-review-list">
                                 {docModal.verification_documents && docModal.verification_documents.length > 0 ? (
                                     docModal.verification_documents.map((doc, idx) => (

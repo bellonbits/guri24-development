@@ -1,17 +1,17 @@
 /* AdminAgentProfile.css — Guri24 Admin Agent Profile Page */
-/* Uses Guri24 brand colors instead of green */
 
 .admin-agent-profile-page {
     padding-bottom: 2rem;
     background: #f8fafc;
     min-height: calc(100vh - 64px);
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Banner — Guri24 blue for admin context */
+/* Banner */
 .profile-banner {
     position: relative;
     background: linear-gradient(135deg, #1a5f9e 0%, #0d3b6e 100%);
-    height: 160px;
+    height: 168px;
     overflow: hidden;
 }
 
@@ -41,7 +41,7 @@
     height: 96px;
     border-radius: 50%;
     border: 4px solid #ffffff;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(26, 95, 158, 0.18);
     object-fit: cover;
     background: #e8f1fb;
     flex-shrink: 0;
@@ -53,7 +53,7 @@
     height: 96px;
     border-radius: 50%;
     border: 4px solid #ffffff;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(26, 95, 158, 0.18);
     background: #1a5f9e;
     display: flex;
     align-items: center;
@@ -62,6 +62,7 @@
     font-weight: 800;
     color: #ffffff;
     flex-shrink: 0;
+    letter-spacing: -0.02em;
 }
 
 .header-info {
@@ -74,11 +75,12 @@
     font-weight: 800;
     color: #ffffff;
     margin: 0 0 4px;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 6px rgba(10, 15, 26, 0.18);
 }
 
 .header-info p {
-    color: rgba(255,255,255,0.85);
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
     font-size: 0.9375rem;
 }
@@ -106,9 +108,14 @@
 .profile-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(26, 95, 158, 0.06);
     overflow: hidden;
+    transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.profile-card:hover {
+    box-shadow: 0 8px 28px rgba(26, 95, 158, 0.12);
 }
 
 .profile-card-header {
@@ -127,6 +134,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    letter-spacing: -0.01em;
 }
 
 .profile-card-header h3 svg {
@@ -145,6 +153,7 @@
     padding: 0.625rem 0;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.875rem;
+    transition: background 0.15s;
 }
 
 .info-row:last-child {
@@ -158,18 +167,19 @@
 }
 
 .info-label {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: #94a3b8;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     display: block;
     margin-bottom: 2px;
 }
 
 .info-value {
     color: #1e293b;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.875rem;
 }
 
 /* Stat mini cards */
@@ -183,9 +193,18 @@
 .mini-stat {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 0.875rem;
     text-align: center;
+    transition: border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.mini-stat:hover {
+    border-color: rgba(26, 95, 158, 0.2);
+    box-shadow: 0 4px 14px rgba(26, 95, 158, 0.1);
+    transform: translateY(-2px);
 }
 
 .mini-stat h4 {
@@ -193,6 +212,7 @@
     font-weight: 800;
     color: #1e293b;
     margin: 0 0 3px;
+    letter-spacing: -0.03em;
 }
 
 .mini-stat p {
@@ -215,29 +235,53 @@
     font-size: 0.875rem;
     border: none;
     cursor: pointer;
-    transition: all 0.18s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
     text-decoration: none;
+    letter-spacing: -0.01em;
 }
 
-.btn-primary:hover { background: #0d3b6e; }
+.btn-primary:hover {
+    background: #0d3b6e;
+    box-shadow: 0 6px 20px rgba(26, 95, 158, 0.28);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
 
 .btn-secondary {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     background: #ffffff;
-    color: #1e293b;
+    color: #334155;
     padding: 9px 18px;
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.875rem;
     border: 1.5px solid #e2e8f0;
     cursor: pointer;
-    transition: all 0.18s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
     text-decoration: none;
+    letter-spacing: -0.01em;
 }
 
-.btn-secondary:hover { background: #f8fafc; border-color: #c5d9f0; }
+.btn-secondary:hover {
+    background: #f8fafc;
+    border-color: rgba(26, 95, 158, 0.25);
+    box-shadow: 0 3px 10px rgba(26, 95, 158, 0.08);
+}
+
+.btn-secondary:active {
+    transform: scale(0.98);
+}
 
 .btn-danger {
     display: inline-flex;
@@ -251,10 +295,24 @@
     font-size: 0.875rem;
     border: 1px solid #fca5a5;
     cursor: pointer;
-    transition: all 0.18s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
+                color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+    letter-spacing: -0.01em;
 }
 
-.btn-danger:hover { background: #ef4444; color: #ffffff; border-color: #ef4444; }
+.btn-danger:hover {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+}
+
+.btn-danger:active {
+    transform: scale(0.98);
+}
 
 /* Status badges */
 .status-badge {
@@ -262,10 +320,11 @@
     align-items: center;
     gap: 4px;
     padding: 3px 10px;
-    border-radius: 99px;
+    border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: capitalize;
+    letter-spacing: 0.02em;
 }
 
 .status-badge.verified,

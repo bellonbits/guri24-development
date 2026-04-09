@@ -46,6 +46,8 @@ import NotFoundPage from './pages/NotFoundPage';
 import BookingConfirmPage from './pages/BookingConfirmPage';
 import AgentPublicProfile from './pages/AgentPublicProfile';
 import AgentApplicationPage from './pages/AgentApplicationPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import DeleteAccountPage from './pages/DeleteAccountPage';
 import AgentBookingDetails from './pages/agent/AgentBookingDetails';
 import './index.css';
 import './App.css';
@@ -80,6 +82,8 @@ function App() {
               <Route path="/property/:slug" element={<PropertyDetailPage />} />
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/delete-account" element={<DeleteAccountPage />} />
               <Route path="/agents/:id" element={<AgentPublicProfile />} />
 
               {/* Auth Routes */}

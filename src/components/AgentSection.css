@@ -1,40 +1,47 @@
 /* AgentSection Styles */
 .agent-section {
-    padding: 56px 0;
-    background: var(--white);
+    padding: 72px 0;
+    background: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .agent-intro-title {
     font-size: clamp(28px, 4vw, 42px);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
     margin-bottom: 1rem;
+    color: #0a0f1a;
 }
 
 .agent-intro-subtitle {
-    font-size: 1.15rem;
-    color: var(--gray-500);
+    font-size: 1.0625rem;
+    color: #64748b;
     margin-bottom: 2.5rem;
+    line-height: 1.65;
 }
 
 .agent-grid-container {
-    padding-top: 10px;
+    padding-top: 12px;
 }
 
 .agent-profile-card {
-    border-radius: var(--radius-lg) !important;
-    border: 1px solid var(--gray-100) !important;
+    border-radius: 18px !important;
+    border: 1px solid #e2e8f0 !important;
     text-align: center;
-    padding: 2rem;
+    padding: 2.25rem 2rem;
     height: 100%;
-    transition: var(--transition) !important;
-    background: var(--white) !important;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
+    background: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(26, 95, 158, 0.06) !important;
 }
 
 .agent-profile-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover) !important;
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(26, 95, 158, 0.14) !important;
+    border-color: #cbd5e1 !important;
 }
 
 .agent-avatar-wrapper {
@@ -47,52 +54,66 @@
     position: absolute;
     bottom: 0;
     right: -10px;
-    background: var(--white);
-    border-radius: var(--radius-pill);
+    background: #ffffff;
+    border-radius: 999px;
     padding: 4px 12px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 2px 10px rgba(26, 95, 158, 0.12);
     display: flex;
     align-items: center;
     gap: 4px;
-    border: 1px solid var(--gray-100);
+    border: 1px solid #e2e8f0;
 }
 
 .rating-number {
-    font-size: 0.825rem;
+    font-size: 0.8125rem;
     font-weight: 700;
+    color: #1e293b;
 }
 
 .rating-star {
-    color: #faad14;
+    color: #f59e0b;
     font-size: 0.75rem;
 }
 
 .agent-name {
-    font-size: 1.25rem !important;
+    font-size: 1.1875rem !important;
     font-weight: 700 !important;
     margin-bottom: 4px !important;
+    color: #0a0f1a !important;
+    letter-spacing: -0.01em;
 }
 
 .agent-property-count {
     font-size: 0.875rem !important;
-    color: var(--gray-500) !important;
+    color: #64748b !important;
     display: block;
     margin-bottom: 1.5rem !important;
+    font-weight: 500;
 }
 
 .agent-contact-btn {
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     height: 44px !important;
-    border-radius: var(--radius-md) !important;
-    border: 2px solid var(--gray-100) !important;
-    background: transparent !important;
-    transition: var(--transition) !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    color: #334155 !important;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+                background 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
+    letter-spacing: -0.01em;
 }
 
 .agent-contact-btn:hover {
-    background: var(--primary) !important;
-    color: var(--white) !important;
-    border-color: var(--primary) !important;
+    background: #1a5f9e !important;
+    color: #ffffff !important;
+    border-color: #1a5f9e !important;
+    box-shadow: 0 6px 18px rgba(26, 95, 158, 0.18) !important;
+}
+
+.agent-contact-btn:active {
+    transform: scale(0.98) !important;
 }
 
 @media (max-width: 1024px) {

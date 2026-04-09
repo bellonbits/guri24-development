@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MapPin, Bed, Bath, Maximize, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { scaleIn, viewportOnce } from '../utils/animations';
@@ -28,48 +29,59 @@ const PropertyCard = ({ property, index = 0 }) => {
         bathrooms,
         sqft,
         type,
-        purpose
+        purpose,
     } = property;
 
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
-    const formatPrice = (amount, cur) => {
-        if (!amount) return 'On Request';
+    const lowerPurpose = useMemo(() => (purpose || '').toLowerCase(), [purpose]);
+
+    const formattedPrice = useMemo(() => {
+        if (!price) return t('property.on_request');
         return new Intl.NumberFormat('en-KE', {
             style: 'currency',
-            currency: cur || 'KES',
+            currency: currency || 'KES',
             maximumFractionDigits: 0,
-        }).format(amount);
-    };
+        }).format(price);
+    }, [price, currency]);
 
-    const getBadgeLabel = () => {
+    const badgeLabel = useMemo(() => {
         const key = (purpose || type || '').toLowerCase().trim();
-        return PURPOSE_LABELS[key] || (purpose ? purpose.replace(/_/g, ' ') : 'Featured');
-    };
+        const PURPOSE_LABELS = {
+            stay: t('property.short_stay'),
+            short_stay: t('property.short_stay'),
+            'short stay': t('property.short_stay'),
+            rent: t('property.for_rent'),
+            rental: t('property.for_rent'),
+            sale: t('property.for_sale'),
+            selling: t('property.for_sale'),
+            buy: t('property.for_sale'),
+        };
+        return PURPOSE_LABELS[key] || (purpose ? purpose.replace(/_/g, ' ') : t('property.featured'));
+    }, [purpose, type, t]);
 
-    const getActionLabel = () => {
-        const lowerPurpose = (purpose || '').toLowerCase();
-        if (lowerPurpose === 'stay' || lowerPurpose === 'short_stay') return 'Book Now';
-        if (lowerPurpose === 'rent') return 'Rent Now';
-        if (lowerPurpose === 'sale') return 'Buy Now';
-        return 'View';
-    };
+    const actionLabel = useMemo(() => {
+        if (lowerPurpose === 'stay' || lowerPurpose === 'short_stay') return t('property.book_now');
+        if (lowerPurpose === 'rent') return t('property.rent_now');
+        if (lowerPurpose === 'sale') return t('property.buy_now');
+        return t('property.view');
+    }, [lowerPurpose, t]);
 
-    const getPriceLabel = () => {
-        const lowerPurpose = (purpose || '').toLowerCase();
-        if (lowerPurpose === 'stay' || lowerPurpose === 'short_stay') return '/ night';
-        if (lowerPurpose === 'rent') return '/ month';
+    const priceLabel = useMemo(() => {
+        if (lowerPurpose === 'stay' || lowerPurpose === 'short_stay') return t('property.per_night');
+        if (lowerPurpose === 'rent') return t('property.per_month');
         return '';
-    };
+    }, [lowerPurpose, t]);
 
     // Avoid "NAIVASHA, NAIVASHA" — only show area if different from city
-    const locationText = (() => {
+    const locationText = useMemo(() => {
         const city = location?.city || '';
         const area = location?.area || '';
-        if (!city && !area) return 'Kenya';
+        if (!city && !area) return t('common.kenya');
         if (!area || area.toLowerCase() === city.toLowerCase()) return city;
         return `${area}, ${city}`;
-    })();
+    }, [location?.city, location?.area]);
 
     return (
         <motion.div
@@ -84,7 +96,7 @@ const PropertyCard = ({ property, index = 0 }) => {
         >
             {/* Image */}
             <div className="property-card-image-box">
-                <span className="property-card-badge">{getBadgeLabel()}</span>
+                <span className="property-card-badge">{badgeLabel}</span>
                 <motion.img
                     src={images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'}
                     alt={title}
@@ -106,38 +118,38 @@ const PropertyCard = ({ property, index = 0 }) => {
                     {sqft > 0 && (
                         <div className="property-detail-item">
                             <Maximize size={13} />
-                            <span>{sqft.toLocaleString()} sqft</span>
+                            <span>{t('property.sqft', { value: sqft.toLocaleString() })}</span>
                         </div>
                     )}
                     {bedrooms > 0 && (
                         <div className="property-detail-item">
                             <Bed size={13} />
-                            <span>{bedrooms} Bed</span>
+                            <span>{t('property.bed', { count: bedrooms })}</span>
                         </div>
                     )}
                     {bathrooms > 0 && (
                         <div className="property-detail-item">
                             <Bath size={13} />
-                            <span>{bathrooms} Bath</span>
+                            <span>{t('property.bath', { count: bathrooms })}</span>
                         </div>
                     )}
                     {!sqft && !bedrooms && !bathrooms && (
                         <div className="property-detail-item">
-                            <span style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>Details available on request</span>
+                            <span style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>{t('property.details_on_request')}</span>
                         </div>
                     )}
                 </div>
 
                 <div className="property-card-footer">
                     <div className="property-card-price">
-                        <span className="price-value">{formatPrice(price, currency)}</span>
-                        {getPriceLabel() && (
-                            <span className="price-label">{getPriceLabel()}</span>
+                        <span className="price-value">{formattedPrice}</span>
+                        {priceLabel && (
+                            <span className="price-label">{priceLabel}</span>
                         )}
                     </div>
 
                     <button className="property-card-btn">
-                        {getActionLabel()}
+                        {actionLabel}
                         <ArrowRight size={13} />
                     </button>
                 </div>

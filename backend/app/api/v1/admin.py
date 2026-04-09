@@ -1,9 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Body, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, or_
 from sqlalchemy.orm import selectinload
 from typing import List, Optional
 from datetime import datetime
+import uuid
+import re
+
+def _make_slug(title: str) -> str:
+    slug = title.lower()
+    slug = re.sub(r'[^a-z0-9]+', '-', slug)
+    slug = slug.strip('-')
+    return f"{slug}-{uuid.uuid4().hex[:8]}"
 from app.database import get_db
 from app.models.user import User, UserRole, AgentStatus
 from app.models.property import Property
@@ -27,7 +35,7 @@ async def ping_admin():
 
 @router.post("/impersonate/{user_id}")
 async def impersonate_user(
-    user_id: str,
+    user_id: uuid.UUID,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
 ):
@@ -147,7 +155,7 @@ async def list_users(
 
 @router.get("/users/{user_id}", response_model=UserResponse)
 async def get_user_details(
-    user_id: str,
+    user_id: uuid.UUID,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
 ):
@@ -201,7 +209,7 @@ async def get_user_details(
 
 @router.patch("/users/{user_id}/role")
 async def update_user_role(
-    user_id: str,
+    user_id: uuid.UUID,
     role: str,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
@@ -231,7 +239,7 @@ async def update_user_role(
 
 @router.patch("/agents/{user_id}/status")
 async def update_agent_status(
-    user_id: str,
+    user_id: uuid.UUID,
     status: str,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
@@ -259,7 +267,7 @@ async def update_agent_status(
 
 @router.get("/agents/{user_id}/performance")
 async def get_agent_performance(
-    user_id: str,
+    user_id: uuid.UUID,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
 ):
@@ -339,7 +347,7 @@ async def create_user_admin(
 
 @router.put("/users/{user_id}", response_model=UserResponse)
 async def update_user_admin(
-    user_id: str,
+    user_id: uuid.UUID,
     user_data: AdminUserUpdate,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
@@ -394,7 +402,7 @@ async def update_user_admin(
 
 @router.delete("/users/{user_id}")
 async def delete_user_admin(
-    user_id: str,
+    user_id: uuid.UUID,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
 ):
@@ -449,6 +457,20 @@ async def get_system_health(
         }
     }
 
+# Standalone image upload — works before a property_id exists
+@router.post("/upload-image")
+async def upload_property_image(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_admin_user),
+):
+    """Upload a single property image to storage, returns the public URL"""
+    from app.services.storage_service import storage_service
+    allowed = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+    if file.content_type not in allowed:
+        raise HTTPException(status_code=400, detail="Only JPEG, PNG, WebP or GIF images are allowed")
+    url = await storage_service.upload_file(file, folder="properties")
+    return {"url": url}
+
 # Property Management Endpoints
 @router.post("/properties", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 async def create_property_admin(
@@ -458,9 +480,10 @@ async def create_property_admin(
 ):
     """Create a new property (Admin only)"""
     
-    # Create property with admin as agent if not specified
+    # Create property with auto-generated slug
     new_property = Property(
         **property_data.dict(),
+        slug=_make_slug(property_data.title),
         agent_id=current_user.id
     )
     
@@ -609,7 +632,7 @@ async def list_pending_agents(
 
 @router.post("/agents/{user_id}/verify")
 async def verify_agent(
-    user_id: str,
+    user_id: uuid.UUID,
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
 ):
@@ -639,8 +662,8 @@ async def verify_agent(
 
 @router.post("/agents/{user_id}/reject")
 async def reject_agent(
-    user_id: str,
-    rejection_data: dict,
+    user_id: uuid.UUID,
+    rejection_data: dict = Body(default={}),
     current_user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db)
 ):

@@ -1,65 +1,84 @@
 /* Services Styles */
 .services-section {
-    padding: 56px 0;
-    background: var(--gray-50);
+    padding: 72px 0;
+    background: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2.5rem;
+    gap: 1.75rem;
 }
 
 .service-card {
-    background: var(--white);
-    border-radius: var(--radius-xl);
-    padding: 3.5rem;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition);
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2.75rem 2.5rem;
+    box-shadow: 0 2px 8px rgba(26, 95, 158, 0.06);
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
     cursor: pointer;
-    border: 1px solid var(--gray-100);
+    border: 1px solid #e2e8f0;
 }
 
 .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(26, 95, 158, 0.14);
+    border-color: #cbd5e1;
+}
+
+.service-card:active {
+    transform: scale(0.98) translateY(0);
 }
 
 .service-icon-box {
-    width: 64px;
-    height: 64px;
-    border-radius: var(--radius-md);
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
     background: rgba(26, 95, 158, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 2rem;
-    color: var(--primary);
+    margin-bottom: 1.75rem;
+    color: #1a5f9e;
+    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.service-card:hover .service-icon-box {
+    background: rgba(26, 95, 158, 0.13);
+    transform: scale(1.06);
 }
 
 .service-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--black);
+    margin-bottom: 0.875rem;
+    color: #0a0f1a;
+    letter-spacing: -0.02em;
 }
 
 .service-description {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--gray-500);
+    font-size: 0.9375rem;
+    line-height: 1.72;
+    color: #64748b;
     margin-bottom: 1.5rem;
 }
 
 .service-link {
-    color: var(--black);
+    color: #334155;
     font-weight: 700;
-    font-size: 1rem;
-    display: flex;
+    font-size: 0.9375rem;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    transition: color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                gap 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .service-card:hover .service-link {
-    color: var(--primary);
+    color: #1a5f9e;
+    gap: 10px;
 }

@@ -145,7 +145,7 @@ function AdminProperties() {
             {/* Filters */}
             <div className="filters-bar">
                 <div className="search-box">
-                    <Search size={20} />
+                    <Search size={16} />
                     <input
                         type="text"
                         placeholder="Search properties by title or city..."
@@ -154,21 +154,21 @@ function AdminProperties() {
                     />
                 </div>
 
-                <select value={filterAgent} onChange={(e) => setFilterAgent(e.target.value)}>
+                <select className="filter-select" value={filterAgent} onChange={(e) => setFilterAgent(e.target.value)}>
                     <option value="all">All Agents</option>
                     {agents.map(agent => (
                         <option key={agent.id} value={agent.id}>{agent.name}</option>
                     ))}
                 </select>
 
-                <select value={filterCity} onChange={(e) => setFilterCity(e.target.value)}>
+                <select className="filter-select" value={filterCity} onChange={(e) => setFilterCity(e.target.value)}>
                     <option value="all">All Cities</option>
                     {cities.map(city => (
                         <option key={city} value={city}>{city}</option>
                     ))}
                 </select>
 
-                <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+                <select className="filter-select" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
                     <option value="all">All Status</option>
                     <option value="published">Published</option>
                     <option value="pending">Pending</option>
@@ -179,135 +179,134 @@ function AdminProperties() {
 
             {/* Properties Table */}
             {loading ? (
-                <div className="loading-state">Loading properties...</div>
+                <div className="loading-state">
+                    <div className="spinner" />
+                    <p>Loading properties...</p>
+                </div>
             ) : (
-                <div className="properties-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Property</th>
-                                <th>Agent</th>
-                                <th>Location</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredProperties.map(property => (
-                                <tr key={property.id}>
-                                    <td>
-                                        <div className="property-cell">
-                                            {property.images && property.images.length > 0 ? (
-                                                <img
-                                                    src={property.images[0]}
-                                                    alt={property.title}
-                                                    className="property-thumb"
-                                                />
-                                            ) : (
-                                                <div className="property-thumb-placeholder">
-                                                    <Building2 size={24} />
-                                                </div>
-                                            )}
-                                            <div>
-                                                <strong>{property.title}</strong>
-                                                <div className="property-meta-row">
-                                                    <span className="property-type">{property.type}</span>
-                                                    <span className="dot">•</span>
-                                                    <span className="property-purpose">{property.purpose}</span>
+                <div className="table-wrapper">
+                    <div className="table-header">
+                        <h3>All Properties</h3>
+                        <span className="table-count">{filteredProperties.length} total</span>
+                    </div>
+                    <div className="table-scroll">
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Agent</th>
+                                    <th>Location</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredProperties.map(property => (
+                                    <tr key={property.id}>
+                                        <td>
+                                            <div className="property-cell">
+                                                {property.images && property.images.length > 0 ? (
+                                                    <img
+                                                        src={property.images[0]}
+                                                        alt={property.title}
+                                                        className="property-thumb"
+                                                    />
+                                                ) : (
+                                                    <div className="property-thumb-placeholder">
+                                                        <Building2 size={18} />
+                                                    </div>
+                                                )}
+                                                <div className="property-info">
+                                                    <h4>{property.title}</h4>
+                                                    <span>
+                                                        {property.type}
+                                                        {property.purpose && <> &bull; {property.purpose}</>}
+                                                    </span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="agent-cell-admin">
+                                        </td>
+                                        <td className="agent-cell">
                                             {agents.find(a => a.id === property.agent_id)?.name || 'Unknown Agent'}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="location-cell">
-                                            <MapPin size={14} />
-                                            {property.location || property.city || 'N/A'}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="price-cell-admin">
-                                            <span className="currency">KES</span>
-                                            {property.price?.toLocaleString()}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span className={`badge status-${property.status}`}>
-                                            {property.status}
-                                        </span>
-                                    </td>
-                                    <td>{new Date(property.created_at).toLocaleDateString()}</td>
-                                    <td>
-                                        <div className="action-buttons">
-                                            {property.status === 'pending' || property.status === 'draft' ? (
+                                        </td>
+                                        <td className="location-cell">
+                                            <MapPin size={13} />
+                                            {property.city || property.location || 'N/A'}
+                                        </td>
+                                        <td className="price-cell">
+                                            KES {property.price?.toLocaleString()}
+                                        </td>
+                                        <td>
+                                            <span className={`status-badge ${property.status}`}>
+                                                {property.status}
+                                            </span>
+                                        </td>
+                                        <td className="date-cell">
+                                            {new Date(property.created_at).toLocaleDateString()}
+                                        </td>
+                                        <td>
+                                            <div className="action-buttons">
+                                                {(property.status === 'pending' || property.status === 'draft') && (
+                                                    <button
+                                                        className="action-btn approve"
+                                                        onClick={() => handleApprove(property.id)}
+                                                        title="Approve & Publish"
+                                                    >
+                                                        <CheckCircle2 size={15} />
+                                                    </button>
+                                                )}
+                                                {property.status === 'published' && (
+                                                    <button
+                                                        className="action-btn deactivate"
+                                                        onClick={() => handleDeactivate(property.id)}
+                                                        title="Deactivate to Draft"
+                                                    >
+                                                        <XCircle size={15} />
+                                                    </button>
+                                                )}
+                                                {property.status === 'pending' && (
+                                                    <button
+                                                        className="action-btn reject"
+                                                        onClick={() => handleReject(property.id)}
+                                                        title="Reject"
+                                                    >
+                                                        <XCircle size={15} />
+                                                    </button>
+                                                )}
                                                 <button
-                                                    className="btn-icon approve"
-                                                    onClick={() => handleApprove(property.id)}
-                                                    title="Approve & Publish"
+                                                    className="action-btn edit"
+                                                    onClick={() => handleEdit(property.id)}
+                                                    title="Edit"
                                                 >
-                                                    <CheckCircle2 size={16} />
+                                                    <Edit size={15} />
                                                 </button>
-                                            ) : null}
-
-                                            {property.status === 'published' && (
                                                 <button
-                                                    className="btn-icon deactivate"
-                                                    onClick={() => handleDeactivate(property.id)}
-                                                    title="Deactivate to Draft"
+                                                    className="action-btn view"
+                                                    onClick={() => handleView(property.slug)}
+                                                    title="View Live"
                                                 >
-                                                    <XCircle size={16} />
+                                                    <Eye size={15} />
                                                 </button>
-                                            )}
-
-                                            {property.status === 'pending' && (
                                                 <button
-                                                    className="btn-icon reject"
-                                                    onClick={() => handleReject(property.id)}
-                                                    title="Reject"
+                                                    className="action-btn delete"
+                                                    onClick={() => handleDelete(property.id)}
+                                                    title="Delete"
                                                 >
-                                                    <XCircle size={16} />
+                                                    <Trash2 size={15} />
                                                 </button>
-                                            )}
-
-                                            <button
-                                                className="btn-icon edit"
-                                                onClick={() => handleEdit(property.id)}
-                                                title="Edit"
-                                            >
-                                                <Edit size={16} />
-                                            </button>
-
-                                            <button
-                                                className="btn-icon view"
-                                                onClick={() => handleView(property.slug)}
-                                                title="View Live"
-                                            >
-                                                <Eye size={16} />
-                                            </button>
-
-                                            <button
-                                                className="btn-icon delete"
-                                                onClick={() => handleDelete(property.id)}
-                                                title="Delete"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     {filteredProperties.length === 0 && (
                         <div className="empty-state">
-                            <p>No properties found matching your filters.</p>
+                            <Building2 size={36} />
+                            <h3>No properties found</h3>
+                            <p>Try adjusting your search or filters.</p>
                         </div>
                     )}
                 </div>

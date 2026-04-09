@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { Select, Input } from 'antd';
 import { Search, MapPin, Home, Tag } from 'lucide-react';
-
-const TABS = [
-    { label: 'Buy', value: 'buy' },
-    { label: 'Rent', value: 'rent' },
-    { label: 'Short Stay', value: 'short_stay' },
-];
+import { useTranslation } from 'react-i18next';
 
 const GuriFilterBar = ({ onSearch }) => {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('buy');
     const [location, setLocation] = useState('');
     const [type, setType] = useState('all');
     const [priceRange, setPriceRange] = useState('all');
+
+    const tabs = [
+        { label: t('home.buy_link', 'Buy'), value: 'buy' },
+        { label: t('home.rent_link', 'Rent'), value: 'rent' },
+        { label: t('filter.short_stay', 'Short Stay'), value: 'short_stay' },
+    ];
 
     const handleSearch = () => {
         if (onSearch) {
@@ -38,7 +40,7 @@ const GuriFilterBar = ({ onSearch }) => {
                 padding: '6px',
                 gap: '4px',
             }}>
-                {TABS.map((tab) => (
+                {tabs.map((tab) => (
                     <button
                         key={tab.value}
                         onClick={() => setActiveTab(tab.value)}
@@ -82,11 +84,11 @@ const GuriFilterBar = ({ onSearch }) => {
                     <MapPin size={16} style={{ color: '#1a5f9e', marginTop: '18px', flexShrink: 0 }} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: '10px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>
-                            Location
+                            {t('filter.location', 'Location')}
                         </div>
                         <Input
                             variant="borderless"
-                            placeholder="Where are you going?"
+                            placeholder={t('filter.where_going', 'Where are you going?')}
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                             onKeyDown={handleKeyDown}
@@ -103,7 +105,7 @@ const GuriFilterBar = ({ onSearch }) => {
                     <Home size={16} style={{ color: '#1a5f9e', marginTop: '18px', flexShrink: 0 }} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: '10px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>
-                            Type
+                            {t('filter.type', 'Type')}
                         </div>
                         <Select
                             variant="borderless"
@@ -111,12 +113,12 @@ const GuriFilterBar = ({ onSearch }) => {
                             onChange={(val) => setType(val)}
                             style={{ width: '100%', fontWeight: 600, fontSize: '14px', marginLeft: '-11px' }}
                             options={[
-                                { label: 'All Types', value: 'all' },
-                                { label: 'Apartment', value: 'apartment' },
-                                { label: 'House', value: 'house' },
-                                { label: 'Villa', value: 'villa' },
-                                { label: 'Commercial', value: 'commercial' },
-                                { label: 'Land', value: 'land' },
+                                { label: t('filter.all_types', 'All Types'), value: 'all' },
+                                { label: t('categories.apartment', 'Apartment'), value: 'apartment' },
+                                { label: t('categories.house', 'House'), value: 'house' },
+                                { label: t('categories.villa', 'Villa'), value: 'villa' },
+                                { label: t('categories.commercial', 'Commercial'), value: 'commercial' },
+                                { label: t('categories.land', 'Land'), value: 'land' },
                             ]}
                         />
                     </div>
@@ -130,7 +132,7 @@ const GuriFilterBar = ({ onSearch }) => {
                     <Tag size={16} style={{ color: '#1a5f9e', marginTop: '18px', flexShrink: 0 }} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: '10px', color: '#9ca3af', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>
-                            Price Range
+                            {t('filter.price_range', 'Price Range')}
                         </div>
                         <Select
                             variant="borderless"
@@ -138,11 +140,11 @@ const GuriFilterBar = ({ onSearch }) => {
                             onChange={(val) => setPriceRange(val)}
                             style={{ width: '100%', fontWeight: 600, fontSize: '14px', marginLeft: '-11px' }}
                             options={[
-                                { label: 'Any Price', value: 'all' },
-                                { label: 'Under KES 10M', value: '10000000' },
-                                { label: 'Under KES 50M', value: '50000000' },
-                                { label: 'Under KES 100M', value: '100000000' },
-                                { label: 'KES 100M+', value: '500000000' },
+                                { label: t('filter.any_price', 'Any Price'), value: 'all' },
+                                { label: t('filter.under_10m', 'Under KES 10M'), value: '10000000' },
+                                { label: t('filter.under_50m', 'Under KES 50M'), value: '50000000' },
+                                { label: t('filter.under_100m', 'Under KES 100M'), value: '100000000' },
+                                { label: t('filter.above_100m', 'KES 100M+'), value: '500000000' },
                             ]}
                         />
                     </div>
@@ -184,7 +186,7 @@ const GuriFilterBar = ({ onSearch }) => {
                         }}
                     >
                         <Search size={18} />
-                        <span className="hidden sm:inline">Search</span>
+                        <span className="hidden sm:inline">{t('filter.search', 'Search')}</span>
                     </button>
                 </div>
             </div>

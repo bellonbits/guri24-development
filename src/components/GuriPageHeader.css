@@ -1,41 +1,106 @@
 /* GuriPageHeader Styles */
 .guri-page-header {
-    background: linear-gradient(135deg, #0a1f3d 0%, #1a5f9e 100%);
-    padding: 56px 24px 48px;
+    background: linear-gradient(150deg, #0a1f3d 0%, #0e2d5a 40%, #1a5f9e 100%);
+    padding: 60px 24px 52px;
     margin: 0;
     text-align: center;
     border-bottom: none;
-    overflow: hidden; /* prevent margin collapse from inner h1 */
+    overflow: hidden;
+    position: relative;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Subtle radial glow */
+.guri-page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 70% 60% at 50% 110%,
+        rgba(26, 95, 158, 0.28) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+/* Grain texture overlay */
+.guri-page-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px;
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .guri-page-header .container-narrow {
     max-width: 860px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 .guri-page-header h1,
 .guri-page-header .ant-typography {
-    font-size: clamp(28px, 5vw, 48px);
+    font-size: clamp(26px, 5vw, 46px);
     font-weight: 800;
     margin-top: 0 !important;
     margin-bottom: 1rem;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
     color: #ffffff;
-    line-height: 1.15;
+    line-height: 1.12;
 }
 
 .guri-page-header .subtitle {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.65);
     font-weight: 400;
-    max-width: 560px;
+    max-width: 520px;
     display: block;
     margin: 0 auto;
-    line-height: 1.65;
+    line-height: 1.70;
+}
+
+/* Breadcrumb */
+.guri-page-header .breadcrumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 18px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.48);
+    letter-spacing: 0.01em;
+}
+
+.guri-page-header .breadcrumb a {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.guri-page-header .breadcrumb a:hover {
+    color: rgba(255, 255, 255, 0.90);
+}
+
+.guri-page-header .breadcrumb span {
+    color: rgba(255, 255, 255, 0.28);
+}
+
+.guri-page-header .breadcrumb .current {
+    color: rgba(255, 255, 255, 0.70);
+    font-weight: 700;
 }
 
 @media (max-width: 768px) {
     .guri-page-header {
-        padding: 40px 16px 36px;
+        padding: 44px 16px 38px;
+    }
+
+    .guri-page-header h1,
+    .guri-page-header .ant-typography {
+        letter-spacing: -0.025em;
     }
 }

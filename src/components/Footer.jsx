@@ -1,41 +1,43 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight, Send } from 'lucide-react';
 import './Footer.css';
 
 const Footer = () => {
+    const { t } = useTranslation();
     const currentYear = new Date().getFullYear();
     const [email, setEmail] = useState('');
 
     const columns = [
         {
-            title: 'Company',
+            title: t('footer.company'),
             links: [
-                { label: 'About Us', path: '/about' },
-                { label: 'Our Services', path: '/services' },
-                { label: 'Blog & Insights', path: '/blog' },
-                { label: 'Careers', path: '/contact' },
-                { label: 'Contact Us', path: '/contact' },
+                { label: t('footer.about_us'), path: '/about' },
+                { label: t('footer.our_services'), path: '/services' },
+                { label: t('footer.blog_insights'), path: '/blog' },
+                { label: t('footer.careers'), path: '/contact' },
+                { label: t('footer.contact_us'), path: '/contact' },
             ]
         },
         {
-            title: 'Properties',
+            title: t('footer.properties'),
             links: [
-                { label: 'Buy Property', path: '/buy' },
-                { label: 'Rent Property', path: '/rent' },
-                { label: 'Short-Term Stays', path: '/stays' },
-                { label: 'All Listings', path: '/listings' },
-                { label: 'List Your Property', path: '/sell' },
+                { label: t('footer.buy_property'), path: '/buy' },
+                { label: t('footer.rent_property'), path: '/rent' },
+                { label: t('footer.short_term_stays'), path: '/stays' },
+                { label: t('footer.all_listings'), path: '/listings' },
+                { label: t('footer.list_your_property'), path: '/sell' },
             ]
         },
         {
-            title: 'Support',
+            title: t('footer.support'),
             links: [
-                { label: 'Help Center', path: '/help' },
-                { label: 'Privacy Policy', path: '/about' },
-                { label: 'Terms of Service', path: '/about' },
-                { label: 'Cookie Policy', path: '/about' },
-                { label: 'Sitemap', path: '/listings' },
+                { label: t('footer.help_center'), path: '/help' },
+                { label: t('footer.privacy_policy'), path: '/privacy' },
+                { label: t('footer.terms_of_service'), path: '/about' },
+                { label: t('footer.cookie_policy'), path: '/about' },
+                { label: t('footer.sitemap'), path: '/listings' },
             ]
         },
     ];
@@ -53,8 +55,8 @@ const Footer = () => {
             <div className="footer-newsletter-strip">
                 <div className="container footer-newsletter-inner">
                     <div className="footer-newsletter-text">
-                        <h3>Stay ahead of the market</h3>
-                        <p>Get the latest listings, market trends, and property insights straight to your inbox.</p>
+                        <h3>{t('footer.newsletter_title')}</h3>
+                        <p>{t('footer.newsletter_desc')}</p>
                     </div>
                     <form
                         className="footer-newsletter-form"
@@ -64,14 +66,14 @@ const Footer = () => {
                             <Mail size={16} className="footer-newsletter-icon" />
                             <input
                                 type="email"
-                                placeholder="Enter your email address"
+                                placeholder={t('footer.email_placeholder')}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                         </div>
                         <button type="submit" className="footer-newsletter-btn">
-                            Subscribe <Send size={14} />
+                            {t('footer.subscribe')} <Send size={14} />
                         </button>
                     </form>
                 </div>
@@ -91,7 +93,7 @@ const Footer = () => {
                             />
                         </Link>
                         <p className="footer-brand-desc">
-                            East Africa's most trusted real estate platform. We connect buyers, sellers, and investors with verified properties across Kenya and beyond.
+                            {t('footer.brand_desc')}
                         </p>
 
                         {/* Contact Info */}
@@ -143,14 +145,14 @@ const Footer = () => {
             <div className="footer-bottom-bar">
                 <div className="container footer-bottom-inner">
                     <p className="footer-copy">
-                        © {currentYear} Guri24 Real Estate Ltd. All rights reserved.
+                        {t('footer.copyright', { year: currentYear })}
                     </p>
                     <div className="footer-bottom-links">
-                        <Link to="/about" className="footer-bottom-link">Privacy</Link>
+                        <Link to="/privacy" className="footer-bottom-link">{t('footer.privacy')}</Link>
                         <span className="footer-bottom-sep">·</span>
-                        <Link to="/about" className="footer-bottom-link">Terms</Link>
+                        <Link to="/about" className="footer-bottom-link">{t('footer.terms')}</Link>
                         <span className="footer-bottom-sep">·</span>
-                        <Link to="/about" className="footer-bottom-link">Cookies</Link>
+                        <Link to="/about" className="footer-bottom-link">{t('footer.cookies')}</Link>
                     </div>
                 </div>
             </div>

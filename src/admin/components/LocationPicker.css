@@ -1,0 +1,104 @@
+.location-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.location-picker-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 0.875rem;
+    padding: 12px 0;
+}
+
+/* Search input */
+.location-search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.location-pin-icon {
+    position: absolute;
+    left: 11px;
+    color: #1a5f9e;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.location-search-input {
+    width: 100%;
+    padding: 9px 36px 9px 34px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    color: #1e293b;
+    background: #f8fafc;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.location-search-input:focus {
+    border-color: #1a5f9e;
+    box-shadow: 0 0 0 3px rgba(26, 95, 158, 0.1);
+    background: #fff;
+}
+
+.location-search-input::placeholder { color: #94a3b8; }
+
+.location-clear-btn {
+    position: absolute;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.location-clear-btn:hover { background: #fca5a5; color: #991b1b; }
+
+/* Coordinates pill row */
+.location-coords-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    color: #64748b;
+    background: #f0f7ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+
+.location-coords-row strong { color: #1e293b; }
+
+.location-city-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: auto;
+    background: #dbeafe;
+    color: #1a5f9e;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+}
+
+/* Map hint */
+.location-map-hint {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 0;
+    text-align: center;
+}
