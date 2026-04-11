@@ -3,7 +3,13 @@ default_platform(:ios)
 platform :ios do
   desc "Build the iOS app for distribution"
   lane :build do
-    # 1. Archive and build the IPA
+    # Ensure the project uses the correct team before building
+    update_project_team(
+      path: "App.xcodeproj",
+      teamid: "2969422VU2"
+    )
+
+    # Archive and build the IPA
     # We use 'gym' (alias for build_app) to handle the export
     gym(
       scheme: "App",                  # Default Capacitor scheme name
