@@ -7,7 +7,7 @@ import GuriHero from '../components/GuriHero';
 import GuriFilterBar from '../components/GuriFilterBar';
 import GuriProperties from '../components/GuriProperties';
 import AgentSection from '../components/AgentSection';
-import BlogSection from '../components/BlogSection';
+
 import Footer from '../components/Footer';
 
 import propertyApi, { transformProperty } from '../utils/propertyApi';
@@ -100,7 +100,7 @@ const GuriLandingPage = () => {
                 <GuriProperties properties={properties.slice(0, 3)} loading={loading} />
             </section>
 
-            <BlogSection />
+
 
             <Footer />
         </Layout>

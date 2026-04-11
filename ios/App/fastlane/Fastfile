@@ -1,0 +1,19 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build the iOS app for distribution"
+  lane :build do
+    # 1. Archive and build the IPA
+    # We use 'gym' (alias for build_app) to handle the export
+    gym(
+      scheme: "App",                  # Default Capacitor scheme name
+      export_method: "app-store",      # Change to 'ad-hoc' or 'development' if needed
+      output_directory: "./build",
+      output_name: "Guri24.ipa",
+      clean: true,                    # Clean the build directory before starting
+      configuration: "Release",        # Build configuration
+      silent: false,                   # Show build output for debugging
+      codesigning_identity: "Apple Distribution" # Ensure it uses the distribution cert
+    )
+  end
+end

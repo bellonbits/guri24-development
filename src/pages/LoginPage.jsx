@@ -126,24 +126,7 @@ const LoginPage = () => {
                             </Link>
                         </div>
 
-                        <Divider className="my-10 border-gray-100">
-                            <AntText className="login-divider-text">{t('login.or_continue')}</AntText>
-                        </Divider>
 
-                        <Row gutter={16}>
-                            <Col span={12}>
-                                <Button block size="large" className="social-auth-btn">
-                                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="h-[18px]" />
-                                    Google
-                                </Button>
-                            </Col>
-                            <Col span={12}>
-                                <Button block size="large" className="social-auth-btn">
-                                    <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="h-[18px]" />
-                                    Facebook
-                                </Button>
-                            </Col>
-                        </Row>
                     </div>
                 </Col>
 

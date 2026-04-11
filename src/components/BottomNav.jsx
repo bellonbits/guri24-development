@@ -22,7 +22,7 @@ const BottomNav = () => {
     };
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl flex justify-around items-end border-t border-black/5 z-[1999] px-[10px] md:hidden dark:bg-black/90 dark:border-white/10" style={{ height: '65px', paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl flex justify-around items-center border-t border-black/5 z-[1999] px-[10px] md:hidden dark:bg-black/90 dark:border-white/10" style={{ minHeight: '68px', paddingBottom: 'env(safe-area-inset-bottom)', paddingTop: '8px' }}>
             <NavLink
                 to="/"
                 className={({ isActive }) =>

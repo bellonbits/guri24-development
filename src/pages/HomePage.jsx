@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import PropertyCard from '../components/PropertyCard';
 import GuriHero from '../components/GuriHero';
 import StatsSection from '../components/StatsSection';
+
 import { propertyApi, transformProperty } from '../utils/propertyApi';
 import { fadeUp, scaleIn, staggerContainer, slideLeft, viewportOnce } from '../utils/animations';
 import SEO from '../components/SEO';
@@ -187,6 +188,7 @@ const HomePage = () => {
                     </motion.div>
                 </div>
             </section>
+
 
         </div>
     );

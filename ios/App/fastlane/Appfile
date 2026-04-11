@@ -1,0 +1,8 @@
+app_identifier("com.suqafuran.app") # The bundle identifier of your app
+apple_id("jama.ismail767@gmail.com") # Your Apple Developer Center username
+
+itc_team_id("2969422VU2") # App Store Connect Team ID
+team_id("2969422VU2") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+# https://docs.fastlane.tools/advanced/#appfile

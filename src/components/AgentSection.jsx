@@ -9,12 +9,7 @@ import './AgentSection.css';
 
 const { Title, Text: AntText, Paragraph } = Typography;
 
-const PLACEHOLDER_AGENTS = [
-    { id: null, full_name: 'James Kariuki', specialization: 'Residential & Commercial', property_count: 24, rating: '4.9', avatar_url: 'https://i.pravatar.cc/150?img=11' },
-    { id: null, full_name: 'Grace Wanjiku', specialization: 'Luxury Properties', property_count: 18, rating: '5.0', avatar_url: 'https://i.pravatar.cc/150?img=5' },
-    { id: null, full_name: 'Brian Omondi', specialization: 'Land & Investment', property_count: 31, rating: '4.8', avatar_url: 'https://i.pravatar.cc/150?img=8' },
-    { id: null, full_name: 'Amina Hassan', specialization: 'Rentals & Stays', property_count: 15, rating: '4.9', avatar_url: 'https://i.pravatar.cc/150?img=25' },
-];
+
 
 const AgentSection = ({ title, subtitle }) => {
     const [agents, setAgents] = useState([]);
@@ -27,7 +22,7 @@ const AgentSection = ({ title, subtitle }) => {
                 setLoading(true);
                 const response = await getPublicAgents();
                 const agentsData = response?.items || (Array.isArray(response) ? response : []);
-                setAgents(agentsData.slice(0, 4));
+                setAgents(agentsData);
             } catch (error) {
                 console.error('AgentSection: Failed to fetch agents:', error);
                 setAgents([]);
@@ -38,7 +33,7 @@ const AgentSection = ({ title, subtitle }) => {
         fetchAgents();
     }, []);
 
-    const displayAgents = agents.length > 0 ? agents : PLACEHOLDER_AGENTS;
+    const displayAgents = agents;
 
     return (
         <section className="agent-section">
@@ -76,54 +71,60 @@ const AgentSection = ({ title, subtitle }) => {
                                 viewport={viewportOnce}
                             >
                             <Row gutter={[24, 24]} className="agent-grid-container">
-                                {displayAgents.map((agent, idx) => (
-                                    <Col xs={24} sm={12} xl={6} key={agent.id || idx}>
-                                        <motion.div variants={scaleIn} custom={idx} whileHover={{ y: -8, transition: { duration: 0.2 } }}>
-                                        <Card
-                                            variant="borderless"
-                                            className="agent-profile-card"
-                                            styles={{ body: { padding: 0 } }}
-                                            style={{ cursor: agent.id ? 'pointer' : 'default' }}
-                                            onClick={() => agent.id && navigate(`/agents/${agent.id}`)}
-                                        >
-                                            <div className="agent-avatar-wrapper">
-                                                <Avatar
-                                                    size={100}
-                                                    src={
-                                                        agent.avatar_url
-                                                            ? (agent.avatar_url.startsWith('http')
-                                                                ? agent.avatar_url
-                                                                : `https://api.guri24.com:8002${agent.avatar_url}`)
-                                                            : `https://i.pravatar.cc/150?u=${agent.id || idx}`
-                                                    }
-                                                />
-                                                <div className="agent-rating-badge">
-                                                    <AntText className="rating-number">{agent.rating || '5.0'}</AntText>
-                                                    <AntText className="rating-star">★</AntText>
-                                                </div>
-                                            </div>
-                                            <Title level={4} className="agent-name" ellipsis>
-                                                {agent.full_name || agent.name}
-                                            </Title>
-                                            <AntText className="agent-property-count">
-                                                {agent.specialization
-                                                    ? `${agent.specialization} · ${agent.property_count || 0} listings`
-                                                    : `${agent.property_count || 0} listings`}
-                                            </AntText>
-                                            {agent.id && (
-                                                <Button
-                                                    shape="round"
-                                                    block
-                                                    className="agent-contact-btn"
-                                                    onClick={(e) => { e.stopPropagation(); navigate(`/agents/${agent.id}`); }}
+                                {displayAgents.length > 0 ? (
+                                    displayAgents.map((agent, idx) => (
+                                        <Col xs={24} sm={12} xl={6} key={agent.id || idx}>
+                                            <motion.div variants={scaleIn} custom={idx} whileHover={{ y: -8, transition: { duration: 0.2 } }}>
+                                                <Card
+                                                    variant="borderless"
+                                                    className="agent-profile-card"
+                                                    styles={{ body: { padding: 0 } }}
+                                                    style={{ cursor: agent.id ? 'pointer' : 'default' }}
+                                                    onClick={() => agent.id && navigate(`/agents/${agent.id}`)}
                                                 >
-                                                    View Profile
-                                                </Button>
-                                            )}
-                                        </Card>
-                                        </motion.div>
-                                    </Col>
-                                ))}
+                                                    <div className="agent-avatar-wrapper">
+                                                        <Avatar
+                                                            size={100}
+                                                            src={
+                                                                agent.avatar_url
+                                                                    ? (agent.avatar_url.startsWith('http')
+                                                                        ? agent.avatar_url
+                                                                        : `https://api.guri24.com:8002${agent.avatar_url}`)
+                                                                    : `https://i.pravatar.cc/150?u=${agent.id || idx}`
+                                                            }
+                                                        />
+                                                        <div className="agent-rating-badge">
+                                                            <AntText className="rating-number">{agent.rating || '5.0'}</AntText>
+                                                            <AntText className="rating-star">★</AntText>
+                                                        </div>
+                                                    </div>
+                                                    <Title level={4} className="agent-name" ellipsis>
+                                                        {agent.full_name || agent.name}
+                                                    </Title>
+                                                    <AntText className="agent-property-count">
+                                                        {agent.specialization
+                                                            ? `${agent.specialization} · ${agent.property_count || 0} listings`
+                                                            : `${agent.property_count || 0} listings`}
+                                                    </AntText>
+                                                    {agent.id && (
+                                                        <Button
+                                                            shape="round"
+                                                            block
+                                                            className="agent-contact-btn"
+                                                            onClick={(e) => { e.stopPropagation(); navigate(`/agents/${agent.id}`); }}
+                                                        >
+                                                            View Profile
+                                                        </Button>
+                                                    )}
+                                                </Card>
+                                            </motion.div>
+                                        </Col>
+                                    ))
+                                ) : (
+                                    <div style={{ padding: '40px', textAlign: 'center', width: '100%' }}>
+                                        <AntText type="secondary">No agents available at the moment.</AntText>
+                                    </div>
+                                )}
                             </Row>
                             </motion.div>
                         )}

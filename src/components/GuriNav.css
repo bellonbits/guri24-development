@@ -6,8 +6,9 @@
     border-bottom: none;
     height: 68px !important;
     line-height: 68px !important;
-    padding: 0 !important;
+    padding: var(--sat) 0 0 !important;
     margin: 0 !important;
+    box-sizing: border-box !important;
 }
 
 /* Suppress any Ant Design Layout.Header default spacing */

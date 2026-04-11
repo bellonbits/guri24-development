@@ -86,7 +86,7 @@ function AgentPublicProfile() {
                         <div className="agp-avatar-wrap">
                             <img
                                 src={getProfileImageUrl(agent.avatar_url)}
-                                alt={agent.name}
+                                alt={agent.full_name || agent.name || 'Agent'}
                                 className="agp-avatar"
                             />
                             {isVerified && (
@@ -97,7 +97,7 @@ function AgentPublicProfile() {
                         </div>
                         <div className="agp-hero-info">
                             <div className="agp-name-row">
-                                <h1 className="agp-name">{agent.name}</h1>
+                                <h1 className="agp-name">{agent.full_name || agent.name || 'Agent'}</h1>
                                 {isVerified && <Tag color="blue">Verified Agent</Tag>}
                             </div>
                             {agent.specialization && (
@@ -146,7 +146,7 @@ function AgentPublicProfile() {
             <div className="agp-container agp-listings-section">
                 <div className="agp-listings-header">
                     <h2 className="agp-section-title">
-                        Properties by {agent.name.split(' ')[0]}
+                        Properties by {(agent.full_name || agent.name || 'Agent').split(' ')[0]}
                         {!propsLoading && (
                             <span className="agp-count">{properties.length}</span>
                         )}
