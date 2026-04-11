@@ -1,15 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { Users, Building2, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { animate } from 'animejs';
 import { fadeUp, slideLeft, slideRight, viewportOnce } from '../utils/animations';
+import { useTranslation } from 'react-i18next';
 import './StatsSection.css';
-
-const stats = [
-    { icon: <Award size={28} />, end: 10,    suffix: '+', label: 'Years of Experience', color: '#1a5f9e' },
-    { icon: <Users size={28} />, end: 2000,  suffix: '+', label: 'Happy Clients',        color: '#0d3b66' },
-    { icon: <Building2 size={28} />, end: 1500, suffix: '+', label: 'Verified Properties', color: '#3498db' },
-];
 
 const StatCounter = ({ end, suffix, color }) => {
     const ref = useRef(null);
@@ -21,15 +15,17 @@ const StatCounter = ({ end, suffix, color }) => {
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting && !animated.current) {
                 animated.current = true;
-                const obj = { val: 0 };
-                animate(obj, {
-                    val: end,
-                    duration: 1800,
-                    ease: 'outExpo',
-                    onUpdate: () => {
-                        el.textContent = Math.round(obj.val).toLocaleString() + suffix;
-                    },
-                });
+                const duration = 1200;
+                const startTime = performance.now();
+                const tick = (now) => {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // easeOutQuad
+                    const eased = 1 - (1 - progress) * (1 - progress);
+                    el.textContent = Math.round(eased * end).toLocaleString() + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
             }
         }, { threshold: 0.5 });
         observer.observe(el);
@@ -47,7 +43,15 @@ const StatCounter = ({ end, suffix, color }) => {
     );
 };
 
-const StatsSection = () => (
+const StatsSection = () => {
+    const { t } = useTranslation();
+    const statsData = [
+        { icon: <Award size={28} />, end: 10,    suffix: '+', label: t('home.stats_exp', 'Years of Experience'), color: '#1a5f9e' },
+        { icon: <Users size={28} />, end: 2000,  suffix: '+', label: t('home.stats_clients', 'Happy Clients'),        color: '#0d3b66' },
+        { icon: <Building2 size={28} />, end: 1500, suffix: '+', label: t('home.stats_props', 'Verified Properties'), color: '#3498db' },
+    ];
+
+    return (
     <section className="section" style={{ background: '#f0f4f9', paddingTop: '3rem', paddingBottom: '3rem' }}>
         <div className="container">
             <div className="stats-grid-main">
@@ -59,10 +63,10 @@ const StatsSection = () => (
                     viewport={viewportOnce}
                 >
                     <h2 className="stats-about-title">
-                        Your trusted partner for smarter real estate decisions
+                        {t('home.stats_about_title', 'Your trusted partner for smarter real estate decisions')}
                     </h2>
                     <p className="stats-about-desc">
-                        Our experienced agents blend deep market insight, modern technology, and personalized service to deliver transparent guidance, strong results, and long-term value across East Africa.
+                        {t('home.stats_about_desc', 'Our experienced agents blend deep market insight, modern technology, and personalized service to deliver transparent guidance, strong results, and long-term value across East Africa.')}
                     </p>
                     <motion.a
                         href="/about"
@@ -78,7 +82,7 @@ const StatsSection = () => (
                             textDecoration: 'none',
                         }}
                     >
-                        Learn more about us →
+                        {t('home.learn_more', 'Learn more about us')} →
                     </motion.a>
                 </motion.div>
 
@@ -90,7 +94,7 @@ const StatsSection = () => (
                     whileInView="visible"
                     viewport={viewportOnce}
                 >
-                    {stats.map((stat, i) => (
+                    {statsData.map((stat, i) => (
                         <motion.div
                             key={i}
                             className="stat-item"
@@ -112,6 +116,7 @@ const StatsSection = () => (
             </div>
         </div>
     </section>
-);
+    );
+};
 
 export default StatsSection;

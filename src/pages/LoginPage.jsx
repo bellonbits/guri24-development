@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Typography, Row, Col, Input, Button, Space, Divider, message } from 'antd';
 import {
     Mail,
@@ -16,6 +17,7 @@ import './LoginPage.css';
 const { Title, Text: AntText, Paragraph } = Typography;
 
 const LoginPage = () => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -28,18 +30,24 @@ const LoginPage = () => {
         const result = await login(email, password);
         setLoading(false);
         if (result.success) {
-            message.success('Welcome back to Guri24!');
-            navigate('/profile');
+            message.success(t('login.welcome_message'));
+            const pendingAgent = localStorage.getItem('pending_agent_application');
+            if (pendingAgent) {
+                localStorage.removeItem('pending_agent_application');
+                navigate('/apply-agent');
+            } else {
+                navigate('/profile');
+            }
         } else {
-            message.error(result.error || 'Failed to login. Please check your credentials.');
+            message.error(result.error || t('login.login_failed'));
         }
     };
 
     const benefits = [
-        { icon: <ShieldCheck size={20} />, title: "Verified Listings", desc: "Access high-quality, pre-verified property listings." },
-        { icon: <Zap size={20} />, title: "Real-time Alerts", desc: "Get notified instantly about new property matches." },
-        { icon: <Users size={20} />, title: "Agent Connect", desc: "Direct communication with top-rated local agents." },
-        { icon: <Star size={20} />, title: "Exclusive Offers", desc: "Unlock premium deals available only to Guri24 members." }
+        { icon: <ShieldCheck size={20} />, title: t('login.benefit_verified'), desc: t('login.benefit_verified_desc') },
+        { icon: <Zap size={20} />, title: t('login.benefit_alerts'), desc: t('login.benefit_alerts_desc') },
+        { icon: <Users size={20} />, title: t('login.benefit_connect'), desc: t('login.benefit_connect_desc') },
+        { icon: <Star size={20} />, title: t('login.benefit_offers'), desc: t('login.benefit_offers_desc') }
     ];
 
     return (
@@ -57,19 +65,19 @@ const LoginPage = () => {
                     <div className="login-form-main">
                         <div className="login-header-section">
                             <Title level={1} className="login-title">
-                                Welcome Back
+                                {t('login.title')}
                             </Title>
                             <Paragraph className="login-subtitle">
-                                Sign in to manage your property journey and access exclusive listings.
+                                {t('login.subtitle')}
                             </Paragraph>
                         </div>
 
                         <form onSubmit={handleSubmit}>
                             <div className="login-input-group">
-                                <AntText className="login-input-label">Email Address</AntText>
+                                <AntText className="login-input-label">{t('login.email_label')}</AntText>
                                 <Input
                                     size="large"
-                                    placeholder="Enter your email"
+                                    placeholder={t('login.email_placeholder')}
                                     prefix={<Mail size={20} className="mr-2 text-gray-400" />}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -78,14 +86,14 @@ const LoginPage = () => {
                             </div>
                             <div className="login-input-group">
                                 <div className="flex justify-between items-center pr-1 mb-2">
-                                    <AntText className="login-input-label ml-0">Password</AntText>
+                                    <AntText className="login-input-label ml-0">{t('login.password_label')}</AntText>
                                     <Link to="/forgot-password" size="small" className="login-forgot-link">
-                                        Forgot Password?
+                                        {t('login.forgot_password')}
                                     </Link>
                                 </div>
                                 <Input.Password
                                     size="large"
-                                    placeholder="Enter your password"
+                                    placeholder={t('login.password_placeholder')}
                                     prefix={<Lock size={20} className="mr-2 text-gray-400" />}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -102,19 +110,24 @@ const LoginPage = () => {
                                 iconPlacement="end"
                                 className="login-submit-btn"
                             >
-                                Sign In
+                                {t('login.sign_in')}
                             </Button>
                         </form>
 
                         <div className="login-signup-prompt">
-                            Don't have an account? {' '}
+                            {t('login.no_account')} {' '}
                             <Link to="/register" className="login-signup-link">
-                                Sign up for free
+                                {t('login.sign_up_free')}
+                            </Link>
+                            <br />
+                            {t('login.want_to_list')} {' '}
+                            <Link to="/register?mode=agent" className="login-signup-link mt-2 inline-block">
+                                {t('login.register_as_agent')}
                             </Link>
                         </div>
 
                         <Divider className="my-10 border-gray-100">
-                            <AntText className="login-divider-text">Or continue with</AntText>
+                            <AntText className="login-divider-text">{t('login.or_continue')}</AntText>
                         </Divider>
 
                         <Row gutter={16}>
@@ -139,10 +152,12 @@ const LoginPage = () => {
                     <div className="showcase-bg-image" />
                     <div className="showcase-content">
                         <Title level={2} className="showcase-title">
-                            Find your <span>dream home</span> with Guri24.
+                            {t('login.showcase_title')?.split('dream home').map((part, i, arr) => 
+                                i === arr.length - 1 ? part : <span key={i}>{part}<span>dream home</span></span>
+                            ) || 'Find your dream home with Guri24.'}
                         </Title>
                         <Paragraph className="showcase-desc">
-                            Experience a seamless property search with personalized tools designed for the modern lifestyle.
+                            {t('login.showcase_desc')}
                         </Paragraph>
                         <div className="benefits-grid">
                             {benefits.map((item, idx) => (
@@ -158,7 +173,7 @@ const LoginPage = () => {
                     </div>
                     {/* Decorative Elements */}
                     <div className="showcase-footer">
-                        <AntText>© Guri24 Real Estate</AntText>
+                        <AntText>{t('login.copyright')}</AntText>
                     </div>
                 </Col>
             </Row>

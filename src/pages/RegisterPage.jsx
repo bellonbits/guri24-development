@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Typography, Row, Col, Input, Button, message, Switch } from 'antd';
 import {
     Mail,
@@ -17,13 +18,15 @@ import './RegisterPage.css';
 const { Title, Text: AntText, Paragraph } = Typography;
 
 const RegisterPage = () => {
+    const { t } = useTranslation();
+    const [searchParams] = useSearchParams();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
         password: '',
         confirm_password: '',
-        is_agent_request: false,
+        is_agent_request: searchParams.get('mode') === 'agent',
     });
     const [loading, setLoading] = useState(false);
     const { register } = useAuth();
@@ -40,7 +43,7 @@ const RegisterPage = () => {
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
         if (formData.password !== formData.confirm_password) {
-            message.error('Passwords do not match.');
+            message.error(t('register.passwords_mismatch'));
             return;
         }
         setLoading(true);
@@ -52,17 +55,20 @@ const RegisterPage = () => {
         const result = await register(payload);
         setLoading(false);
         if (result.success) {
-            message.success('Account created! Please check your email to verify.');
+            if (is_agent_request) {
+                localStorage.setItem('pending_agent_application', '1');
+            }
+            message.success(t('register.account_created'));
             navigate('/verify-email');
         } else {
-            message.error(result.error || 'Registration failed. Please try again.');
+            message.error(result.error || t('register.registration_failed'));
         }
     };
 
     const features = [
-        { icon: <Shield size={24} />, title: 'Smart Protection', desc: 'Secure data encryption and verified transactions.' },
-        { icon: <TrendingUp size={24} />, title: 'Market Insights', desc: 'Real-time property value tracking and analytics.' },
-        { icon: <Building2 size={24} />, title: 'Premium Portfolio', desc: 'Exclusive access to off-market luxury listings.' }
+        { icon: <Shield size={24} />, title: t('register.feature_protection'), desc: t('register.feature_protection_desc') },
+        { icon: <TrendingUp size={24} />, title: t('register.feature_insights'), desc: t('register.feature_insights_desc') },
+        { icon: <Building2 size={24} />, title: t('register.feature_portfolio'), desc: t('register.feature_portfolio_desc') }
     ];
 
     return (
@@ -78,19 +84,19 @@ const RegisterPage = () => {
 
                     <div className="register-form-main">
                         <div className="mb-8">
-                            <Title level={1} className="register-title">Create Account</Title>
+                            <Title level={1} className="register-title">{t('register.title')}</Title>
                             <Paragraph className="register-subtitle">
-                                Join Guri24 to find your next home or start your investment career.
+                                {t('register.subtitle')}
                             </Paragraph>
                         </div>
 
                         <form onSubmit={handleSubmit}>
                             <div className="register-input-group">
-                                <AntText className="register-input-label">Full Name</AntText>
+                                <AntText className="register-input-label">{t('register.full_name_label')}</AntText>
                                 <Input
                                     size="large"
                                     name="name"
-                                    placeholder="John Doe"
+                                    placeholder={t('register.full_name_placeholder')}
                                     value={formData.name}
                                     onChange={handleChange}
                                     className="register-input-field"
@@ -99,12 +105,12 @@ const RegisterPage = () => {
                             </div>
 
                             <div className="register-input-group">
-                                <AntText className="register-input-label">Email Address</AntText>
+                                <AntText className="register-input-label">{t('register.email_label')}</AntText>
                                 <Input
                                     size="large"
                                     type="email"
                                     name="email"
-                                    placeholder="email@example.com"
+                                    placeholder={t('register.email_placeholder')}
                                     value={formData.email}
                                     onChange={handleChange}
                                     className="register-input-field"
@@ -113,11 +119,11 @@ const RegisterPage = () => {
                             </div>
 
                             <div className="register-input-group">
-                                <AntText className="register-input-label">Phone Number</AntText>
+                                <AntText className="register-input-label">{t('register.phone_label')}</AntText>
                                 <Input
                                     size="large"
                                     name="phone"
-                                    placeholder="+254 7..."
+                                    placeholder={t('register.phone_placeholder')}
                                     value={formData.phone}
                                     onChange={handleChange}
                                     className="register-input-field"
@@ -128,11 +134,11 @@ const RegisterPage = () => {
                             <Row gutter={16}>
                                 <Col span={12}>
                                     <div className="register-input-group">
-                                        <AntText className="register-input-label">Password</AntText>
+                                        <AntText className="register-input-label">{t('register.password_label')}</AntText>
                                         <Input.Password
                                             size="large"
                                             name="password"
-                                            placeholder="Min. 8 characters"
+                                            placeholder={t('register.password_placeholder')}
                                             value={formData.password}
                                             onChange={handleChange}
                                             className="register-input-field"
@@ -142,11 +148,11 @@ const RegisterPage = () => {
                                 </Col>
                                 <Col span={12}>
                                     <div className="register-input-group">
-                                        <AntText className="register-input-label">Confirm Password</AntText>
+                                        <AntText className="register-input-label">{t('register.confirm_password_label')}</AntText>
                                         <Input.Password
                                             size="large"
                                             name="confirm_password"
-                                            placeholder="Repeat password"
+                                            placeholder={t('register.confirm_password_placeholder')}
                                             value={formData.confirm_password}
                                             onChange={handleChange}
                                             className="register-input-field"
@@ -159,8 +165,8 @@ const RegisterPage = () => {
                             <div className="agent-apply-box">
                                 <div className="agent-apply-switch">
                                     <div className="agent-switch-label">
-                                        <span className="agent-switch-title">Apply as an Agent</span>
-                                        <span className="agent-switch-desc">List properties and grow your business with us.</span>
+                                        <span className="agent-switch-title">{t('register.apply_agent_title')}</span>
+                                        <span className="agent-switch-desc">{t('register.apply_agent_desc')}</span>
                                     </div>
                                     <Switch
                                         checked={formData.is_agent_request}
@@ -179,13 +185,13 @@ const RegisterPage = () => {
                                 icon={!loading && <ArrowRight size={20} />}
                                 className="register-submit-btn"
                             >
-                                Get Started
+                                {t('register.get_started')}
                             </Button>
                         </form>
 
                         <div className="register-login-prompt">
-                            Already have an account? {' '}
-                            <Link to="/login" className="register-login-link">Sign In</Link>
+                            {t('register.have_account')} {' '}
+                            <Link to="/login" className="register-login-link">{t('register.sign_in')}</Link>
                         </div>
                     </div>
                 </Col>
@@ -195,8 +201,7 @@ const RegisterPage = () => {
                     <div className="register-showcase-bg" />
                     <div className="register-showcase-content">
                         <Title level={2} style={{ color: '#fff', fontSize: '48px', fontWeight: 800, lineHeight: 1.2, letterSpacing: '-1.5px' }}>
-                            Start your journey <br />
-                            with the <span style={{ color: '#7eb8f7' }}>#1 Platform</span>.
+                            {t('register.showcase_title')}
                         </Title>
 
                         <div className="register-feature-list">
@@ -215,7 +220,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="register-showcase-footer">
                         <AntText style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>
-                            © Guri24 Real Estate
+                            {t('register.copyright')}
                         </AntText>
                     </div>
                 </Col>

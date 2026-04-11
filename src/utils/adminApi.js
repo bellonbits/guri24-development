@@ -91,8 +91,8 @@ export const adminApi = {
         return api.post(`/admin/agents/${userId}/verify`);
     },
 
-    rejectAgent: async (userId) => {
-        return api.post(`/admin/agents/${userId}/reject`);
+    rejectAgent: async (userId, data = {}) => {
+        return api.post(`/admin/agents/${userId}/reject`, data);
     },
 
     updateAgentStatus: async (userId, status) => {
@@ -129,6 +129,14 @@ export const adminApi = {
 
     pingAdmin: async () => {
         return api.get('/admin/ping');
+    },
+
+    uploadPropertyImage: async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        return api.post('/admin/upload-image', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
     }
 };
 

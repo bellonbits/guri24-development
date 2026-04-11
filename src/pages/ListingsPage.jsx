@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './ListingsPage.css';
 import { Typography, Button, Input, Select, Space, Spin } from 'antd';
 import { Search, MapPin, Grid, List, Loader2, Home, ChevronDown } from 'lucide-react';
@@ -10,6 +11,7 @@ import { propertyApi, transformProperty } from '../utils/propertyApi';
 const { Text: AntText } = Typography;
 
 const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Browse all available properties' }) => {
+    const { t } = useTranslation();
     const [viewMode, setViewMode] = useState('grid');
     const [searchQuery, setSearchQuery] = useState('');
     const [propertyType, setPropertyType] = useState('all');
@@ -90,7 +92,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                         <MapPin size={18} color="#0052cc" style={{ flexShrink: 0 }} />
                         <Input
                             variant="borderless"
-                            placeholder="Search location..."
+                            placeholder={t('listings.search_location')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onPressEnter={applyFilters}
@@ -107,12 +109,12 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                             suffixIcon={<ChevronDown size={16} color="#0052cc" />}
                             style={{ width: '100%', fontWeight: 600 }}
                             options={[
-                                { label: 'All Types', value: 'all' },
-                                { label: 'Apartment', value: 'apartment' },
-                                { label: 'House', value: 'house' },
-                                { label: 'Villa', value: 'villa' },
-                                { label: 'Commercial', value: 'commercial' },
-                                { label: 'Land', value: 'land' },
+                                { label: t('categories.all'), value: 'all' },
+                                { label: t('categories.apartment'), value: 'apartment' },
+                                { label: t('categories.house'), value: 'house' },
+                                { label: t('categories.villa'), value: 'villa' },
+                                { label: t('categories.commercial'), value: 'commercial' },
+                                { label: t('categories.land'), value: 'land' },
                             ]}
                         />
                     </div>
@@ -132,7 +134,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                                     padding: '0 8px', transition: 'all 0.2s',
                                 }}
                             >
-                                {num}
+                                {num === 'Any' ? t('listings.any_beds') : num}
                             </button>
                         ))}
                     </div>
@@ -144,7 +146,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                         onClick={applyFilters}
                         className="listings-search-btn"
                     >
-                        <span className="listings-search-label">Search</span>
+                        <span className="listings-search-label">{t('listings.search_btn')}</span>
                     </Button>
                 </div>
             </div>
@@ -161,7 +163,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                             {filteredProperties.length}
                         </span>
                         <AntText style={{ fontWeight: 600, color: '#6b7280', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {loading ? 'Loading...' : `Propert${filteredProperties.length !== 1 ? 'ies' : 'y'} found`}
+                            {loading ? t('listings.loading') : `${filteredProperties.length !== 1 ? t('listings.properties_found') : t('listings.property_found')}`}
                         </AntText>
                     </div>
 
@@ -169,11 +171,11 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                         <Select
                             defaultValue="newest"
                             onChange={(val) => setSortBy(val)}
-                            style={{ width: 150 }}
+                            style={{ width: 170 }}
                             options={[
-                                { label: 'Sort by: Newest', value: 'newest' },
-                                { label: 'Price: Low-High', value: 'price-low' },
-                                { label: 'Price: High-Low', value: 'price-high' },
+                                { label: t('listings.sort_newest'), value: 'newest' },
+                                { label: t('listings.sort_price_low'), value: 'price-low' },
+                                { label: t('listings.sort_price_high'), value: 'price-high' },
                             ]}
                         />
                         <div className="view-mode-toggle">
@@ -194,7 +196,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                 {loading ? (
                     <div className="listings-loading">
                         <Spin indicator={<Loader2 className="animate-spin" size={32} />} />
-                        <AntText className="loading-text">Fetching listings...</AntText>
+                        <AntText className="loading-text">{t('listings.fetching')}</AntText>
                     </div>
                 ) : filteredProperties.length > 0 ? (
                     <div className={`properties-grid ${viewMode === 'grid' ? 'grid' : 'list'}`}>
@@ -213,10 +215,10 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                         </div>
                         <div>
                             <p style={{ fontWeight: 700, fontSize: '17px', color: '#111827', margin: '0 0 6px' }}>
-                                No properties found
+                                {t('listings.no_results_title')}
                             </p>
                             <p style={{ color: '#6b7280', fontSize: '14px', margin: 0 }}>
-                                Try adjusting your filters or search for a different location.
+                                {t('listings.no_results_desc')}
                             </p>
                         </div>
                         <Button
@@ -224,7 +226,7 @@ const ListingsPage = ({ purpose = 'all', title = 'All Listings', subtitle = 'Bro
                             onClick={() => { setSearchQuery(''); setPropertyType('all'); setPropertyBedrooms('Any'); }}
                             style={{ borderColor: '#0052cc', color: '#0052cc', fontWeight: 700 }}
                         >
-                            Clear all filters
+                            {t('listings.clear_filters')}
                         </Button>
                     </div>
                 )}

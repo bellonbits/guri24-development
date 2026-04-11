@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Input, DatePicker, Button, Spin, Empty } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { Search, MapPin, Calendar, Users, Loader2, Moon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PropertyCard from '../components/PropertyCard';
@@ -12,6 +13,7 @@ const { Title, Text: AntText } = Typography;
 const { RangePicker } = DatePicker;
 
 const StaysPage = () => {
+    const { t } = useTranslation();
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -45,8 +47,8 @@ const StaysPage = () => {
     return (
         <div className="stays-page">
             <GuriPageHeader
-                title="Find Unique Stays"
-                subtitle="Book incredible homes, apartments, or villas for your next getaway or business trip."
+                title={t('stays.page_title')}
+                subtitle={t('stays.page_subtitle')}
             />
 
             {/* Search Card */}
@@ -57,7 +59,7 @@ const StaysPage = () => {
                         <MapPin size={18} color="#0052cc" style={{ flexShrink: 0 }} />
                         <Input
                             variant="borderless"
-                            placeholder="Where are you going?"
+                            placeholder={t('stays.where_going')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             style={{ fontWeight: 600, fontSize: '14px' }}
@@ -70,14 +72,14 @@ const StaysPage = () => {
                         <RangePicker
                             variant="borderless"
                             style={{ flex: 1, fontWeight: 600 }}
-                            placeholder={['Check In', 'Check Out']}
+                            placeholder={[t('stays.check_in_label'), t('stays.check_out_label')]}
                         />
                     </div>
 
                     {/* Guests */}
                     <div className="stays-field stays-guests-field">
                         <Users size={18} color="#0052cc" style={{ flexShrink: 0 }} />
-                        <AntText style={{ fontWeight: 600, color: '#555', whiteSpace: 'nowrap' }}>1 Guest</AntText>
+                        <AntText style={{ fontWeight: 600, color: '#555', whiteSpace: 'nowrap' }}>{t('stays.one_guest')}</AntText>
                     </div>
 
                     <Button
@@ -86,7 +88,7 @@ const StaysPage = () => {
                         icon={<Search size={17} />}
                         className="stays-search-btn"
                     >
-                        Search
+                        {t('stays.search_btn')}
                     </Button>
                 </div>
             </div>
@@ -110,13 +112,19 @@ const StaysPage = () => {
                             {filteredStays.length}
                         </span>
                         <Title level={3} style={{ margin: 0, fontSize: '20px', fontWeight: 700 }}>
-                            Available Stays
+                            {t('stays.available_stays')}
                         </Title>
                     </div>
 
                     {/* Category pills */}
                     <div className="stays-category-pills">
-                        {['All', 'Beach', 'City', 'Mountain', 'Villa'].map(cat => (
+                        {[
+                            t('stays.all'),
+                            t('stays.beach'),
+                            t('stays.city'),
+                            t('stays.mountain'),
+                            t('stays.villa')
+                        ].map(cat => (
                             <button key={cat} className="stays-pill">{cat}</button>
                         ))}
                     </div>
@@ -125,7 +133,7 @@ const StaysPage = () => {
                 {loading ? (
                     <div style={{ padding: '80px 0', textAlign: 'center' }}>
                         <Spin indicator={<Loader2 className="animate-spin" size={32} />} />
-                        <p style={{ marginTop: 16, color: '#9ca3af', fontWeight: 600 }}>Finding the best stays…</p>
+                        <p style={{ marginTop: 16, color: '#9ca3af', fontWeight: 600 }}>{t('stays.finding_best')}</p>
                     </div>
                 ) : filteredStays.length > 0 ? (
                     <motion.div
@@ -148,14 +156,14 @@ const StaysPage = () => {
                         style={{ padding: '80px 24px', textAlign: 'center', background: '#f8f9fa', borderRadius: '24px' }}
                     >
                         <Moon size={48} color="#d1d5db" style={{ marginBottom: 16 }} />
-                        <p style={{ fontWeight: 700, fontSize: '18px', color: '#111827', marginBottom: 8 }}>No stays found</p>
-                        <p style={{ color: '#6b7280', fontSize: '14px' }}>Try a different location or clear your search.</p>
+                        <p style={{ fontWeight: 700, fontSize: '18px', color: '#111827', marginBottom: 8 }}>{t('stays.no_stays_found')}</p>
+                        <p style={{ color: '#6b7280', fontSize: '14px' }}>{t('stays.no_stays_desc')}</p>
                         <Button
                             shape="round" size="large"
                             onClick={() => setSearchQuery('')}
                             style={{ marginTop: 20, borderColor: '#0052cc', color: '#0052cc', fontWeight: 700 }}
                         >
-                            Clear search
+                            {t('stays.clear_search')}
                         </Button>
                     </motion.div>
                 )}

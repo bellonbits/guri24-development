@@ -1,57 +1,83 @@
+/* ================================================
+   ABOUT PAGE — Guri24 Premium
+   ================================================ */
+
 /* Global About Styling */
 .about-page {
-    background: var(--white);
+    background: #f8fafc;
     min-height: 100vh;
     margin-top: 0;
     padding-top: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .section-subtitle {
-    color: var(--primary);
+    color: #1a5f9e;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
-    display: block;
-    margin-bottom: 1rem;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(26, 95, 158, 0.08);
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 1.25rem;
 }
 
 /* Hero & Page Header inherited/styled in GuriPageHeader or common classes */
 
 /* About Content (Mission Section) */
 .about-content {
-    padding: 56px 0;
+    padding: 72px 0;
+    background: #f8fafc;
 }
 
 .about-text h2 {
-    font-size: clamp(32px, 5vw, 48px);
+    font-size: clamp(30px, 5vw, 46px);
     font-weight: 800;
     letter-spacing: -1.5px;
     line-height: 1.1;
-    margin-bottom: 2rem;
+    color: #0a0f1a;
+    margin-bottom: 1.75rem;
 }
 
 .lead {
-    font-size: 1.15rem;
-    color: var(--gray-500);
-    line-height: 1.8;
+    font-size: 1.0625rem;
+    color: #64748b;
+    line-height: 1.85;
     margin-bottom: 2rem;
+    font-weight: 400;
 }
 
 .about-features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    gap: 1.25rem;
     margin-bottom: 2.5rem;
 }
 
 .feature-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.feature-item:hover {
+    border-color: rgba(26, 95, 158, 0.3);
+    box-shadow: 0 4px 16px rgba(26, 95, 158, 0.1);
 }
 
 .feature-item svg {
-    color: var(--primary);
+    color: #1a5f9e;
+    flex-shrink: 0;
 }
 
 .about-image {
@@ -61,118 +87,196 @@
 
 .about-image img {
     width: 100%;
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-xl);
+    border-radius: 20px;
+    box-shadow: 0 24px 64px rgba(26, 95, 158, 0.14),
+                0 8px 24px rgba(26, 95, 158, 0.08);
+    display: block;
 }
 
 .experience-badge {
     position: absolute;
     bottom: -30px;
     left: -20px;
-    background: var(--primary-dark);
-    color: var(--white);
-    padding: 2.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-floating);
-    min-width: 200px;
+    background: linear-gradient(135deg, #0d3b66 0%, #1a5f9e 100%);
+    color: #ffffff;
+    padding: 2rem 2.25rem;
+    border-radius: 18px;
+    box-shadow: 0 20px 48px rgba(26, 95, 158, 0.28),
+                0 8px 20px rgba(26, 95, 158, 0.16);
+    min-width: 190px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .experience-badge .years {
     display: block;
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     font-weight: 800;
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    letter-spacing: -1px;
 }
 
 .experience-badge .text {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 600;
-    opacity: 0.8;
+    opacity: 0.82;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Stats Section */
 .about-stats {
-    padding: 48px 0;
-    background: var(--gray-50);
-    border-top: 1px solid var(--gray-100);
-    border-bottom: 1px solid var(--gray-100);
+    padding: 56px 0;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    position: relative;
+}
+
+.about-stats::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26, 95, 158, 0.025) 0%, transparent 100%);
+    pointer-events: none;
 }
 
 .stat-box {
     text-align: center;
+    padding: 32px 24px;
+    border-radius: 18px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1a5f9e, #0d3b66);
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.stat-box:hover {
+    box-shadow: 0 12px 36px rgba(26, 95, 158, 0.12),
+                0 4px 12px rgba(26, 95, 158, 0.08);
+    transform: translateY(-4px);
+    border-color: rgba(26, 95, 158, 0.2);
+}
+
+.stat-box:hover::after {
+    opacity: 1;
 }
 
 .stat-box .icon {
-    color: var(--primary);
+    color: #1a5f9e;
     margin-bottom: 1rem;
     display: flex;
     justify-content: center;
+    align-items: center;
+    width: 52px;
+    height: 52px;
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(26, 95, 158, 0.08);
+    border-radius: 14px;
+    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.stat-box:hover .icon {
+    background: rgba(26, 95, 158, 0.14);
 }
 
 .stat-box .number {
     display: block;
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    color: var(--black);
-    margin-bottom: 4px;
+    color: #0a0f1a;
+    margin-bottom: 6px;
+    letter-spacing: -1px;
+    line-height: 1;
 }
 
 .stat-box .label {
-    color: var(--gray-500);
+    color: #64748b;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Team Section */
 .team-section {
-    padding: 56px 0;
-    background: var(--white);
+    padding: 72px 0;
+    background: #f8fafc;
 }
 
 .agent-card {
-    border-radius: var(--radius-lg) !important;
+    border-radius: 18px !important;
     overflow: hidden;
-    border: 1px solid var(--gray-100) !important;
-    transition: var(--transition) !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(26, 95, 158, 0.06) !important;
+    transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
 }
 
 .agent-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover) !important;
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px rgba(26, 95, 158, 0.14),
+                0 8px 20px rgba(26, 95, 158, 0.08) !important;
+    border-color: rgba(26, 95, 158, 0.2) !important;
 }
 
 .agent-image-wrapper {
-    height: 320px;
+    height: 300px;
     overflow: hidden;
+    background: #f1f5f9;
 }
 
 .agent-image-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .agent-card:hover .agent-image-wrapper img {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 .agent-card .ant-card-meta-title {
-    font-size: 1.15rem !important;
+    font-size: 1.0625rem !important;
     font-weight: 700 !important;
+    color: #0a0f1a !important;
+    letter-spacing: -0.2px !important;
 }
 
 .agent-card .ant-card-meta-description {
-    color: var(--primary) !important;
+    color: #1a5f9e !important;
     font-weight: 600 !important;
+    font-size: 0.875rem !important;
 }
 
 /* Responsive */
 @media (max-width: 991px) {
+    .about-content {
+        padding: 48px 0;
+    }
+
     .about-image {
         padding-left: 0;
-        margin-top: 40px;
+        margin-top: 48px;
     }
 
     .experience-badge {
@@ -181,5 +285,17 @@
         left: 0;
         margin-top: 20px;
         display: inline-block;
+    }
+
+    .about-stats {
+        padding: 40px 0;
+    }
+
+    .stat-box {
+        padding: 24px 16px;
+    }
+
+    .team-section {
+        padding: 48px 0;
     }
 }

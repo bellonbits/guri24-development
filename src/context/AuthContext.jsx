@@ -89,7 +89,11 @@ export const AuthProvider = ({ children }) => {
             return { success: true, message: "Please check your email to verify your account." };
         } catch (error) {
             console.error('Registration error:', error);
-            return { success: false, error: error.message || 'Registration failed' };
+            const detail = error.response?.data?.detail;
+            const msg = Array.isArray(detail)
+                ? detail.map(d => d.msg || d).join(', ')
+                : detail || error.message || 'Registration failed';
+            return { success: false, error: msg };
         }
     };
 

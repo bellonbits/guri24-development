@@ -9,19 +9,19 @@
   --primary-accent: #d0e4f4;
   --accent-blue: #2563eb;
 
-  /* Modern Neutral Palette - Airbnb inspired */
+  /* Modern Neutral Palette - Slate family (consistent cool undertone) */
   --white: #ffffff;
-  --gray-50: #f7f7f7;
-  --gray-100: #ebebeb;
-  --gray-200: #dddddd;
-  --gray-300: #b0b0b0;
-  --gray-400: #717171;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
   --gray-500: #64748b;
-  --gray-600: #484848;
-  --gray-700: #333333;
-  --gray-800: #222222;
-  --gray-900: #111111;
-  --black: #000000;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --black: #0a0f1a;
 
   /* Accent Colors */
   --success: #10b981;
@@ -42,17 +42,17 @@
   --color-text-secondary: #717171;
   --color-border: #ebebeb;
 
-  /* Shadows - Softer, more subtle */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
-  --shadow-floating: 0 16px 32px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.18);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+  /* Shadows - Tinted with brand hue for premium feel */
+  --shadow-sm: 0 1px 3px rgba(26, 95, 158, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow: 0 4px 12px rgba(26, 95, 158, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 10px 30px rgba(26, 95, 158, 0.14), 0 4px 8px rgba(15, 23, 42, 0.06);
+  --shadow-floating: 0 16px 40px rgba(26, 95, 158, 0.12), 0 6px 12px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 12px 28px rgba(26, 95, 158, 0.1), 0 4px 8px rgba(15, 23, 42, 0.06);
+  --shadow-xl: 0 24px 56px rgba(26, 95, 158, 0.14), 0 8px 16px rgba(15, 23, 42, 0.08);
+  --shadow-2xl: 0 32px 64px rgba(26, 95, 158, 0.18), 0 12px 24px rgba(15, 23, 42, 0.1);
 
   /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Transitions */
   --transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
@@ -377,14 +377,14 @@ img {
 
 /* Header: hide extras on mobile/tablet */
 @media (max-width: 1279px) {
-  .header-lang-switch,
   .header-phone {
     display: none !important;
   }
+  /* header-lang intentionally NOT hidden — always visible on all screens */
 }
 
 @media (max-width: 767px) {
-  .header-action-btns {
+  .header-actions {
     display: none !important;
   }
 }

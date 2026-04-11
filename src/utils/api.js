@@ -93,10 +93,35 @@ export const getPublicAgentById = async (agentId) => {
 };
 
 export const applyAgent = async (formData) => {
-    return api.post('/users/me/apply-agent', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+    // Step 1: request agent role
+    await api.post('/users/me/request-agent');
+
+    // Step 2: upload ID/passport document if provided
+    const idFile = formData.get('file');
+    if (idFile) {
+        const fd = new FormData();
+        fd.append('file', idFile);
+        await api.post('/users/me/verification-documents?name=Agent%20Application%20ID%2FPassport', fd, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+    }
+
+    // Step 3: upload application summary as a text document
+    const summary = [
+        `Name: ${formData.get('name') || ''}`,
+        `Phone: ${formData.get('phone') || ''}`,
+        `National ID: ${formData.get('national_id_number') || ''}`,
+        `Date of Birth: ${formData.get('date_of_birth') || ''}`,
+        `Address: ${formData.get('full_address') || ''}`,
+        `Location: ${formData.get('location') || ''}`,
+        `Motivation: ${formData.get('motivation') || ''}`,
+        `Declaration Signed: ${formData.get('declaration_signed') || ''}`,
+    ].join('\n');
+    const blob = new Blob([summary], { type: 'text/plain' });
+    const appForm = new FormData();
+    appForm.append('file', blob, 'application-form.txt');
+    return api.post('/users/me/verification-documents?name=Official%20Application%20Form', appForm, {
+        headers: { 'Content-Type': 'multipart/form-data' }
     });
 };
 

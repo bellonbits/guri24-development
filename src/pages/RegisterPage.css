@@ -1,8 +1,12 @@
-/* RegisterPage Styles */
+/* ================================================
+   REGISTER PAGE — Guri24 Premium
+   ================================================ */
+
 .register-page {
     min-height: 100vh;
-    background: var(--white);
+    background: #f8fafc;
     display: flex;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .register-form-container {
@@ -12,6 +16,7 @@
     justify-content: center;
     position: relative;
     overflow-y: auto;
+    background: #ffffff;
 }
 
 .register-logo-link {
@@ -34,98 +39,161 @@
 .register-title {
     font-size: clamp(28px, 4vw, 42px) !important;
     font-weight: 800 !important;
-    letter-spacing: -1px !important;
-    color: var(--black) !important;
+    letter-spacing: -1.5px !important;
+    color: #0a0f1a !important;
     margin-bottom: 0.5rem !important;
+    line-height: 1.1 !important;
 }
 
 .register-subtitle {
     font-size: 1rem !important;
-    color: var(--gray-500) !important;
+    color: #64748b !important;
     margin-bottom: 2.5rem !important;
+    font-weight: 400 !important;
+    line-height: 1.65 !important;
 }
 
 .register-input-group {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .register-input-label {
-    font-size: 0.75rem !important;
+    font-size: 0.6875rem !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 1px !important;
-    color: var(--black) !important;
-    margin-left: 4px !important;
+    color: #475569 !important;
+    margin-left: 2px !important;
 }
 
 .register-input-field {
     height: 54px !important;
-    border-radius: var(--radius-md) !important;
+    border-radius: 12px !important;
     font-size: 0.9375rem !important;
-    background: var(--gray-50) !important;
-    border: 1px solid var(--gray-100) !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    background: #f8fafc !important;
+    border: 1.5px solid #e2e8f0 !important;
+    color: #1e293b !important;
+    transition: border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                background 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+.register-input-field:hover {
+    border-color: #cbd5e1 !important;
+}
+
+.register-input-field:focus,
+.register-input-field:focus-within {
+    border-color: #1a5f9e !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(26, 95, 158, 0.1) !important;
+    outline: 2px solid rgba(26, 95, 158, 0.4) !important;
+    outline-offset: -1px !important;
 }
 
 .register-submit-btn {
-    height: 60px !important;
-    border-radius: var(--radius-md) !important;
+    height: 58px !important;
+    border-radius: 14px !important;
     font-size: 1.0625rem !important;
     font-weight: 800 !important;
-    background: var(--primary) !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    background: linear-gradient(135deg, #1a5f9e 0%, #0d3b66 100%) !important;
+    border: none !important;
     margin-top: 24px !important;
-    box-shadow: 0 8px 20px rgba(0, 82, 204, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(26, 95, 158, 0.25),
+                0 8px 24px rgba(26, 95, 158, 0.15) !important;
+    letter-spacing: -0.2px !important;
+    transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+.register-submit-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(26, 95, 158, 0.3),
+                0 16px 40px rgba(26, 95, 158, 0.18) !important;
+}
+
+.register-submit-btn:active {
+    transform: scale(0.98) !important;
+    box-shadow: 0 4px 12px rgba(26, 95, 158, 0.2) !important;
+}
+
+.register-submit-btn:focus-visible {
+    outline: 2px solid rgba(26, 95, 158, 0.4) !important;
+    outline-offset: 3px !important;
 }
 
 .register-login-prompt {
     text-align: center;
-    margin-top: 32px;
+    margin-top: 28px;
     font-size: 0.9375rem;
-    color: var(--gray-500);
+    color: #64748b;
+    font-weight: 400;
 }
 
 .register-login-link {
     font-weight: 800;
-    color: var(--black);
-    border-bottom: 2px solid var(--primary);
+    color: #0a0f1a;
+    border-bottom: 2px solid #1a5f9e;
+    text-decoration: none;
+    transition: color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
+    padding-bottom: 1px;
+}
+
+.register-login-link:hover {
+    color: #1a5f9e;
+    border-color: #0d3b66;
 }
 
 /* Agent Toggle Section */
 .agent-apply-box {
-    background: var(--gray-50);
+    background: #f8fafc;
     padding: 20px;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--gray-100);
+    border-radius: 14px;
+    border: 1.5px solid #e2e8f0;
     margin-top: 10px;
+    transition: border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.agent-apply-box:hover {
+    border-color: rgba(26, 95, 158, 0.25);
+    box-shadow: 0 4px 16px rgba(26, 95, 158, 0.08);
 }
 
 .agent-apply-switch {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
 }
 
 .agent-switch-label {
     display: flex;
     flex-direction: column;
+    gap: 3px;
 }
 
 .agent-switch-title {
     font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--black);
+    font-size: 0.9375rem;
+    color: #0a0f1a;
 }
 
 .agent-switch-desc {
     font-size: 0.8125rem;
-    color: var(--gray-400);
+    color: #94a3b8;
+    font-weight: 400;
 }
 
 /* Showcase Section */
 .register-showcase {
-    background: linear-gradient(160deg, #071a35 0%, #0d3b66 60%, #1a5f9e 100%);
+    background: linear-gradient(160deg, #071a35 0%, #0d3b66 55%, #1a5f9e 100%);
     position: relative;
     overflow: hidden;
     padding: 80px;
@@ -141,13 +209,23 @@
     background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80');
     background-size: cover;
     background-position: center;
-    opacity: 0.18;
+    opacity: 0.15;
+    mix-blend-mode: luminosity;
+}
+
+.register-showcase::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, rgba(26, 95, 158, 0.25) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .register-showcase-footer {
     position: absolute;
     bottom: 40px;
     left: 80px;
+    z-index: 10;
 }
 
 .register-showcase-content {
@@ -158,48 +236,55 @@
 .register-feature-list {
     margin-top: 3rem;
     display: grid;
-    gap: 20px;
+    gap: 16px;
 }
 
 .register-feature-item {
     display: flex;
-    gap: 20px;
+    gap: 18px;
     align-items: flex-start;
-    padding: 24px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(12px);
-    transition: background 0.2s;
+    padding: 22px 24px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
+    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .register-feature-item:hover {
-    background: rgba(255, 255, 255, 0.13);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(3px);
 }
 
 .register-feature-icon {
-    width: 48px;
-    height: 48px;
-    background: var(--primary);
+    width: 46px;
+    height: 46px;
+    background: rgba(26, 95, 158, 0.5);
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--white);
+    color: #ffffff;
     flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .register-feature-text h4 {
-    color: var(--white) !important;
-    font-size: 1.125rem !important;
+    color: #ffffff !important;
+    font-size: 1.0625rem !important;
     font-weight: 700 !important;
     margin-bottom: 4px !important;
+    letter-spacing: -0.2px !important;
 }
 
 .register-feature-text p {
-    color: rgba(255, 255, 255, 0.6) !important;
-    font-size: 0.9375rem !important;
+    color: rgba(255, 255, 255, 0.58) !important;
+    font-size: 0.9rem !important;
     margin: 0 !important;
+    line-height: 1.6 !important;
 }
 
 @media (max-width: 1024px) {
@@ -207,12 +292,10 @@
         padding: 40px 24px 60px;
     }
 
-    /* Hide the right showcase panel on tablet/mobile */
     .register-showcase {
         display: none !important;
     }
 
-    /* Logo: flow naturally on mobile */
     .register-logo-link {
         position: static;
         display: block;

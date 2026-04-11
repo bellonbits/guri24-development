@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Typography, Button, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Home, TrendingUp, Key, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import PropertyCard from '../components/PropertyCard';
 import GuriHero from '../components/GuriHero';
 import StatsSection from '../components/StatsSection';
-import BlogSection from '../components/BlogSection';
 import { propertyApi, transformProperty } from '../utils/propertyApi';
 import { fadeUp, scaleIn, staggerContainer, slideLeft, viewportOnce } from '../utils/animations';
 import SEO from '../components/SEO';
@@ -15,6 +15,7 @@ import './HomePage.css';
 const { Title, Text: AntText } = Typography;
 
 const HomePage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [featuredProperties, setFeaturedProperties] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -61,24 +62,24 @@ const HomePage = () => {
     const services = [
         {
             icon: <Home size={28} />,
-            title: 'Buy Property',
-            description: 'Find exceptional properties tailored to your lifestyle and budget. Our curated listings feature verified homes across prime locations.',
+            title: t('home.buy_title'),
+            description: t('home.buy_desc'),
             link: '/listings?purpose=sale',
-            linkText: 'Explore Properties'
+            linkText: t('home.buy_link')
         },
         {
             icon: <TrendingUp size={28} />,
-            title: 'Sell Property',
-            description: 'List your property with expert guidance. We connect you with serious buyers and handle the entire sales process professionally.',
+            title: t('home.sell_title'),
+            description: t('home.sell_desc'),
             link: '/contact',
-            linkText: 'Get Started'
+            linkText: t('home.sell_link')
         },
         {
             icon: <Key size={28} />,
-            title: 'Rent Property',
-            description: 'Discover quality rental properties from apartments to luxury homes. Flexible terms and verified listings for your peace of mind.',
+            title: t('home.rent_title'),
+            description: t('home.rent_desc'),
             link: '/listings?purpose=rent',
-            linkText: 'View Rentals'
+            linkText: t('home.rent_link')
         }
     ];
 
@@ -113,11 +114,11 @@ const HomePage = () => {
                         viewport={viewportOnce}
                     >
                         <div>
-                            <span className="section-subtitle">★ Featured</span>
-                            <Title level={2} className="m-0">Featured Properties</Title>
+                            <span className="section-subtitle">{t('home.featured_badge')}</span>
+                            <Title level={2} className="m-0">{t('home.featured_title')}</Title>
                         </div>
                         <Button shape="round" size="large" className="btn-outline px-8" onClick={() => navigate('/listings')}>
-                            Explore All
+                            {t('home.explore_all')}
                         </Button>
                     </motion.div>
 
@@ -125,8 +126,8 @@ const HomePage = () => {
                         <div className="flex justify-center py-20"><Spin size="large" /></div>
                     ) : featuredProperties.length === 0 ? (
                         <div className="text-center py-20 bg-gray-50 rounded-[32px]">
-                            <AntText type="secondary" className="text-lg block mb-4">No properties found at the moment.</AntText>
-                            <Button type="link" onClick={() => navigate('/listings')}>View all listings</Button>
+                            <AntText type="secondary" className="text-lg block mb-4">{t('home.no_properties')}</AntText>
+                            <Button type="link" onClick={() => navigate('/listings')}>{t('home.view_all_listings')}</Button>
                         </div>
                     ) : (
                         <motion.div
@@ -154,8 +155,8 @@ const HomePage = () => {
                         whileInView="visible"
                         viewport={viewportOnce}
                     >
-                        <span className="section-subtitle">★ Our Services</span>
-                        <Title level={2} className="m-0">Comprehensive Real Estate Solutions</Title>
+                        <span className="section-subtitle">{t('home.services_badge')}</span>
+                        <Title level={2} className="m-0">{t('home.services_title')}</Title>
                     </motion.div>
 
                     <motion.div
@@ -187,7 +188,6 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <BlogSection />
         </div>
     );
 };

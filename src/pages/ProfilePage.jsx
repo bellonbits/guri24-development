@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Users, Mail, Phone, MapPin, Edit2, Save, X, LogOut, Heart, Home, Calendar, CheckCircle, Clock, Shield, Award, FileText, Upload as CloudUpload } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { getSavedProperties, getUserStats } from '../utils/api';
 import { propertyApi } from '../utils/propertyApi';
 import { getProfileImageUrl } from '../utils/imageUtils';
@@ -10,6 +11,7 @@ import ChatWidget from '../components/ChatWidget';
 import HostContactModal from '../components/HostContactModal';
 import './ProfilePage.css';
 function ProfilePage() {
+    const { t } = useTranslation();
     const { user, logout, updateProfile } = useAuth();
     const navigate = useNavigate();
 
@@ -121,11 +123,11 @@ function ProfilePage() {
         const result = await updateProfile(formData);
 
         if (result.success) {
-            setSuccess('Profile updated successfully!');
+            setSuccess(t('profile.profile_updated'));
             setIsEditing(false);
             setTimeout(() => setSuccess(''), 3000);
         } else {
-            setError(result.error || 'Failed to update profile');
+            setError(result.error || t('profile.profile_update_failed'));
         }
 
         setLoading(false);
@@ -158,12 +160,12 @@ function ProfilePage() {
 
         // Basic validation
         if (!file.type.startsWith('image/')) {
-            setError('Please select an image file');
+            setError(t('profile.not_image'));
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) { // 5MB
-            setError('Image size should be less than 5MB');
+            setError(t('profile.image_too_large'));
             return;
         }
 
@@ -190,12 +192,12 @@ function ProfilePage() {
             // I should probably manually trigger a context refresh if possible.
             // Let's reload window for simplicity in this step, or just show success.
 
-            setSuccess('Profile photo updated!');
+            setSuccess(t('profile.photo_updated'));
             window.location.reload(); // Simple way to refresh user context
 
         } catch (err) {
             console.error(err);
-            setError('Failed to upload image');
+            setError(t('profile.photo_failed'));
         } finally {
             setLoading(false);
         }
@@ -249,7 +251,7 @@ function ProfilePage() {
                             style={{ display: 'none' }}
                             accept="image/*"
                         />
-                        <button className="avatar-edit-btn" title="Change photo" onClick={handleAvatarClick}>
+                        <button className="avatar-edit-btn" title={t('profile.change_photo')} onClick={handleAvatarClick}>
                             <Edit2 size={16} />
                         </button>
                     </div>
@@ -257,7 +259,7 @@ function ProfilePage() {
                         <h1>{user?.name || 'User'}</h1>
                         <p className="profile-email">{user?.email}</p>
                         <div className="profile-badges">
-                            <span className="badge">Member since {new Date().getFullYear()}</span>
+                            <span className="badge">{t('profile.member_since', { year: new Date().getFullYear() })}</span>
                             {user?.role === 'agent' && (
                                 <span className={`verification-badge-header ${user?.agent_status || 'unverified'}`}>
                                     {user?.agent_status === 'verified' && <CheckCircle size={14} />}
@@ -272,17 +274,17 @@ function ProfilePage() {
                         {!isEditing ? (
                             <button className="btn btn-primary" onClick={() => setIsEditing(true)}>
                                 <Edit2 size={18} />
-                                Edit Profile
+                                {t('profile.edit_profile')}
                             </button>
                         ) : (
                             <button className="btn btn-secondary" onClick={handleCancel}>
                                 <X size={18} />
-                                Cancel
+                                {t('profile.cancel')}
                             </button>
                         )}
                         <button className="btn btn-outline-danger" onClick={handleLogout}>
                             <LogOut size={18} />
-                            Logout
+                            {t('profile.logout')}
                         </button>
                     </div>
                 </div>
@@ -297,82 +299,70 @@ function ProfilePage() {
                 <div className="profile-content">
                     {/* Personal Information */}
                     <div className="profile-section">
-                        <h2>Personal Information</h2>
+                        <h2>{t('profile.personal_info')}</h2>
                         <form onSubmit={handleSubmit} className="profile-form">
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label htmlFor="name">Full Name</label>
-                                    <div className="input-wrapper">
-                                        <User size={20} className="input-icon" />
-                                        <input
-                                            type="text"
-                                            id="name"
-                                            name="name"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            required
-                                        />
-                                    </div>
+                                    <label htmlFor="name"><User size={14} className="label-icon" />{t('profile.full_name')}</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        disabled={!isEditing}
+                                        required
+                                    />
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="email">Email Address</label>
-                                    <div className="input-wrapper">
-                                        <Mail size={20} className="input-icon" />
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            required
-                                        />
-                                    </div>
+                                    <label htmlFor="email"><Mail size={14} className="label-icon" />{t('profile.email_address')}</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        disabled={!isEditing}
+                                        required
+                                    />
                                 </div>
                             </div>
 
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label htmlFor="phone">Phone Number</label>
-                                    <div className="input-wrapper">
-                                        <Phone size={20} className="input-icon" />
-                                        <input
-                                            type="tel"
-                                            id="phone"
-                                            name="phone"
-                                            value={formData.phone}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                        />
-                                    </div>
+                                    <label htmlFor="phone"><Phone size={14} className="label-icon" />{t('profile.phone_number')}</label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        disabled={!isEditing}
+                                    />
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="location">Location</label>
-                                    <div className="input-wrapper">
-                                        <MapPin size={20} className="input-icon" />
-                                        <input
-                                            type="text"
-                                            id="location"
-                                            name="location"
-                                            placeholder="City, Country"
-                                            value={formData.location}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                        />
-                                    </div>
+                                    <label htmlFor="location"><MapPin size={14} className="label-icon" />{t('profile.location')}</label>
+                                    <input
+                                        type="text"
+                                        id="location"
+                                        name="location"
+                                        placeholder={t('profile.location_placeholder')}
+                                        value={formData.location}
+                                        onChange={handleChange}
+                                        disabled={!isEditing}
+                                    />
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="bio">Bio</label>
+                                <label htmlFor="bio">{t('profile.bio')}</label>
                                 <textarea
                                     id="bio"
                                     name="bio"
                                     rows="4"
-                                    placeholder="Tell us about yourself..."
+                                    placeholder={t('profile.bio_placeholder')}
                                     value={formData.bio}
                                     onChange={handleChange}
                                     disabled={!isEditing}
@@ -381,40 +371,34 @@ function ProfilePage() {
 
                             {/* Professional Details */}
                             <div className="professional-details-section">
-                                <h3 className="section-subtitle">Professional Details</h3>
-                                <p className="section-hint">Share your professional background and expertise</p>
+                                <h3 className="section-subtitle">{t('profile.professional_details')}</h3>
+                                <p className="section-hint">{t('profile.professional_hint')}</p>
 
                                 <div className="form-row">
                                     <div className="form-group">
-                                        <label htmlFor="company">Company / Agency</label>
-                                        <div className="input-wrapper">
-                                            <Shield size={20} className="input-icon" />
-                                            <input
-                                                type="text"
-                                                id="company"
-                                                name="company"
-                                                placeholder="e.g., Guri24 Real Estate"
-                                                value={formData.company}
-                                                onChange={handleChange}
-                                                disabled={!isEditing}
-                                            />
-                                        </div>
+                                        <label htmlFor="company"><Shield size={14} className="label-icon" />{t('profile.company')}</label>
+                                        <input
+                                            type="text"
+                                            id="company"
+                                            name="company"
+                                            placeholder={t('profile.company_placeholder')}
+                                            value={formData.company}
+                                            onChange={handleChange}
+                                            disabled={!isEditing}
+                                        />
                                     </div>
 
                                     <div className="form-group">
-                                        <label htmlFor="specialization">Specialization</label>
-                                        <div className="input-wrapper">
-                                            <Award size={20} className="input-icon" />
-                                            <input
-                                                type="text"
-                                                id="specialization"
-                                                name="specialization"
-                                                placeholder="e.g., Luxury Villas, Commercial"
-                                                value={formData.specialization}
-                                                onChange={handleChange}
-                                                disabled={!isEditing}
-                                            />
-                                        </div>
+                                        <label htmlFor="specialization"><Award size={14} className="label-icon" />{t('profile.specialization')}</label>
+                                        <input
+                                            type="text"
+                                            id="specialization"
+                                            name="specialization"
+                                            placeholder={t('profile.specialization_placeholder')}
+                                            value={formData.specialization}
+                                            onChange={handleChange}
+                                            disabled={!isEditing}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -423,11 +407,11 @@ function ProfilePage() {
                                 <div className="form-actions">
                                     <button type="submit" className="btn btn-primary" disabled={loading}>
                                         {loading ? (
-                                            'Saving...'
+                                            t('profile.saving')
                                         ) : (
                                             <>
                                                 <Save size={18} />
-                                                Save Changes
+                                                {t('profile.save_changes')}
                                             </>
                                         )}
                                     </button>
@@ -440,12 +424,12 @@ function ProfilePage() {
                     <div className="profile-section documents-hub">
                         <div className="hub-header">
                             <div>
-                                <h2>My Documents</h2>
-                                <p>Your uploaded verification documents</p>
+                                <h2>{t('profile.documents')}</h2>
+                                <p>{t('profile.documents_desc')}</p>
                             </div>
                             <button className="btn btn-primary" onClick={() => navigate('/profile/documents')}>
                                 <FileText size={18} />
-                                Manage Documents
+                                {t('profile.manage_documents')}
                             </button>
                         </div>
 
@@ -464,9 +448,9 @@ function ProfilePage() {
                                                 </span>
                                             </div>
                                             <span className={`doc-status-badge ${doc.status}`}>
-                                                {doc.status === 'pending' && 'Pending'}
-                                                {doc.status === 'approved' && 'Approved'}
-                                                {doc.status === 'rejected' && 'Rejected'}
+                                                {doc.status === 'pending' && t('profile.doc_pending')}
+                                                {doc.status === 'approved' && t('profile.doc_approved')}
+                                                {doc.status === 'rejected' && t('profile.doc_rejected')}
                                             </span>
                                         </div>
                                     ))}
@@ -474,8 +458,8 @@ function ProfilePage() {
                             ) : (
                                 <div className="empty-documents">
                                     <FileText size={48} />
-                                    <p>No documents uploaded yet.</p>
-                                    <span>Upload your IDs, Licenses, or Deeds to keep them organized.</span>
+                                    <p>{t('profile.no_documents')}</p>
+                                    <span>{t('profile.no_documents_hint')}</span>
                                 </div>
                             )}
                         </div>
@@ -487,9 +471,9 @@ function ProfilePage() {
                             <div className="section-header">
                                 <h2>
                                     <Shield size={24} />
-                                    Become a Guri24 Agent
+                                    {t('profile.become_agent')}
                                 </h2>
-                                <p>Submit a formal application to list and manage properties on our platform.</p>
+                                <p>{t('profile.become_agent_desc')}</p>
                             </div>
 
                             <div className="application-status-container">
@@ -497,23 +481,23 @@ function ProfilePage() {
                                     <div className="status-notice pending">
                                         <Clock size={32} />
                                         <div>
-                                            <h3>Application Under Review</h3>
-                                            <p>Your formal application is currently being reviewed by our team. We'll get back to you within 24-48 hours.</p>
+                                            <h3>{t('profile.application_reviewing')}</h3>
+                                            <p>{t('profile.application_reviewing_desc')}</p>
                                         </div>
                                     </div>
                                 ) : user?.agent_status === 'REJECTED' ? (
                                     <div className="status-notice rejected">
                                         <X size={32} />
                                         <div>
-                                            <h3>Application Rejected</h3>
-                                            <p>Unfortunately, your application was not approved at this time.</p>
+                                            <h3>{t('profile.application_rejected')}</h3>
+                                            <p>{t('profile.application_rejected_desc')}</p>
                                             {user?.rejection_reason && (
                                                 <div className="rejection-reason">
-                                                    <strong>Reason:</strong> {user.rejection_reason}
+                                                    <strong>{t('profile.rejection_reason')}</strong> {user.rejection_reason}
                                                 </div>
                                             )}
                                             <button className="btn btn-outline-primary mt-2" onClick={() => navigate('/apply-agent')}>
-                                                Re-apply with Updates
+                                                {t('profile.reapply')}
                                             </button>
                                         </div>
                                     </div>
@@ -522,19 +506,19 @@ function ProfilePage() {
                                         <div className="promo-features">
                                             <div className="feature">
                                                 <CheckCircle size={18} />
-                                                <span>List unlimited properties</span>
+                                                <span>{t('profile.list_unlimited')}</span>
                                             </div>
                                             <div className="feature">
                                                 <CheckCircle size={18} />
-                                                <span>Access agent dashboard</span>
+                                                <span>{t('profile.access_dashboard')}</span>
                                             </div>
                                             <div className="feature">
                                                 <CheckCircle size={18} />
-                                                <span>Professional verification badge</span>
+                                                <span>{t('profile.verification_badge')}</span>
                                             </div>
                                         </div>
                                         <button className="btn btn-primary" onClick={() => navigate('/apply-agent')}>
-                                            Start Application
+                                            {t('profile.start_application')}
                                         </button>
                                     </div>
                                 )}
@@ -547,15 +531,15 @@ function ProfilePage() {
                         <div className="profile-section verification-section">
                             <h2>
                                 <Shield size={24} />
-                                Agent Verification
+                                {t('profile.agent_verification')}
                                 {user?.agent_status === 'verified' && (
                                     <span className="verified-badge-inline">
-                                        <Award size={16} /> Verified Pro
+                                        <Award size={16} /> {t('profile.verified_pro')}
                                     </span>
                                 )}
                             </h2>
                             <p className="section-description">
-                                Submit identity and business documents to get the "Verified Agent" badge.
+                                {t('profile.verification_desc')}
                             </p>
 
                             <div className="verification-content">
@@ -563,26 +547,26 @@ function ProfilePage() {
                                     <div className="verification-status-box success">
                                         <CheckCircle size={40} />
                                         <div>
-                                            <h3>You are Verified!</h3>
-                                            <p>Your account is fully verified. Your listings now show the verification badge.</p>
+                                            <h3>{t('profile.you_are_verified')}</h3>
+                                            <p>{t('profile.verified_desc')}</p>
                                         </div>
                                     </div>
                                 ) : (
                                     <div className="verification-layout">
                                         <div className="verification-upload">
                                             <div className="form-group">
-                                                <label>Document Name</label>
+                                                <label>{t('profile.doc_name_label')}</label>
                                                 <input
                                                     type="text"
-                                                    placeholder="e.g., ID Card, Real Estate License"
+                                                    placeholder={t('profile.doc_name_placeholder')}
                                                     id="profile-doc-name"
                                                     className="profile-input"
                                                 />
                                             </div>
                                             <div className="upload-dropzone" onClick={() => document.getElementById('profile-doc-file').click()}>
                                                 <CloudUpload size={32} />
-                                                <p>Click to upload proof document</p>
-                                                <span className="file-info">PDF, JPG, PNG (Max 5MB)</span>
+                                                <p>{t('profile.upload_doc')}</p>
+                                                <span className="file-info">{t('profile.file_info')}</span>
                                                 <input
                                                     type="file"
                                                     id="profile-doc-file"
@@ -591,19 +575,19 @@ function ProfilePage() {
                                                         const file = e.target.files[0];
                                                         const name = document.getElementById('profile-doc-name').value;
                                                         if (!file || !name) {
-                                                            alert('Please provide a document name and select a file.');
+                                                            alert(t('profile.provide_name_and_file'));
                                                             return;
                                                         }
                                                         setLoading(true);
                                                         try {
                                                             const updatedUser = await propertyApi.uploadVerificationDocument(name, file);
                                                             // Usually we would update the auth context user here if we had a setUser method
-                                                            setSuccess('Document uploaded successfully! Verification is now pending.');
+                                                            setSuccess(t('profile.doc_uploaded'));
                                                             document.getElementById('profile-doc-name').value = '';
                                                             // Reload to refresh user state
                                                             setTimeout(() => window.location.reload(), 1500);
                                                         } catch (err) {
-                                                            setError(err.response?.data?.detail || 'Failed to upload document');
+                                                            setError(err.response?.data?.detail || t('profile.doc_upload_failed'));
                                                         } finally {
                                                             setLoading(false);
                                                         }
@@ -617,8 +601,8 @@ function ProfilePage() {
                                                 <div className="status-notice pending">
                                                     <Clock size={20} />
                                                     <div>
-                                                        <strong>Verification Pending</strong>
-                                                        <p>Your documents are being reviewed. This usually takes 24-48 hours.</p>
+                                                        <strong>{t('profile.verification_pending')}</strong>
+                                                        <p>{t('profile.verification_pending_desc')}</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -626,8 +610,8 @@ function ProfilePage() {
                                                 <div className="status-notice rejected">
                                                     <X size={20} />
                                                     <div>
-                                                        <strong>Verification Rejected</strong>
-                                                        <p>Please upload new documents to try again.</p>
+                                                        <strong>{t('profile.verification_rejected')}</strong>
+                                                        <p>{t('profile.verification_rejected_desc')}</p>
                                                         {user?.rejection_reason && (
                                                             <div className="rejection-reason-box">
                                                                 <strong>Reason:</strong> {user.rejection_reason}
@@ -637,7 +621,7 @@ function ProfilePage() {
                                                 </div>
                                             )}
 
-                                            <h3>Submitted Documents</h3>
+                                            <h3>{t('profile.submitted_documents')}</h3>
                                             {user?.verification_documents?.length > 0 ? (
                                                 <div className="profile-doc-list">
                                                     {user.verification_documents.map((doc, idx) => (
@@ -648,14 +632,14 @@ function ProfilePage() {
                                                                 <span className="date">{new Date(doc.uploaded_at).toLocaleDateString()}</span>
                                                             </div>
                                                             <a href={doc.url} target="_blank" rel="noreferrer" className="view-link">
-                                                                View
+                                                                {t('profile.view')}
                                                             </a>
                                                         </div>
                                                     ))}
                                                 </div>
                                             ) : (
                                                 <div className="empty-docs-placeholder">
-                                                    No documents uploaded yet.
+                                                    {t('profile.no_docs_yet')}
                                                 </div>
                                             )}
                                         </div>
@@ -667,7 +651,7 @@ function ProfilePage() {
 
                     {/* Activity Stats */}
                     <div className="profile-section">
-                        <h2>Activity</h2>
+                        <h2>{t('profile.activity')}</h2>
                         <div className="activity-stats">
                             <div className="stat-card">
                                 <div className="stat-icon">
@@ -675,7 +659,7 @@ function ProfilePage() {
                                 </div>
                                 <div className="stat-info">
                                     <h3>{stats.saved_properties}</h3>
-                                    <p>Saved Properties</p>
+                                    <p>{t('profile.saved_properties')}</p>
                                 </div>
                             </div>
                             <div className="stat-card">
@@ -684,7 +668,7 @@ function ProfilePage() {
                                 </div>
                                 <div className="stat-info">
                                     <h3>{stats.properties_viewed}</h3>
-                                    <p>Properties Viewed</p>
+                                    <p>{t('profile.properties_viewed')}</p>
                                 </div>
                             </div>
                             <div className="stat-card">
@@ -693,7 +677,7 @@ function ProfilePage() {
                                 </div>
                                 <div className="stat-info">
                                     <h3>{stats.scheduled_visits}</h3>
-                                    <p>Scheduled Visits</p>
+                                    <p>{t('profile.scheduled_visits')}</p>
                                 </div>
                             </div>
                         </div>
@@ -701,9 +685,9 @@ function ProfilePage() {
 
                     {/* My Bookings */}
                     <div className="profile-section">
-                        <h2>My Bookings</h2>
+                        <h2>{t('profile.my_bookings')}</h2>
                         {loadingSaved ? (
-                            <p>Loading bookings...</p>
+                            <p>{t('profile.loading_bookings')}</p>
                         ) : bookings.length > 0 ? (
                             <div className="bookings-list">
                                 {bookings.map(booking => (
@@ -725,9 +709,9 @@ function ProfilePage() {
 
                                             <div className="property-location">
                                                 <MapPin size={16} />
-                                                <span>{booking.property?.location || 'Location N/A'}</span>
+                                                <span>{booking.property?.location || t('profile.location_na')}</span>
                                             </div>
-                                            <div className="booking-ref">Ref: {booking.id.slice(0, 8)}</div>
+                                            <div className="booking-ref">{t('profile.booking_ref')} {booking.id.slice(0, 8)}</div>
                                         </div>
 
                                         {/* Middle: Specs */}
@@ -736,15 +720,15 @@ function ProfilePage() {
                                                 <div className="spec-item">
                                                     <Calendar size={18} />
                                                     <div className="spec-content">
-                                                        <label>Booking Dates:</label>
+                                                        <label>{t('profile.booking_dates')}</label>
                                                         <strong>{new Date(booking.check_in).toLocaleDateString()} - {new Date(booking.check_out).toLocaleDateString()}</strong>
                                                     </div>
                                                 </div>
                                                 <div className="spec-item">
                                                     <Users size={18} />
                                                     <div className="spec-content">
-                                                        <label>Total Guests:</label>
-                                                        <strong>{booking.guest_count} Guest{booking.guest_count > 1 ? 's' : ''}</strong>
+                                                        <label>{t('profile.total_guests')}</label>
+                                                        <strong>{booking.guest_count > 1 ? t('profile.guest_plural', { count: booking.guest_count }) : t('profile.guest_singular', { count: booking.guest_count })}</strong>
                                                     </div>
                                                 </div>
                                             </div>
@@ -753,18 +737,18 @@ function ProfilePage() {
                                         {/* Right: Pricing & Action */}
                                         <div className="ticket-pricing">
                                             <div className="price-box">
-                                                <label>Total Price</label>
+                                                <label>{t('profile.total_price')}</label>
                                                 <strong className="price-amount">KSh {parseFloat(booking.total_price).toLocaleString()}</strong>
                                             </div>
                                             <div className="ticket-actions">
                                                 <button className="btn btn-outline-primary btn-sm" onClick={() => navigate(`/my-bookings`)}>
-                                                    View Details
+                                                    {t('profile.view_details')}
                                                 </button>
                                                 <button
                                                     className="btn btn-primary btn-sm"
                                                     onClick={() => handleContactHost(booking)}
                                                 >
-                                                    Contact Host
+                                                    {t('profile.contact_host')}
                                                 </button>
                                             </div>
                                         </div>
@@ -774,9 +758,9 @@ function ProfilePage() {
                         ) : (
                             <div className="empty-state">
                                 <Calendar size={48} />
-                                <p>You haven't made any bookings yet</p>
+                                <p>{t('profile.no_bookings')}</p>
                                 <button className="btn btn-primary" onClick={() => navigate('/stays')}>
-                                    Find a Stay
+                                    {t('profile.find_stay')}
                                 </button>
                             </div>
                         )}
@@ -784,9 +768,9 @@ function ProfilePage() {
 
                     {/* Saved Properties */}
                     <div className="profile-section">
-                        <h2>Saved Properties</h2>
+                        <h2>{t('profile.saved_properties')}</h2>
                         {loadingSaved ? (
-                            <p>Loading saved properties...</p>
+                            <p>{t('profile.loading_saved')}</p>
                         ) : savedProperties.length > 0 ? (
                             <div className="properties-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
                                 {savedProperties.map(property => (
@@ -796,9 +780,9 @@ function ProfilePage() {
                         ) : (
                             <div className="empty-state">
                                 <Heart size={48} />
-                                <p>You haven't saved any properties yet</p>
+                                <p>{t('profile.no_saved')}</p>
                                 <button className="btn btn-primary" onClick={() => navigate('/listings')}>
-                                    Browse Properties
+                                    {t('profile.browse_properties')}
                                 </button>
                             </div>
                         )}

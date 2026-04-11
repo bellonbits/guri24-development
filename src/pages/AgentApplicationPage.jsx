@@ -97,19 +97,13 @@ function AgentApplicationPage() {
             data.append('national_id_number', formData.national_id_number);
             data.append('date_of_birth', formData.date_of_birth);
             data.append('full_address', `${formData.full_address}, ${formData.city}, ${formData.country}`);
-
-            // Append signature to motivation
+            data.append('location', `${formData.city}, ${formData.country}`);
+            data.append('phone', formData.phone);
+            data.append('name', formData.name);
+            data.append('declaration_signed', formData.declaration_signed);
             const signedMotivation = `${formData.motivation}\n\n---\nSigned by: ${formData.signature}\nDate: ${new Date().toLocaleDateString()}`;
             data.append('motivation', signedMotivation);
-
-            data.append('declaration_signed', formData.declaration_signed);
-            data.append('phone', formData.phone);
-            data.append('location', `${formData.city}, ${formData.country}`);
-
-            if (idFile) {
-                data.append('file', idFile);
-            }
-
+            if (idFile) data.append('file', idFile);
             await applyAgent(data);
             setSuccess(true);
             await refreshUser();

@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { Typography, Input, Button, message } from 'antd';
 import { ArrowLeft, Mail, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text: AntText } = Typography;
 
 function ForgotPasswordPage() {
+    const { t } = useTranslation();
     const { forgotPassword } = useAuth();
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
@@ -72,10 +74,10 @@ function ForgotPasswordPage() {
                     <>
                         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                             <Title level={2} style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.5px', marginBottom: '8px', color: '#111' }}>
-                                Reset Password
+                                {t('forgot_password.title')}
                             </Title>
                             <AntText style={{ color: '#6b7280', fontSize: '14px', lineHeight: 1.6 }}>
-                                Enter your email and we'll send you a link to reset your password.
+                                {t('forgot_password.subtitle')}
                             </AntText>
                         </div>
 
@@ -97,12 +99,12 @@ function ForgotPasswordPage() {
                         <form onSubmit={handleSubmit}>
                             <div style={{ marginBottom: '20px' }}>
                                 <AntText style={{ fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px', color: '#111', display: 'block', marginBottom: '8px' }}>
-                                    Email Address
+                                    {t('forgot_password.email_label')}
                                 </AntText>
                                 <Input
                                     size="large"
                                     type="email"
-                                    placeholder="name@example.com"
+                                    placeholder={t('forgot_password.email_placeholder')}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     prefix={<Mail size={18} color="#9ca3af" />}
@@ -134,7 +136,7 @@ function ForgotPasswordPage() {
                                     boxShadow: '0 8px 20px rgba(26,95,158,0.25)',
                                 }}
                             >
-                                Send Reset Link
+                                {t('forgot_password.send_link')}
                             </Button>
                         </form>
 
@@ -144,7 +146,7 @@ function ForgotPasswordPage() {
                             color: '#6b7280', fontWeight: 600, fontSize: '14px',
                         }}>
                             <ArrowLeft size={16} />
-                            Back to Login
+                            {t('forgot_password.back_to_login')}
                         </Link>
                     </>
                 ) : (
@@ -157,9 +159,9 @@ function ForgotPasswordPage() {
                         }}>
                             <Mail size={36} color="#22c55e" />
                         </div>
-                        <Title level={3} style={{ fontWeight: 800, marginBottom: '8px' }}>Check your inbox</Title>
+                        <Title level={3} style={{ fontWeight: 800, marginBottom: '8px' }}>{t('forgot_password.check_inbox')}</Title>
                         <AntText style={{ color: '#6b7280', lineHeight: 1.6 }}>
-                            We've sent a reset link to <strong style={{ color: '#111' }}>{email}</strong>.
+                            {t('forgot_password.sent_link')} <strong style={{ color: '#111' }}>{email}</strong>.
                         </AntText>
 
                         <Button
@@ -172,14 +174,14 @@ function ForgotPasswordPage() {
                                 borderColor: '#e5e7eb', color: '#374151',
                             }}
                         >
-                            Resend Link
+                            {t('forgot_password.resend_link')}
                         </Button>
 
                         <Link to="/login" style={{
                             display: 'block', marginTop: '16px',
                             color: '#1a5f9e', fontWeight: 700, fontSize: '14px',
                         }}>
-                            Back to Login
+                            {t('forgot_password.back_to_login')}
                         </Link>
                     </div>
                 )}

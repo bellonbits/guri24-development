@@ -3,10 +3,12 @@ import { User, Mail, Phone, MapPin, Calendar, Edit2, Save, X, Camera, Award, Bri
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 import propertyApi from '../../utils/propertyApi';
+import { useTranslation } from 'react-i18next';
 import './AgentProfile.css';
 
 const AgentProfile = () => {
     const { user, updateUser, refreshUser } = useAuth();
+    const { t } = useTranslation();
     const [editing, setEditing] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -147,17 +149,17 @@ const AgentProfile = () => {
                         {!editing ? (
                             <button onClick={() => setEditing(true)} className="btn-edit-profile">
                                 <Edit2 size={18} />
-                                <span>Edit Profile</span>
+                                <span>{t('profile.edit_profile', 'Edit Profile')}</span>
                             </button>
                         ) : (
                             <div className="editing-actions-header">
                                 <button onClick={handleCancel} className="btn-cancel-profile">
                                     <X size={18} />
-                                    <span>Cancel</span>
+                                    <span>{t('profile.cancel', 'Cancel')}</span>
                                 </button>
                                 <button onClick={handleSubmit} disabled={loading} className="btn-save-profile">
                                     <Save size={18} />
-                                    <span>{loading ? 'Saving...' : 'Save Changes'}</span>
+                                    <span>{loading ? t('profile.saving', 'Saving...') : t('profile.save_changes', 'Save Changes')}</span>
                                 </button>
                             </div>
                         )}
@@ -174,7 +176,7 @@ const AgentProfile = () => {
                 {/* Left Column - Stats & Quick Info */}
                 <aside className="profile-sidebar">
                     <div className="info-card">
-                        <h3>Quick Info</h3>
+                        <h3>{t('agent_profile.quick_info', 'Quick Info')}</h3>
                         <div className="info-list">
                             <div className="info-item">
                                 <div>
@@ -228,7 +230,7 @@ const AgentProfile = () => {
                     </div>
 
                     <div className="info-card">
-                        <h3>Account Status</h3>
+                        <h3>{t('agent_profile.account_status', 'Account Status')}</h3>
                         <div className="status-list">
                             <div className="status-item">
                                 <span className="status-label">Email Verified</span>
@@ -258,8 +260,8 @@ const AgentProfile = () => {
                     <form onSubmit={handleSubmit} className="profile-edit-form">
                         <div className="form-section">
                             <div className="section-header">
-                                <h2>Personal Information</h2>
-                                <p>Update your personal details and contact information</p>
+                                <h2>{t('profile.personal_info', 'Personal Information')}</h2>
+                                <p>{t('agent_profile.admin_info_desc', 'Update your personal details and contact information')}</p>
                             </div>
 
                             <div className="form-grid">
@@ -333,8 +335,8 @@ const AgentProfile = () => {
 
                         <div className="form-section">
                             <div className="section-header">
-                                <h2>Professional Details</h2>
-                                <p>Share your professional background and expertise</p>
+                                <h2>{t('profile.professional_details', 'Professional Details')}</h2>
+                                <p>{t('profile.professional_hint', 'Share your professional background and expertise')}</p>
                             </div>
 
                             <div className="form-grid">
@@ -393,15 +395,15 @@ const AgentProfile = () => {
                             <div className="form-section verification-section">
                                 <div className="section-header">
                                     <div className="header-with-badge">
-                                        <h2>Agent Verification</h2>
+                                        <h2>{t('profile.agent_verification', 'Agent Verification')}</h2>
                                         {user?.agent_status === 'verified' && (
                                             <span className="premium-badge">
                                                 <Award size={14} />
-                                                Verified Pro
+                                                {t('profile.verified_pro', 'Verified Pro')}
                                             </span>
                                         )}
                                     </div>
-                                    <p>Submit identity and business documents to get the "Verified Agent" badge.</p>
+                                    <p>{t('profile.verification_desc', 'Submit identity and business documents to get the "Verified Agent" badge.')}</p>
                                 </div>
 
                                 <div className="verification-content">
@@ -409,8 +411,8 @@ const AgentProfile = () => {
                                         <div className="verification-success-box">
                                             <CheckCircle size={40} className="success-icon" />
                                             <div>
-                                                <h3>You are Verified!</h3>
-                                                <p>Your account is fully verified. Your listings now show the verification badge.</p>
+                                                <h3>{t('profile.you_are_verified', 'You are Verified!')}</h3>
+                                                <p>{t('profile.verified_desc', 'Your account is fully verified. Your listings now show the verification badge.')}</p>
                                             </div>
                                         </div>
                                     ) : (
@@ -514,7 +516,7 @@ const AgentProfile = () => {
                                                 )}
 
                                                 {/* Documents List */}
-                                                <h3>Submitted Documents</h3>
+                                                <h3>{t('profile.submitted_documents', 'Submitted Documents')}</h3>
                                                 {user?.verification_documents?.length > 0 ? (
                                                     <div className="docs-list">
                                                         {user.verification_documents.map((doc, idx) => (
@@ -558,11 +560,11 @@ const AgentProfile = () => {
                         {editing && (
                             <div className="form-actions">
                                 <button type="button" onClick={handleCancel} className="btn-secondary">
-                                    Cancel
+                                    {t('profile.cancel', 'Cancel')}
                                 </button>
                                 <button type="submit" disabled={loading} className="btn-primary">
                                     <Save size={18} />
-                                    <span>{loading ? 'Saving...' : 'Save Changes'}</span>
+                                    <span>{loading ? t('profile.saving', 'Saving...') : t('profile.save_changes', 'Save Changes')}</span>
                                 </button>
                             </div>
                         )}

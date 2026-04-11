@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './ContactPage.css';
 import {
     Phone,
@@ -12,6 +13,7 @@ import {
 import SEO from '../components/SEO';
 
 const ContactPage = () => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -22,12 +24,12 @@ const ContactPage = () => {
     });
 
     const services = [
-        'Property Management',
-        'Buying A Home',
-        'Selling Property',
-        'Consultation',
-        'Investment',
-        'Other'
+        t('contact.service_management'),
+        t('contact.service_buying'),
+        t('contact.service_selling'),
+        t('contact.service_consultation'),
+        t('contact.service_investment'),
+        t('contact.service_other')
     ];
 
     const toggleService = (service) => {
@@ -41,7 +43,7 @@ const ContactPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert('Thank you! We will be in touch shortly.');
+        alert(t('contact.thank_you'));
     };
 
     return (
@@ -57,13 +59,13 @@ const ContactPage = () => {
                     {/* Left Column: Info */}
                     <div className="contact-info">
                         <div className="contact-badge">
-                            Contact Us
+                            {t('contact.badge')}
                         </div>
                         <h1 className="contact-heading">
-                            Let's Get In Touch.
+                            {t('contact.heading')}
                         </h1>
                         <p className="contact-subheading">
-                            We are here to help with your real estate needs. Whether you are buying, selling, or renting, reach out to us.
+                            {t('contact.subheading')}
                         </p>
 
                         <div className="contact-details">
@@ -72,7 +74,7 @@ const ContactPage = () => {
                                     <Mail size={20} />
                                 </div>
                                 <div>
-                                    <p className="detail-label">Email Us</p>
+                                    <p className="detail-label">{t('contact.email_label')}</p>
                                     <a href="mailto:hello@guri24.com" className="detail-link">hello@guri24.com</a>
                                 </div>
                             </div>
@@ -81,7 +83,7 @@ const ContactPage = () => {
                                     <Phone size={20} />
                                 </div>
                                 <div>
-                                    <p className="detail-label">Call Us</p>
+                                    <p className="detail-label">{t('contact.call_label')}</p>
                                     <a href="tel:+254706070747" className="detail-link">+254 706 070 747</a>
                                 </div>
                             </div>
@@ -90,8 +92,8 @@ const ContactPage = () => {
                                     <MapPin size={20} />
                                 </div>
                                 <div>
-                                    <p className="detail-label">Visit Us</p>
-                                    <p className="detail-text">Westpark Towers, Nairobi</p>
+                                    <p className="detail-label">{t('contact.visit_label')}</p>
+                                    <p className="detail-text">{t('contact.visit_address')}</p>
                                 </div>
                             </div>
                         </div>
@@ -102,13 +104,13 @@ const ContactPage = () => {
                         <form onSubmit={handleSubmit} className="contact-form">
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label className="form-label">Full Name</label>
+                                    <label className="form-label">{t('contact.full_name')}</label>
                                     <div className="input-wrapper">
                                         <User className="input-icon" size={18} />
                                         <input
                                             type="text"
                                             className="form-input"
-                                            placeholder="Enter your name"
+                                            placeholder={t('contact.full_name_placeholder')}
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             required
@@ -117,13 +119,13 @@ const ContactPage = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="form-label">Email Address</label>
+                                    <label className="form-label">{t('contact.email_address')}</label>
                                     <div className="input-wrapper">
                                         <Mail className="input-icon" size={18} />
                                         <input
                                             type="email"
                                             className="form-input"
-                                            placeholder="Enter your email"
+                                            placeholder={t('contact.email_placeholder')}
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                             required
@@ -134,13 +136,13 @@ const ContactPage = () => {
 
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label className="form-label">Phone Number</label>
+                                    <label className="form-label">{t('contact.phone_number')}</label>
                                     <div className="input-wrapper">
                                         <Phone className="input-icon" size={18} />
                                         <input
                                             type="tel"
                                             className="form-input"
-                                            placeholder="Enter phone number"
+                                            placeholder={t('contact.phone_placeholder')}
                                             value={formData.phone}
                                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                         />
@@ -148,7 +150,7 @@ const ContactPage = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="form-label">I am a...</label>
+                                    <label className="form-label">{t('contact.i_am')}</label>
                                     <div className="input-wrapper">
                                         <Briefcase className="input-icon" size={18} />
                                         <select
@@ -156,12 +158,12 @@ const ContactPage = () => {
                                             value={formData.jobPosition}
                                             onChange={(e) => setFormData({ ...formData, jobPosition: e.target.value })}
                                         >
-                                            <option value="" disabled>Select option...</option>
-                                            <option value="Buyer">Property Buyer</option>
-                                            <option value="Seller">Property Seller</option>
-                                            <option value="Agent">Real Estate Agent</option>
-                                            <option value="Investor">Investor</option>
-                                            <option value="Other">Other</option>
+                                            <option value="" disabled>{t('contact.select_option')}</option>
+                                            <option value="Buyer">{t('contact.buyer')}</option>
+                                            <option value="Seller">{t('contact.seller')}</option>
+                                            <option value="Agent">{t('contact.agent')}</option>
+                                            <option value="Investor">{t('contact.investor')}</option>
+                                            <option value="Other">{t('contact.other')}</option>
                                         </select>
                                         <ChevronDown className="select-icon" size={18} />
                                     </div>
@@ -169,7 +171,7 @@ const ContactPage = () => {
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Services</label>
+                                <label className="form-label">{t('contact.services_label')}</label>
                                 <div className="services-grid">
                                     {services.map((service) => (
                                         <button
@@ -185,10 +187,10 @@ const ContactPage = () => {
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Message</label>
+                                <label className="form-label">{t('contact.message_label')}</label>
                                 <textarea
                                     className="form-textarea"
-                                    placeholder="Tell us about your needs..."
+                                    placeholder={t('contact.message_placeholder')}
                                     value={formData.message}
                                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                     required
@@ -199,7 +201,7 @@ const ContactPage = () => {
                                 type="submit"
                                 className="submit-button"
                             >
-                                Send Message
+                                {t('contact.send_message')}
                                 <ArrowRight size={20} />
                             </button>
                         </form>

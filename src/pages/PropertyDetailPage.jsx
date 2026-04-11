@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './PropertyDetailPage.css';
 import analytics from '../utils/analytics';
 import { MapPin, ChevronLeft, ChevronRight, Share2, Building2, ExternalLink, Check } from 'lucide-react';
@@ -37,6 +38,7 @@ const getAmenityEmoji = (feature) => {
 };
 
 function PropertyDetailPage() {
+    const { t } = useTranslation();
     const { slug } = useParams();
     const [property, setProperty] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -111,17 +113,17 @@ function PropertyDetailPage() {
     const handleInquirySubmit = async (e) => {
         e.preventDefault();
         if (inquiryForm.message.length < 10) {
-            message.error('Message must be at least 10 characters.');
+            message.error(t('property.message_too_short'));
             return;
         }
         setSubmitting(true);
         try {
             await createInquiry({ property_id: property.id, ...inquiryForm });
-            message.success('Inquiry sent! An agent will contact you soon.');
+            message.success(t('property.inquiry_sent'));
             setInquiryForm({ name: user?.name || '', email: user?.email || '', phone: user?.phone || '', message: '' });
             setShowInquiry(false);
         } catch {
-            message.error('Failed to send inquiry. Please try again.');
+            message.error(t('property.inquiry_failed'));
         } finally {
             setSubmitting(false);
         }
@@ -129,14 +131,14 @@ function PropertyDetailPage() {
 
     const handleShare = () => {
         navigator.clipboard.writeText(window.location.href);
-        message.success('Link copied!');
+        message.success(t('property.link_copied'));
     };
 
     if (loading) {
         return (
             <div className="pd-loading-screen">
                 <Spin size="large" />
-                <p>Loading property...</p>
+                <p>{t('property.loading')}</p>
             </div>
         );
     }
@@ -148,9 +150,9 @@ function PropertyDetailPage() {
                     <div className="pd-nf-icon">
                         <Building2 size={40} color="#ef4444" />
                     </div>
-                    <h1>Property Not Found</h1>
-                    <p>The property you're looking for doesn't exist or has been removed.</p>
-                    <Link to="/listings" className="pd-nf-btn">Back to Listings</Link>
+                    <h1>{t('property.not_found_title')}</h1>
+                    <p>{t('property.not_found_desc')}</p>
+                    <Link to="/listings" className="pd-nf-btn">{t('property.back_to_listings')}</Link>
                 </div>
             </div>
         );
@@ -170,9 +172,9 @@ function PropertyDetailPage() {
 
                 {/* Breadcrumbs */}
                 <nav className="pd-breadcrumb">
-                    <Link to="/">Home</Link>
+                    <Link to="/">{t('property.home_breadcrumb')}</Link>
                     <span>/</span>
-                    <Link to="/listings">Properties</Link>
+                    <Link to="/listings">{t('property.properties_breadcrumb')}</Link>
                     <span>/</span>
                     <span>{property.title}</span>
                 </nav>
@@ -192,7 +194,7 @@ function PropertyDetailPage() {
                     <div className="pd-title-actions">
                         <button className="pd-action-btn" onClick={handleShare}>
                             <Share2 size={18} />
-                            <span>Share</span>
+                            <span>{t('property.share')}</span>
                         </button>
                         <div className="pd-price-pill">
                             {formatPrice(property.price, property.currency)}
@@ -240,24 +242,24 @@ function PropertyDetailPage() {
                         <div className="pd-specs-bar">
                             <div className="pd-spec">
                                 <span className="pd-spec-val">{property.bedrooms ?? 0}</span>
-                                <span className="pd-spec-lbl">Bedrooms</span>
+                                <span className="pd-spec-lbl">{t('property.bedrooms')}</span>
                             </div>
                             <div className="pd-spec-divider" />
                             <div className="pd-spec">
                                 <span className="pd-spec-val">{property.bathrooms ?? 0}</span>
-                                <span className="pd-spec-lbl">Bathrooms</span>
+                                <span className="pd-spec-lbl">{t('property.bathrooms')}</span>
                             </div>
                             <div className="pd-spec-divider" />
                             <div className="pd-spec">
                                 <span className="pd-spec-val">{property.size || 'N/A'}</span>
-                                <span className="pd-spec-lbl">Area</span>
+                                <span className="pd-spec-lbl">{t('property.area')}</span>
                             </div>
                             {property.floors && (
                                 <>
                                     <div className="pd-spec-divider" />
                                     <div className="pd-spec">
                                         <span className="pd-spec-val">{property.floors}</span>
-                                        <span className="pd-spec-lbl">Floors</span>
+                                        <span className="pd-spec-lbl">{t('property.floors')}</span>
                                     </div>
                                 </>
                             )}
@@ -265,23 +267,23 @@ function PropertyDetailPage() {
 
                         {/* About */}
                         <section className="pd-section">
-                            <h2 className="pd-section-title">About this property</h2>
-                            <p className="pd-description">{property.description || 'No description available. Contact the agent for more details.'}</p>
+                            <h2 className="pd-section-title">{t('property.about_property')}</h2>
+                            <p className="pd-description">{property.description || t('property.no_description')}</p>
                         </section>
 
                         {/* Property Details */}
                         <section className="pd-section">
-                            <h2 className="pd-section-title">Property Details</h2>
+                            <h2 className="pd-section-title">{t('property.property_details')}</h2>
                             <div className="pd-details-grid">
                                 {[
-                                    { label: 'Type', value: typeLabel },
-                                    { label: 'Purpose', value: purposeLabel },
-                                    { label: 'Status', value: statusLabel },
-                                    { label: 'Address', value: property.address || `${property.location.city}, Kenya` },
-                                    ...(property.bedrooms != null ? [{ label: 'Bedrooms', value: property.bedrooms }] : []),
-                                    ...(property.bathrooms != null ? [{ label: 'Bathrooms', value: property.bathrooms }] : []),
-                                    ...(property.area_sqft ? [{ label: 'Area', value: `${property.area_sqft.toLocaleString()} sq ft` }] : []),
-                                    ...(property.year_built ? [{ label: 'Year Built', value: property.year_built }] : []),
+                                    { label: t('property.type'), value: typeLabel },
+                                    { label: t('property.purpose'), value: purposeLabel },
+                                    { label: t('property.status'), value: statusLabel },
+                                    { label: t('property.address'), value: property.address || `${property.location.city}, Kenya` },
+                                    ...(property.bedrooms != null ? [{ label: t('property.bedrooms'), value: property.bedrooms }] : []),
+                                    ...(property.bathrooms != null ? [{ label: t('property.bathrooms'), value: property.bathrooms }] : []),
+                                    ...(property.area_sqft ? [{ label: t('property.area'), value: `${property.area_sqft.toLocaleString()} sq ft` }] : []),
+                                    ...(property.year_built ? [{ label: t('property.year_built'), value: property.year_built }] : []),
                                 ].map((row, i) => (
                                     <div className="pd-detail-row" key={i}>
                                         <span className="pd-detail-label">{row.label}</span>
@@ -294,9 +296,9 @@ function PropertyDetailPage() {
                         {/* Amenities */}
                         <section className="pd-section">
                             <h2 className="pd-section-title">
-                                Amenities
+                                {t('property.amenities')}
                                 {property.features?.length > 0 && (
-                                    <span className="pd-amenity-count">{property.features.length} features</span>
+                                    <span className="pd-amenity-count">{t('property.features_count', { count: property.features.length })}</span>
                                 )}
                             </h2>
                             {property.features?.length > 0 ? (
@@ -311,14 +313,14 @@ function PropertyDetailPage() {
                             ) : (
                                 <div className="pd-amenities-empty">
                                     <Check size={20} color="#9ca3af" />
-                                    <span>Standard amenities included. Contact agent for full list.</span>
+                                    <span>{t('property.no_amenities')}</span>
                                 </div>
                             )}
                         </section>
 
                         {/* Location / Map */}
                         <section className="pd-section">
-                            <h2 className="pd-section-title">Location</h2>
+                            <h2 className="pd-section-title">{t('property.location_section')}</h2>
                             <div className="pd-map-box">
                                 <Map
                                     center={property.coordinates}
@@ -327,7 +329,7 @@ function PropertyDetailPage() {
                             </div>
                             <div className="pd-map-footer">
                                 <MapPin size={15} />
-                                <span>{property.location.city}{property.location.area ? `, ${property.location.area}` : ''}, Kenya</span>
+                                <span>{property.location.city}{property.location.area ? `, ${property.location.area}` : ''}, {t('common.kenya')}</span>
                                 {!property.coordinates && (
                                     <a
                                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((property.address || property.title) + ' ' + property.location.city)}`}
@@ -336,7 +338,7 @@ function PropertyDetailPage() {
                                         className="pd-map-link"
                                     >
                                         <ExternalLink size={14} />
-                                        Open in Maps
+                                        {t('property.open_in_maps')}
                                     </a>
                                 )}
                             </div>
@@ -356,30 +358,30 @@ function PropertyDetailPage() {
                         ) : (
                         <div className="pd-sidebar-card">
                             <div className="pd-sidebar-price">
-                                <span className="pd-price-label">Price</span>
+                                <span className="pd-price-label">{t('property.price_label')}</span>
                                 <span className="pd-price-value">{formatPrice(property.price, property.currency)}</span>
                                 {property.priceUnit && property.priceUnit !== '/ month' ? null : (
-                                    property.purpose === 'rent' && <span className="pd-price-unit">/ month</span>
+                                    property.purpose === 'rent' && <span className="pd-price-unit">{t('property.per_month')}</span>
                                 )}
                             </div>
 
                             <button className="pd-cta-btn" onClick={() => setIsChatOpen(true)}>
-                                Request a Tour
-                                <span className="pd-cta-sub">Earliest available tomorrow</span>
+                                {t('property.request_tour')}
+                                <span className="pd-cta-sub">{t('property.earliest_tomorrow')}</span>
                             </button>
 
                             <button
                                 className="pd-secondary-btn"
                                 onClick={() => setShowInquiry(prev => !prev)}
                             >
-                                {showInquiry ? 'Hide Form' : 'Send Inquiry'}
+                                {showInquiry ? t('property.hide_form') : t('property.send_inquiry')}
                             </button>
 
                             {showInquiry && (
                                 <form className="pd-inquiry-form" onSubmit={handleInquirySubmit}>
                                     <input
                                         className="pd-input"
-                                        placeholder="Your name"
+                                        placeholder={t('property.your_name')}
                                         value={inquiryForm.name}
                                         onChange={e => setInquiryForm(p => ({ ...p, name: e.target.value }))}
                                         required
@@ -387,27 +389,27 @@ function PropertyDetailPage() {
                                     <input
                                         className="pd-input"
                                         type="email"
-                                        placeholder="Email address"
+                                        placeholder={t('property.email_address')}
                                         value={inquiryForm.email}
                                         onChange={e => setInquiryForm(p => ({ ...p, email: e.target.value }))}
                                         required
                                     />
                                     <input
                                         className="pd-input"
-                                        placeholder="Phone number"
+                                        placeholder={t('property.phone_number')}
                                         value={inquiryForm.phone}
                                         onChange={e => setInquiryForm(p => ({ ...p, phone: e.target.value }))}
                                     />
                                     <textarea
                                         className="pd-input pd-textarea"
-                                        placeholder="I'm interested in this property..."
+                                        placeholder={t('property.interested_message')}
                                         value={inquiryForm.message}
                                         onChange={e => setInquiryForm(p => ({ ...p, message: e.target.value }))}
                                         rows={3}
                                         required
                                     />
                                     <button className="pd-cta-btn" type="submit" disabled={submitting}>
-                                        {submitting ? 'Sending...' : 'Send Message'}
+                                        {submitting ? t('property.sending') : t('property.send_message')}
                                     </button>
                                 </form>
                             )}
@@ -416,7 +418,7 @@ function PropertyDetailPage() {
 
                         {/* Agent Card */}
                         <div className="pd-sidebar-card pd-agent-card">
-                            <p className="pd-agent-label">Listed by</p>
+                            <p className="pd-agent-label">{t('property.listed_by')}</p>
                             <Link
                                 to={property.agent?.id ? `/agents/${property.agent.id}` : '#'}
                                 className="pd-agent-link"
@@ -428,12 +430,12 @@ function PropertyDetailPage() {
                                         alt={property.agent?.name}
                                     />
                                     <div style={{ flex: 1 }}>
-                                        <div className="pd-agent-name">{property.agent?.name || 'Guri Agent'}</div>
+                                        <div className="pd-agent-name">{property.agent?.name || t('property.guri_agent')}</div>
                                         <div className="pd-agent-role">
-                                            {property.agent?.specialization || 'Professional Agent'}
+                                            {property.agent?.specialization || t('property.professional_agent')}
                                         </div>
                                     </div>
-                                    <span className="pd-agent-view">View →</span>
+                                    <span className="pd-agent-view">{t('property.view_arrow')}</span>
                                 </div>
                             </Link>
                             {property.agent?.phone && (
@@ -452,10 +454,10 @@ function PropertyDetailPage() {
                     <div className="pd-container">
                         <div className="pd-similar-header">
                             <div>
-                                <div className="pd-similar-label">You might also like</div>
-                                <h2 className="pd-similar-title">Similar Properties</h2>
+                                <div className="pd-similar-label">{t('property.you_might_like')}</div>
+                                <h2 className="pd-similar-title">{t('property.similar_properties')}</h2>
                             </div>
-                            <Link to="/listings" className="pd-view-all">View All</Link>
+                            <Link to="/listings" className="pd-view-all">{t('property.view_all')}</Link>
                         </div>
                         <Row gutter={[28, 28]}>
                             {relatedProperties.map(prop => (
