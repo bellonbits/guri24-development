@@ -9,8 +9,9 @@ platform :ios do
       teamid: "2969422VU2"
     )
 
-    # Disable automatic signing for CI to avoid conflicts with manual overrides
-    disable_automatic_code_signing(
+    # Use the newer, non-deprecated action to force manual signing
+    update_code_signing_settings(
+      use_automatic_signing: false,
       path: "App.xcodeproj"
     )
 
@@ -25,7 +26,7 @@ platform :ios do
       configuration: "Release",        # Build configuration
       silent: false,                   # Show build output for debugging
       codesigning_identity: "Apple Distribution", # Ensure it uses the distribution cert
-      xcargs: "DEVELOPMENT_TEAM=2969422VU2 CODE_SIGN_STYLE=Manual" # Enforce manual signing style
+      xcargs: "DEVELOPMENT_TEAM=2969422VU2 CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='guri24'" # Explicitly set team and profile
     )
   end
 end
