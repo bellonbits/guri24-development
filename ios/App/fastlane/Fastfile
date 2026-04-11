@@ -13,7 +13,8 @@ platform :ios do
       clean: true,                    # Clean the build directory before starting
       configuration: "Release",        # Build configuration
       silent: false,                   # Show build output for debugging
-      codesigning_identity: "Apple Distribution" # Ensure it uses the distribution cert
+      codesigning_identity: "Apple Distribution", # Ensure it uses the distribution cert
+      xcargs: "DEVELOPMENT_TEAM=2969422VU2" # Explicitly set team to avoid signing errors
     )
   end
 end
