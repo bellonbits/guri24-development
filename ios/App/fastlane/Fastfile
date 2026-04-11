@@ -9,6 +9,11 @@ platform :ios do
       teamid: "2969422VU2"
     )
 
+    # Disable automatic signing for CI to avoid conflicts with manual overrides
+    disable_automatic_code_signing(
+      path: "App.xcodeproj"
+    )
+
     # Archive and build the IPA
     # We use 'gym' (alias for build_app) to handle the export
     gym(
@@ -20,7 +25,7 @@ platform :ios do
       configuration: "Release",        # Build configuration
       silent: false,                   # Show build output for debugging
       codesigning_identity: "Apple Distribution", # Ensure it uses the distribution cert
-      xcargs: "DEVELOPMENT_TEAM=2969422VU2" # Explicitly set team to avoid signing errors
+      xcargs: "DEVELOPMENT_TEAM=2969422VU2 CODE_SIGN_STYLE=Manual" # Enforce manual signing style
     )
   end
 end
