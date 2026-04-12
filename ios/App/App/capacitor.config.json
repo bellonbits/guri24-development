@@ -1,0 +1,37 @@
+{
+	"appId": "com.guri24.app",
+	"appName": "Guri24",
+	"webDir": "dist",
+	"server": {
+		"androidScheme": "https"
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 2000,
+			"launchAutoHide": true,
+			"backgroundColor": "#0d3b66",
+			"androidSplashResourceName": "splash",
+			"androidScaleType": "CENTER_CROP",
+			"showSpinner": false,
+			"splashFullScreen": true,
+			"splashImmersive": true
+		},
+		"StatusBar": {
+			"style": "LIGHT",
+			"backgroundColor": "#0d3b66"
+		},
+		"Keyboard": {
+			"resize": "body",
+			"resizeOnFullScreen": true
+		}
+	},
+	"android": {
+		"minWebViewVersion": 60,
+		"backgroundColor": "#ffffff"
+	},
+	"ios": {
+		"contentInset": "automatic",
+		"backgroundColor": "#ffffff"
+	},
+	"packageClassList": []
+}
