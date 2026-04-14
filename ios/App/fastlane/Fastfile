@@ -1,32 +1,54 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Build the iOS app for distribution"
   lane :build do
-    # Ensure the project uses the correct team before building
-    update_project_team(
-      path: "guri24.xcodeproj",
-      teamid: "2969422VU2"
+    # Create a temporary keychain for this CI run
+    keychain_name = "app-signing"
+    keychain_password = SecureRandom.hex
+
+    create_keychain(
+      name: keychain_name,
+      password: keychain_password,
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: false
     )
 
-    # Use the newer, non-deprecated action to force manual signing
-    update_code_signing_settings(
-      use_automatic_signing: false,
-      path: "guri24.xcodeproj"
+    # Import the distribution certificate from the file decoded by the workflow
+    import_certificate(
+      certificate_path: "/tmp/cert.p12",
+      certificate_password: ENV["DISTRIBUTION_CERT_PASSWORD"],
+      keychain_name: keychain_name,
+      keychain_password: keychain_password
     )
 
-    # Archive and build the IPA
-    # We use 'gym' (alias for build_app) to handle the export
+    # Authenticate with App Store Connect
+    api_key = app_store_connect_api_key(
+      key_id: "Y7479A5B46",
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_filepath: File.expand_path("~/Downloads/AuthKey_Y7479A5B46.p8"),
+      duration: 1200,
+      in_house: false
+    )
+
+    # Download (or create) the App Store distribution provisioning profile
+    sigh(
+      api_key: api_key,
+      app_identifier: "com.guri24.app",
+      readonly: false
+    )
+
+    # Build and archive — use SIGH_UUID set by sigh above
     gym(
       scheme: "guri24",
-      export_method: "app-store",      # Change to 'ad-hoc' or 'development' if needed
+      export_method: "app-store",
       output_directory: "./build",
       output_name: "Guri24.ipa",
-      clean: true,                    # Clean the build directory before starting
-      configuration: "Release",        # Build configuration
-      silent: false,                   # Show build output for debugging
-      codesigning_identity: "Apple Distribution", # Ensure it uses the distribution cert
-      xcargs: "DEVELOPMENT_TEAM=2969422VU2 CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='guri24'" # Explicitly set team and profile
+      clean: true,
+      configuration: "Release",
+      codesigning_identity: "Apple Distribution",
+      xcargs: "DEVELOPMENT_TEAM=2969422VU2 CODE_SIGN_STYLE=Manual \"PROVISIONING_PROFILE[com.guri24.app]=#{ENV['SIGH_UUID']}\""
     )
   end
 end

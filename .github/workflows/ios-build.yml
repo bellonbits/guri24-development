@@ -59,12 +59,17 @@ jobs:
           mkdir -p ~/Downloads
           echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" > ~/Downloads/AuthKey_Y7479A5B46.p8
 
+      - name: Decode distribution certificate
+        env:
+          DISTRIBUTION_CERT_P12: ${{ secrets.DISTRIBUTION_CERT_P12 }}
+        run: echo "$DISTRIBUTION_CERT_P12" | base64 --decode > /tmp/cert.p12
+
       - name: Build IPA
         working-directory: ios/App
         run: bundle exec fastlane build
         env:
-          DISTRIBUTION_CERT_P12: ${{ secrets.DISTRIBUTION_CERT_P12 }}
           DISTRIBUTION_CERT_PASSWORD: ${{ secrets.DISTRIBUTION_CERT_PASSWORD }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
