@@ -5,20 +5,20 @@ platform :ios do
   lane :build do
     # Ensure the project uses the correct team before building
     update_project_team(
-      path: "App.xcodeproj",
+      path: "guri24.xcodeproj",
       teamid: "2969422VU2"
     )
 
     # Use the newer, non-deprecated action to force manual signing
     update_code_signing_settings(
       use_automatic_signing: false,
-      path: "App.xcodeproj"
+      path: "guri24.xcodeproj"
     )
 
     # Archive and build the IPA
     # We use 'gym' (alias for build_app) to handle the export
     gym(
-      scheme: "App",                  # Default Capacitor scheme name
+      scheme: "guri24",
       export_method: "app-store",      # Change to 'ad-hoc' or 'development' if needed
       output_directory: "./build",
       output_name: "Guri24.ipa",
