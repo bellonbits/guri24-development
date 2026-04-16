@@ -38,7 +38,7 @@ platform :ios do
     )
 
     gym(
-      scheme: "guri24",
+      scheme: "App",
       export_method: "app-store",
       output_directory: "./build",
       output_name: "Guri24.ipa",
