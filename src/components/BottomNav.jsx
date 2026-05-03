@@ -2,9 +2,10 @@ import React from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Search, PlusCircle, Users, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import './BottomNav.css';
 
 const BottomNav = () => {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -15,91 +16,39 @@ const BottomNav = () => {
 
     const handleListProperty = () => {
         if (!isAuthenticated) {
-            navigate('/login?redirect=/listings');
+            navigate('/login?redirect=/agent/properties/add');
             return;
         }
         navigate('/agent/properties/add');
     };
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl flex justify-around items-center border-t border-black/5 z-[1999] px-[10px] md:hidden dark:bg-black/90 dark:border-white/10" style={{ minHeight: '68px', paddingBottom: 'env(safe-area-inset-bottom)', paddingTop: '8px' }}>
-            <NavLink
-                to="/"
-                className={({ isActive }) =>
-                    `flex flex-col items-center justify-center no-underline flex-1 gap-1 transition-all duration-300 cursor-pointer ${isActive ? 'text-primary' : 'text-gray-500'}`
-                }
-            >
-                {({ isActive }) => (
-                    <>
-                        <Home size={22} className={`transition-transform duration-300 ${isActive ? '-translate-y-0.5' : ''}`} />
-                        <span className="text-[10px] font-semibold">Home</span>
-                    </>
-                )}
+        <nav className="bottom-nav">
+            <NavLink to="/" className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}>
+                <Home size={22} />
+                <span className="bottom-nav-label">Home</span>
             </NavLink>
 
-            <NavLink
-                to="/listings"
-                className={({ isActive }) =>
-                    `flex flex-col items-center justify-center no-underline flex-1 gap-1 transition-all duration-300 cursor-pointer ${isActive ? 'text-primary' : 'text-gray-500'}`
-                }
-            >
-                {({ isActive }) => (
-                    <>
-                        <Search size={22} className={`transition-transform duration-300 ${isActive ? '-translate-y-0.5' : ''}`} />
-                        <span className="text-[10px] font-semibold">Explore</span>
-                    </>
-                )}
+            <NavLink to="/listings" className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}>
+                <Search size={22} />
+                <span className="bottom-nav-label">Explore</span>
             </NavLink>
 
-            <div
-                className="flex flex-col items-center justify-center flex-1 gap-1 cursor-pointer relative"
-                style={{ marginTop: '-22px' }}
-                onClick={handleListProperty}
-            >
-                <div style={{
-                    width: '52px',
-                    height: '52px',
-                    background: 'linear-gradient(135deg, #1a5f9e 0%, #0d3b66 100%)',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    boxShadow: '0 4px 16px rgba(26,95,158,0.45)',
-                    border: '3px solid white',
-                    transition: 'all 0.2s ease',
-                }}>
-                    <PlusCircle size={22} />
+            <div className="bottom-nav-list-btn" onClick={handleListProperty}>
+                <div className="list-btn-circle">
+                    <PlusCircle size={24} strokeWidth={2.5} />
                 </div>
-                <span className="text-[10px] font-semibold" style={{ color: '#1a5f9e', marginTop: '2px' }}>List</span>
+                <span className="list-btn-label">List</span>
             </div>
 
-            <NavLink
-                to="/about"
-                className={({ isActive }) =>
-                    `flex flex-col items-center justify-center no-underline flex-1 gap-1 transition-all duration-300 cursor-pointer ${isActive ? 'text-primary' : 'text-gray-500'}`
-                }
-            >
-                {({ isActive }) => (
-                    <>
-                        <Users size={22} className={`transition-transform duration-300 ${isActive ? '-translate-y-0.5' : ''}`} />
-                        <span className="text-[10px] font-semibold">Agents</span>
-                    </>
-                )}
+            <NavLink to="/about" className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}>
+                <Users size={22} />
+                <span className="bottom-nav-label">Agents</span>
             </NavLink>
 
-            <NavLink
-                to="/profile"
-                className={({ isActive }) =>
-                    `flex flex-col items-center justify-center no-underline flex-1 gap-1 transition-all duration-300 cursor-pointer ${isActive ? 'text-primary' : 'text-gray-500'}`
-                }
-            >
-                {({ isActive }) => (
-                    <>
-                        <User size={22} className={`transition-transform duration-300 ${isActive ? '-translate-y-0.5' : ''}`} />
-                        <span className="text-[10px] font-semibold">{isAuthenticated ? 'Profile' : 'Login'}</span>
-                    </>
-                )}
+            <NavLink to="/profile" className={({ isActive }) => `bottom-nav-item ${isActive ? 'active' : ''}`}>
+                <User size={22} />
+                <span className="bottom-nav-label">{isAuthenticated ? 'Profile' : 'Login'}</span>
             </NavLink>
         </nav>
     );

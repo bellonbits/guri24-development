@@ -144,7 +144,7 @@
 .profile-header-info h1 {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--p-text);
+  color: #0d3b66 !important;
   margin: 0 0 4px;
   line-height: 1.2;
   letter-spacing: -0.03em;
@@ -153,8 +153,9 @@
 .profile-email {
   color: #64748b !important;
   font-size: 0.875rem;
-  margin: 0 0 10px !important;
-  font-weight: 500;
+  margin: 0 0 12px !important;
+  font-weight: 600;
+  display: block;
 }
 
 .profile-badges {

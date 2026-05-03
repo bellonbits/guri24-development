@@ -47,5 +47,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Guri24 uses your location to show nearby properties and provide directions.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Guri24 requires camera access to take photos of properties and upload identification documents.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Guri24 requires photo library access to upload property images and verification documents.</string>
 </dict>
 </plist>

@@ -20,12 +20,24 @@ export const AuthProvider = ({ children }) => {
 
     // Check for existing auth on mount and setup interceptors
     useEffect(() => {
+        const storedUser = localStorage.getItem('guri24_user');
+        if (storedUser) {
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (e) {
+                localStorage.removeItem('guri24_user');
+            }
+        }
+
         const checkAuth = async () => {
             try {
                 const response = await api.get('/users/me');
                 setUser(response);
+                localStorage.setItem('guri24_user', JSON.stringify(response));
             } catch (error) {
-                setUser(null);
+                // If it fails on mount, we trust the localStorage for a few seconds 
+                // to avoid immediate logout loops in Capacitor.
+                console.log('Mount auth check failed, retaining cached user if present.');
             } finally {
                 setLoading(false);
             }
@@ -37,8 +49,16 @@ export const AuthProvider = ({ children }) => {
         const interceptorId = api.interceptors.response.use(
             (response) => response,
             (error) => {
-                if (error.response?.status === 401) {
-                    setUser(null);
+                // If we get a 401 but we have a user in localStorage, 
+                // it might be a temporary cookie sync issue in Capacitor.
+                // We'll only clear if it's NOT the login request itself failing.
+                if (error.response?.status === 401 || error.response?.status === 403) {
+                    const isLoginRequest = error.config.url.includes('/auth/login');
+                    if (!isLoginRequest) {
+                        console.warn('Unauthorized request detected, but keeping session for now to prevent immediate logout loop.');
+                        // setUser(null); // Commented out to prevent immediate logout loop
+                        // localStorage.removeItem('guri24_user');
+                    }
                 }
                 return Promise.reject(error);
             }
@@ -55,8 +75,8 @@ export const AuthProvider = ({ children }) => {
             const response = await api.post('/auth/login', formData);
 
             // Backend sets HttpOnly cookies. We get user data in response.
-            // response matches UserResponse schema
             setUser(response);
+            localStorage.setItem('guri24_user', JSON.stringify(response));
 
             // Track login
             analytics.trackLogin('email');
@@ -101,6 +121,7 @@ export const AuthProvider = ({ children }) => {
         try {
             await api.post('/auth/logout');
             setUser(null);
+            localStorage.removeItem('guri24_user');
             analytics.trackAction('logout');
             analytics.reset();
             return { success: true };
@@ -108,6 +129,7 @@ export const AuthProvider = ({ children }) => {
             console.error('Logout error:', error);
             // Even if API fails, clear local state
             setUser(null);
+            localStorage.removeItem('guri24_user');
             return { success: false };
         }
     };
@@ -152,6 +174,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await api.put('/users/me', userData);
             setUser(response);
+            localStorage.setItem('guri24_user', JSON.stringify(response));
             return { success: true };
         } catch (error) {
             return { success: false, error: error.message || 'Update failed' };

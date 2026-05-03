@@ -28,8 +28,17 @@ const GuriNav = () => {
     const isAdmin = ['admin', 'super_admin'].includes(user?.role);
     const isAgent = ['agent', 'admin', 'super_admin'].includes(user?.role);
     const [mobileVisible, setMobileVisible] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language === 'so' ? 'so' : 'en';
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const toggleLanguage = () => {
         const next = currentLang === 'en' ? 'so' : 'en';
@@ -47,15 +56,15 @@ const GuriNav = () => {
     ];
 
     return (
-        <Header className="guri-nav sticky top-0 z-[1000] w-full">
-            <div className="container flex items-center justify-between" style={{ height: '68px' }}>
+        <Header className="guri-nav fixed top-0 left-0 z-[1000] w-full transition-all duration-300 nav-scrolled">
+            <div className="container flex items-center justify-between header-inner-container">
                 {/* Left: Logo */}
-                <Link to="/" className="flex items-center">
+                <Link to="/" className="flex items-center logo-wrapper">
                     <img
-                        src="https://guri24.com/logo.png"
+                        src="/logo.png"
                         alt="Guri24"
-                        className="h-12 object-contain"
-                        onError={(e) => { e.target.src = '/logo.png'; }}
+                        className="h-11 md:h-12 object-contain brand-logo"
+                        onError={(e) => { e.target.src = 'https://guri24.com/logo.png'; }}
                     />
                 </Link>
 
@@ -138,109 +147,91 @@ const GuriNav = () => {
                     </Button>
                 </div>
 
-                {/* Lang toggle — always visible on mobile, hidden on desktop */}
-                <button
-                    type="button"
-                    className="mobile-lang-btn"
-                    onClick={toggleLanguage}
-                    aria-label="Switch language"
-                >
-                    <span className={currentLang === 'en' ? 'lang-primary' : 'lang-secondary'}>EN</span>
-                    <span className="lang-divider">|</span>
-                    <span className={currentLang === 'so' ? 'lang-primary' : 'lang-secondary'}>SO</span>
-                </button>
+                {/* Right side for mobile: Lang toggle + Toggle icon */}
+                <div className="mobile-header-actions flex items-center gap-3">
+                    <button
+                        type="button"
+                        className="mobile-lang-btn"
+                        onClick={toggleLanguage}
+                        aria-label="Switch language"
+                    >
+                        <span className={currentLang === 'en' ? 'lang-primary' : 'lang-secondary'}>EN</span>
+                        <span className="lang-divider">|</span>
+                        <span className={currentLang === 'so' ? 'lang-primary' : 'lang-secondary'}>SO</span>
+                    </button>
 
-                {/* Mobile Menu Toggle */}
-                <Button
-                    type="text"
-                    className="mobile-nav-toggle"
-                    icon={<MenuIcon size={24} />}
-                    onClick={() => setMobileVisible(true)}
-                />
+                    <Button
+                        type="text"
+                        className="mobile-nav-toggle flex items-center justify-center"
+                        icon={<MenuIcon size={26} />}
+                        onClick={() => setMobileVisible(true)}
+                    />
+                </div>
 
                 {/* Mobile Drawer */}
                 <Drawer
                     title={
-                        <img src="https://guri24.com/logo.png" alt="Guri24" className="h-9" onError={(e) => { e.target.src = '/logo.png'; }} />
+                        <img src="/logo.png" alt="Guri24" className="h-9" onError={(e) => { e.target.src = 'https://guri24.com/logo.png'; }} />
                     }
                     closeIcon={<X size={20} />}
                     placement="right"
                     onClose={() => setMobileVisible(false)}
                     open={mobileVisible}
-                    size={300}
+                    width={320}
                 >
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-4 mt-2">
                         {navItems.map(item => (
                             <Link
                                 key={item.path}
                                 to={item.path}
                                 onClick={() => setMobileVisible(false)}
-                                className="nav-link text-lg"
+                                className="nav-link-mobile"
                             >
-                                {item.icon}
-                                {item.label}
+                                <span className="icon-box">{item.icon}</span>
+                                <span className="label">{item.label}</span>
                             </Link>
                         ))}
-                        <div className="h-px bg-gray-100 my-2" />
-                        <Button
-                            type="primary"
-                            block
-                            shape="round"
-                            size="large"
-                            className="list-property-btn"
-                            onClick={() => {
-                                setMobileVisible(false);
-                                if (isAdmin) navigate('/admin/properties/create');
-                                else if (isAgent) navigate('/agent/properties/add');
-                                else navigate('/sell');
-                            }}
-                        >
-                            {t('nav.list_property')}
-                        </Button>
-                        <Button
-                            block
-                            shape="round"
-                            size="large"
-                            className="nav-auth-btn"
-                            onClick={() => { setMobileVisible(false); navigate(isAuthenticated ? '/profile' : '/login'); }}
-                        >
-                            {isAuthenticated ? t('nav.my_profile') : t('nav.login')}
-                        </Button>
-                        {isAdmin && (
+                        <div className="h-px bg-gray-100 my-4" />
+                        <div className="flex flex-col gap-3">
+                            <Button
+                                type="primary"
+                                block
+                                shape="round"
+                                size="large"
+                                className="list-property-btn-mobile"
+                                onClick={() => {
+                                    setMobileVisible(false);
+                                    if (isAdmin) navigate('/admin/properties/create');
+                                    else if (isAgent) navigate('/agent/properties/add');
+                                    else navigate('/sell');
+                                }}
+                            >
+                                {t('nav.list_property')}
+                            </Button>
                             <Button
                                 block
                                 shape="round"
                                 size="large"
-                                className="nav-portal-btn admin-portal-btn"
-                                icon={<ShieldCheck size={16} />}
-                                onClick={() => { setMobileVisible(false); navigate('/admin'); }}
+                                className="nav-auth-btn-mobile"
+                                onClick={() => { setMobileVisible(false); navigate(isAuthenticated ? '/profile' : '/login'); }}
                             >
-                                {t('nav.admin_portal')}
+                                {isAuthenticated ? t('nav.my_profile') : t('nav.login')}
                             </Button>
-                        )}
-                        {isAgent && !isAdmin && (
-                            <Button
-                                block
-                                shape="round"
-                                size="large"
-                                className="nav-portal-btn agent-portal-btn"
-                                icon={<LayoutDashboard size={16} />}
-                                onClick={() => { setMobileVisible(false); navigate('/agent'); }}
-                            >
-                                {t('nav.agent')}
-                            </Button>
-                        )}
+                        </div>
+
                         {/* Lang toggle in drawer */}
-                        <button
-                            type="button"
-                            className="nav-lang-picker drawer-lang-btn"
-                            onClick={toggleLanguage}
-                            aria-label="Switch language"
-                        >
-                            <span className={currentLang === 'en' ? 'lang-primary' : 'lang-secondary'}>EN</span>
-                            <span className="lang-divider">|</span>
-                            <span className={currentLang === 'so' ? 'lang-primary' : 'lang-secondary'}>SO</span>
-                        </button>
+                        <div className="mt-8">
+                            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">Language</p>
+                            <button
+                                type="button"
+                                className="drawer-lang-picker"
+                                onClick={toggleLanguage}
+                            >
+                                <span className={currentLang === 'en' ? 'lang-primary' : 'lang-secondary'}>English</span>
+                                <span className="lang-divider">|</span>
+                                <span className={currentLang === 'so' ? 'lang-primary' : 'lang-secondary'}>Soomaali</span>
+                            </button>
+                        </div>
                     </div>
                 </Drawer>
             </div>

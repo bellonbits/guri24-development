@@ -3,12 +3,13 @@
 	"appName": "Guri24",
 	"webDir": "dist",
 	"server": {
-		"androidScheme": "https"
+		"androidScheme": "https",
+		"iosScheme": "https"
 	},
 	"plugins": {
 		"SplashScreen": {
-			"launchShowDuration": 2000,
-			"launchAutoHide": true,
+			"launchShowDuration": 0,
+			"launchAutoHide": false,
 			"backgroundColor": "#0d3b66",
 			"androidSplashResourceName": "splash",
 			"androidScaleType": "CENTER_CROP",
@@ -23,15 +24,21 @@
 		"Keyboard": {
 			"resize": "body",
 			"resizeOnFullScreen": true
+		},
+		"CapacitorCookies": {
+			"enabled": true
 		}
 	},
 	"android": {
 		"minWebViewVersion": 60,
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#0d3b66"
 	},
 	"ios": {
 		"contentInset": "automatic",
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#0d3b66",
+		"scrollEnabled": true
 	},
-	"packageClassList": []
+	"packageClassList": [
+		"SplashScreenPlugin"
+	]
 }

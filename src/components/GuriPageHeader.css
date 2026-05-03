@@ -1,7 +1,7 @@
 /* GuriPageHeader Styles */
 .guri-page-header {
     background: linear-gradient(150deg, #0a1f3d 0%, #0e2d5a 40%, #1a5f9e 100%);
-    padding: 60px 24px 52px;
+    padding: 60px 24px 64px;
     margin: 0;
     text-align: center;
     border-bottom: none;
@@ -96,7 +96,7 @@
 
 @media (max-width: 768px) {
     .guri-page-header {
-        padding: 44px 16px 38px;
+        padding: 40px 24px 48px;
     }
 
     .guri-page-header h1,

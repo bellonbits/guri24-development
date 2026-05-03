@@ -1,255 +1,251 @@
 /* Navigation Styles */
 .guri-nav {
-    background: rgba(255, 255, 255, 0.98) !important;
-    backdrop-filter: blur(12px);
-    transition: var(--transition);
     border-bottom: none;
-    height: 68px !important;
-    line-height: 68px !important;
-    padding: var(--sat) 0 0 !important;
+    height: 72px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Suppress any Ant Design Layout.Header default spacing */
-.ant-layout-header.guri-nav {
-    padding-inline: 0 !important;
-    margin-bottom: 0 !important;
+/* Transparent state (at the top) */
+.nav-transparent {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
 }
 
+/* Scrolled state */
+.nav-scrolled {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.08) !important;
+    height: 68px !important;
+}
+
+.header-inner-container {
+    height: 100%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100%;
+}
+
+/* Logo styling */
+.brand-logo {
+    transition: all 0.3s ease;
+}
+
+.nav-transparent .brand-logo {
+    filter: brightness(0) invert(1);
+}
+
+/* Nav Links */
 .nav-link {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: var(--black);
-    font-size: 0.875rem; /* slightly smaller to fit more tabs */
-    font-weight: 700;
-    padding: 6px 12px;
-    transition: var(--transition);
-    border-radius: var(--radius-md);
-    white-space: nowrap; /* prevent text wrapping */
+    color: var(--gray-700);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.nav-transparent .nav-link {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .nav-link:hover {
     color: var(--primary);
+    background: var(--gray-100);
+}
+
+.nav-transparent .nav-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Language Picker */
+.nav-lang-picker {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    height: 36px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    color: #fff;
+}
+
+.nav-scrolled .nav-lang-picker {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+    color: var(--gray-700);
+}
+
+.nav-lang-picker:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #fff;
+}
+
+.nav-scrolled .nav-lang-picker:hover {
+    border-color: var(--primary);
+    background: var(--primary-lighter);
+}
+
+/* Mobile actions container */
+.mobile-header-actions {
+    display: none;
+}
+
+@media (max-width: 1250px) {
+    .mobile-header-actions {
+        display: flex;
+    }
+}
+
+/* Mobile language button */
+.mobile-lang-btn {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    height: 32px;
+    color: #fff;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.nav-scrolled .mobile-lang-btn {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+    color: var(--gray-700);
+}
+
+.nav-transparent .lang-primary { color: #fff; }
+.nav-transparent .lang-secondary { color: rgba(255, 255, 255, 0.5); }
+.nav-transparent .lang-divider { color: rgba(255, 255, 255, 0.3); }
+
+/* Hamburger toggle */
+.mobile-nav-toggle {
+    color: #fff !important;
+    padding: 4px !important;
+    height: 40px !important;
+    width: 40px !important;
+}
+
+.nav-scrolled .mobile-nav-toggle {
+    color: var(--gray-800) !important;
+}
+
+/* Drawer Mobile Links */
+.nav-link-mobile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    color: var(--gray-700);
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.2s ease;
     background: var(--gray-50);
+}
+
+.nav-link-mobile:active {
+    background: var(--primary-lighter);
+    color: var(--primary);
+    transform: scale(0.98);
+}
+
+.nav-link-mobile .icon-box {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    color: var(--primary);
+}
+
+/* Desktop Nav Main */
+.desktop-nav-main {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 2rem;
+    flex: 1;
 }
 
 .desktop-nav-actions {
     display: flex;
     align-items: center;
-    gap: 12px; /* reduced from 24px */
+    gap: 16px;
 }
 
-.list-property-btn {
-    background: var(--primary) !important;
-    border-color: var(--primary) !important;
-    font-weight: 700 !important;
-    height: 40px !important;
-    padding: 0 20px !important;
-    font-size: 14px !important;
-    box-shadow: var(--shadow-sm) !important;
-    transition: var(--transition) !important;
+/* Breakpoint for Mobile Nav */
+@media (max-width: 1250px) {
+    .guri-nav {
+        padding-top: var(--sat) !important;
+        height: calc(64px + var(--sat)) !important;
+    }
+    
+    .nav-scrolled {
+        height: calc(60px + var(--sat)) !important;
+    }
+
+    .desktop-nav-main,
+    .desktop-nav-actions {
+        display: none !important;
+    }
 }
 
-.list-property-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover) !important;
+/* On very small screens, shrink logo */
+@media (max-width: 380px) {
+    .brand-logo {
+        height: 36px;
+    }
+    .mobile-header-actions {
+        gap: 8px;
+    }
 }
 
-.nav-lang-picker {
+/* Drawer Lang Picker */
+.drawer-lang-picker {
+    width: 100%;
     display: flex;
     align-items: center;
-    background: var(--gray-50);
-    border-radius: var(--radius-pill);
-    padding: 4px 16px;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    height: 38px;
-    border: 1px solid var(--gray-100);
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: border-color 0.18s, background 0.18s;
-}
-
-.nav-lang-picker:hover {
-    border-color: var(--primary);
-    background: var(--primary-lighter);
-}
-
-/* Mobile-only lang button — shown between logo and hamburger */
-.mobile-lang-btn {
-    display: none;
-    align-items: center;
-    gap: 6px;
-    background: var(--gray-50);
-    border-radius: var(--radius-pill);
-    padding: 5px 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    height: 34px;
-    border: 1px solid var(--gray-200);
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: border-color 0.18s;
-    flex-shrink: 0;
-}
-
-.mobile-lang-btn:hover { border-color: var(--primary); }
-
-/* Drawer lang button — full width */
-.drawer-lang-btn {
-    width: 100%;
     justify-content: center;
-    height: 44px;
-    font-size: 0.875rem;
-}
-
-.lang-primary {
-    color: var(--primary);
-}
-
-.lang-divider {
-    margin: 0 8px;
-    color: var(--gray-300);
-}
-
-.lang-secondary {
-    color: var(--gray-400);
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 16px;
+    padding: 12px;
+    font-weight: 700;
 }
 
 .nav-phone {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--black);
-    font-weight: 700;
-    font-size: 0.875rem;
-    white-space: nowrap;
-}
-
-.nav-auth-btn {
-    background: var(--black) !important;
-    border-color: var(--black) !important;
-    font-weight: 700 !important;
-    height: 40px !important;
-    padding: 0 22px !important;
-    font-size: 14px !important;
-    transition: var(--transition) !important;
-}
-
-.nav-auth-btn:hover {
-    background: var(--primary-dark) !important;
-    border-color: var(--primary-dark) !important;
-}
-
-/* ── Portal Buttons ───────────────────── */
-.nav-portal-btn {
-    height: 40px !important;
-    padding: 0 18px !important;
-    font-weight: 700 !important;
-    font-size: 13px !important;
-    transition: var(--transition) !important;
-}
-
-.admin-portal-btn {
-    background: #7c3aed !important;
-    border-color: #7c3aed !important;
-    color: #fff !important;
-}
-
-.admin-portal-btn:hover {
-    background: #6d28d9 !important;
-    border-color: #6d28d9 !important;
-}
-
-.agent-portal-btn {
-    background: #0052cc !important;
-    border-color: #0052cc !important;
-    color: #fff !important;
-}
-
-.agent-portal-btn:hover {
-    background: #0041a3 !important;
-    border-color: #0041a3 !important;
-}
-
-/* ── Mobile: hide desktop nav & actions ── */
-.mobile-nav-toggle {
-    display: none !important;
-}
-
-.desktop-nav-main {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    margin-left: 2rem;
-    gap: 4px; /* tightly pack main tabs */
-}
-
-/* Bump breakpoint to 1250px so it collapses before running out of real estate */
-@media (max-width: 1250px) {
-    .guri-nav {
-        padding: 0 !important;
-    }
-
-    .mobile-nav-toggle {
-        display: inline-flex !important;
-    }
-
-    /* Show mobile lang button */
-    .mobile-lang-btn {
-        display: flex !important;
-    }
-
-    /* Hide desktop nav links and right-side actions */
-    .guri-nav .desktop-nav-main,
-    .guri-nav .desktop-nav-actions {
-        display: none !important;
-    }
-
-    /* Ensure the container stays as row with logo + lang + toggle */
-    .guri-nav .container {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        gap: 8px !important;
-    }
-}
-
-/* On desktop, hide the mobile-only lang button */
-@media (min-width: 1251px) {
-    .mobile-lang-btn {
-        display: none !important;
-    }
-}
-
-/* ── Tablet tweaks ── */
-@media (max-width: 768px) {
-    .guri-nav {
-        height: 60px !important;
-        line-height: 60px !important;
-    }
-
-    .guri-nav .container {
-        padding: 0 16px !important;
-    }
-}
-
-/* Drawer nav links on mobile */
-.ant-drawer-body .nav-link {
-    font-size: 1rem;
-    padding: 12px 16px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: #1e293b;
+    color: #fff;
     font-weight: 600;
-    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.ant-drawer-body .nav-link:hover {
-    background: #f0f7ff;
-    color: #1a5f9e;
+.nav-scrolled .nav-phone {
+    color: var(--gray-700);
 }
