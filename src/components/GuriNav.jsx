@@ -177,7 +177,8 @@ const GuriNav = () => {
                     placement="right"
                     onClose={() => setMobileVisible(false)}
                     open={mobileVisible}
-                    width={320}
+                    size="default"
+                    styles={{ wrapper: { width: 320 } }}
                 >
                     <div className="flex flex-col gap-4 mt-2">
                         {navItems.map(item => (

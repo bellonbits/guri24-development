@@ -8,7 +8,7 @@ export const getProfileImageUrl = (url) => {
     if (!url) return null;
     if (url.startsWith('http')) return url;
 
-    let baseUrl = import.meta.env.VITE_API_URL || 'https://api.guri24.com:8002';
+    let baseUrl = import.meta.env.VITE_API_URL || 'https://api.guri24.com';
     // Remove /api/v1 suffix if present to get root
     baseUrl = baseUrl.replace('/api/v1', '');
     // Remove trailing slash

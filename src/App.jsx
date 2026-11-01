@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { ArrowUp } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -52,15 +53,60 @@ import AgentBookingDetails from './pages/agent/AgentBookingDetails';
 import './index.css';
 import './App.css';
 
-// Scroll to top on route change
+// Scroll to top on route change + floating Scroll-Up button when scrolled down
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const [showScrollUp, setShowScrollUp] = useState(false);
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [pathname, search]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    const handleScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      setShowScrollUp(y > 300);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  return null;
+  if (!showScrollUp) return null;
+
+  return (
+    <button
+      type="button"
+      aria-label="Scroll to top"
+      onClick={() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        document.documentElement.scrollTo?.({ top: 0, behavior: 'smooth' });
+      }}
+      style={{
+        position: 'fixed',
+        right: '24px',
+        bottom: '28px',
+        zIndex: 1100,
+        width: '46px',
+        height: '46px',
+        borderRadius: '9999px',
+        background: 'linear-gradient(135deg, #0d3b66 0%, #1a5f9e 100%)',
+        color: '#ffffff',
+        border: '1px solid rgba(255,255,255,0.2)',
+        boxShadow: '0 10px 24px rgba(13, 59, 102, 0.28)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-3px)'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
+    >
+      <ArrowUp size={20} strokeWidth={2.5} />
+    </button>
+  );
 }
 
 function App() {

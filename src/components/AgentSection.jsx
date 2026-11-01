@@ -89,7 +89,7 @@ const AgentSection = ({ title, subtitle }) => {
                                                                 agent.avatar_url
                                                                     ? (agent.avatar_url.startsWith('http')
                                                                         ? agent.avatar_url
-                                                                        : `https://api.guri24.com:8002${agent.avatar_url}`)
+                                                                        : `https://api.guri24.com${agent.avatar_url}`)
                                                                     : `https://i.pravatar.cc/150?u=${agent.id || idx}`
                                                             }
                                                         />

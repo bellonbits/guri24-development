@@ -30,17 +30,17 @@ export const SocketProvider = ({ children }) => {
 
             // 1. Local Development
             if (host === 'localhost' || host === '127.0.0.1') {
-                return 'http://localhost:8000';
+                return 'https://api.guri24.com';
             }
 
             // 2. Production Guri24 (API is on api subdomain)
             if (host.includes('guri24.com')) {
-                return 'https://api.guri24.com:8002';
+                return 'https://api.guri24.com';
             }
 
             // 3. Fallback for IP-based or other access
             const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
-            return `${protocol}//${host}:8002`;
+            return `${protocol}//${host}`;
         };
 
         const socketUrl = getSocketUrl();
