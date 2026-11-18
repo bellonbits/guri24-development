@@ -70,6 +70,9 @@ class PasswordReset(BaseModel):
 class EmailVerification(BaseModel):
     token: str
 
+class ResendVerificationRequest(BaseModel):
+    email: EmailStr
+
 # Response schemas
 class UserResponse(BaseModel):
     id: UUID
@@ -100,3 +103,8 @@ class TokenResponse(BaseModel):
 
 class MessageResponse(BaseModel):
     message: str
+
+class ApplicationResponse(BaseModel):
+    message: str
+    sr_number: Optional[str] = None
+    submitted_date: Optional[str] = None

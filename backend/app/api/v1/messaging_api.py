@@ -24,18 +24,22 @@ async def get_conversations(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """List all conversations for the current user (as tenant or agent)"""
-    stmt = select(Conversation).options(
+    """List all conversations for the current user (or all if admin)"""
+    is_admin = current_user.role in ["admin", "super_admin"]
+    base_stmt = select(Conversation).options(
         selectinload(Conversation.messages),
         selectinload(Conversation.property),
         selectinload(Conversation.tenant),
         selectinload(Conversation.agent)
-    ).where(
-        or_(
-            Conversation.tenant_id == current_user.id,
-            Conversation.agent_id == current_user.id
+    )
+    if not is_admin:
+        base_stmt = base_stmt.where(
+            or_(
+                Conversation.tenant_id == current_user.id,
+                Conversation.agent_id == current_user.id
+            )
         )
-    ).order_by(desc(Conversation.updated_at))
+    stmt = base_stmt.order_by(desc(Conversation.updated_at)).limit(100)
     
     result = await db.execute(stmt)
     conversations = result.scalars().all()
@@ -46,8 +50,10 @@ async def get_conversations(
         # Determine the "other" person
         if current_user.id == conv.tenant_id:
             other_user = conv.agent
-        else:
+        elif current_user.id == conv.agent_id:
             other_user = conv.tenant
+        else:
+            other_user = conv.tenant or conv.agent
             
         last_msg = conv.messages[-1] if conv.messages else None
         
@@ -59,7 +65,7 @@ async def get_conversations(
             "created_at": conv.created_at,
             "updated_at": conv.updated_at,
             "property_title": conv.property.title if conv.property else "General Inquiry",
-            "other_party_name": other_user.name if other_user else "Unknown",
+            "other_party_name": other_user.name if other_user else "Platform User",
             "last_message": last_msg
         })
         
@@ -72,16 +78,19 @@ async def get_messages(
     current_user: User = Depends(get_current_active_user)
 ):
     """Get message history for a conversation"""
-    # Verify access
-    stmt = select(Conversation).where(
-        and_(
-            Conversation.id == conversation_id,
-            or_(
-                Conversation.tenant_id == current_user.id,
-                Conversation.agent_id == current_user.id
+    is_admin = current_user.role in ["admin", "super_admin"]
+    if is_admin:
+        stmt = select(Conversation).where(Conversation.id == conversation_id)
+    else:
+        stmt = select(Conversation).where(
+            and_(
+                Conversation.id == conversation_id,
+                or_(
+                    Conversation.tenant_id == current_user.id,
+                    Conversation.agent_id == current_user.id
+                )
             )
         )
-    )
     result = await db.execute(stmt)
     conversation = result.scalar_one_or_none()
     
@@ -174,15 +183,19 @@ async def send_message(
 ):
     """Reply to a conversation"""
     # Verify access first
-    stmt = select(Conversation).where(
-        and_(
-            Conversation.id == conversation_id,
-            or_(
-                Conversation.tenant_id == current_user.id,
-                Conversation.agent_id == current_user.id
+    is_admin = current_user.role in ["admin", "super_admin"]
+    if is_admin:
+        stmt = select(Conversation).where(Conversation.id == conversation_id)
+    else:
+        stmt = select(Conversation).where(
+            and_(
+                Conversation.id == conversation_id,
+                or_(
+                    Conversation.tenant_id == current_user.id,
+                    Conversation.agent_id == current_user.id
+                )
             )
         )
-    )
     result = await db.execute(stmt)
     conversation = result.scalar_one_or_none()
     

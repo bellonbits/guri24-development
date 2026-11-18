@@ -1,13 +1,12 @@
 /* =========================================================
    AdminLayout.css — Guri24 Admin Sidebar + Header
-   Premium SaaS Dashboard — Plus Jakarta Sans
    ========================================================= */
 
 .admin-layout {
     display: flex;
     min-height: 100vh;
-    background: #f1f5f9;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #f8fafc;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
 }
 
 /* =========================================================
@@ -18,24 +17,24 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 256px;
+    width: 260px;
     background: #ffffff;
     border-right: 1px solid #e2e8f0;
     display: flex;
     flex-direction: column;
     transition: width 0.2s cubic-bezier(0.2, 0, 0, 1);
     z-index: 1000;
-    box-shadow: 2px 0 16px rgba(26, 95, 158, 0.08);
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.03);
 }
 
 .admin-sidebar.closed {
-    width: 72px;
+    width: 76px;
 }
 
-/* Logo area */
+/* Logo Area */
 .sidebar-header {
-    padding: 0 1rem;
-    border-bottom: 1px solid #e2e8f0;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
     min-height: 64px;
     display: flex;
     align-items: center;
@@ -43,78 +42,103 @@
 }
 
 .sidebar-logo {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: #1a5f9e;
     display: flex;
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
-    letter-spacing: -0.01em;
 }
 
-.sidebar-logo svg {
-    color: #1a5f9e;
-    flex-shrink: 0;
+.logo-badge-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.admin-sidebar.closed .sidebar-logo span {
-    display: none;
+.logo-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #e05638;
+    letter-spacing: -0.5px;
+}
+
+.admin-badge {
+    background: #e6f4ea;
+    color: #0c6759;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 /* Navigation */
 .sidebar-nav {
     flex: 1;
-    padding: 0.625rem 0;
+    padding: 1rem 0;
     overflow-y: auto;
     overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: #e2e8f0 transparent;
+}
+
+.sidebar-section {
+    margin-bottom: 1.25rem;
+}
+
+.sidebar-section-title {
+    padding: 0 1.25rem;
+    margin-bottom: 6px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #94a3b8;
+}
+
+.sidebar-util-link {
+    padding: 0 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 0.75rem;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.6875rem 0.875rem;
-    color: #64748b;
+    padding: 0.625rem 0.875rem;
+    color: #475569;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.875rem;
-    margin: 1px 0.625rem;
+    margin: 2px 0.75rem;
     border-radius: 10px;
-    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
-                color 0.2s cubic-bezier(0.2, 0, 0, 1),
-                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+    transition: all 0.15s ease;
     white-space: nowrap;
-    overflow: hidden;
-    position: relative;
 }
 
 .nav-item:hover {
     background: #f1f5f9;
-    color: #1a5f9e;
+    color: #0c6759;
 }
 
 .nav-item.active {
-    background: #dbeafe;
-    color: #1a5f9e;
+    background: #e6f4ea;
+    color: #0c6759;
     font-weight: 700;
-    box-shadow: 0 1px 4px rgba(26, 95, 158, 0.12);
 }
 
-.nav-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 20%;
-    bottom: 20%;
-    width: 3px;
-    background: #1a5f9e;
-    border-radius: 0 2px 2px 0;
-    margin-left: -0.625rem;
+.live-site-link {
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+}
+
+.live-site-link:hover {
+    background: #f0fdf4;
+    border-color: #0c6759;
+    color: #0c6759;
 }
 
 .nav-icon {
@@ -129,96 +153,63 @@
 
 .admin-sidebar.closed .nav-item {
     justify-content: center;
-    padding: 0.6875rem;
-    margin: 1px 0.5rem;
-}
-
-.admin-sidebar.closed .nav-item.active::before {
-    left: -0.5rem;
+    padding: 0.625rem;
+    margin: 2px 0.5rem;
 }
 
 /* Sidebar Footer */
 .sidebar-footer {
-    padding: 0.875rem 1rem;
-    border-top: 1px solid #e2e8f0;
+    padding: 1rem;
+    border-top: 1px solid #f1f5f9;
     background: #f8fafc;
 }
 
 .admin-user {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    padding: 0.625rem 0.75rem;
-    margin-bottom: 0.625rem;
+    gap: 0.75rem;
+    padding: 0.5rem 0.625rem;
+    margin-bottom: 0.75rem;
     background: #ffffff;
     border-radius: 10px;
     border: 1px solid #e2e8f0;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(26, 95, 158, 0.06);
 }
 
 .user-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1a5f9e 0%, #3b82f6 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    flex-shrink: 0;
-    font-weight: 700;
-    font-size: 0.875rem;
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(26, 95, 158, 0.25);
-}
-
-.user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-.user-initials {
-    width: 100%;
-    height: 100%;
+    background: #0c6759;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.875rem;
     font-weight: 700;
-    color: #ffffff;
-    background: linear-gradient(135deg, #1a5f9e 0%, #3b82f6 100%);
-    border-radius: 50%;
+    font-size: 0.875rem;
+    flex-shrink: 0;
 }
 
 .user-info {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    flex: 1;
 }
 
 .user-name {
-    font-weight: 700;
-    color: #1e293b;
     font-size: 0.8125rem;
+    font-weight: 700;
+    color: #0f172a;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    letter-spacing: -0.01em;
 }
 
 .user-role {
-    font-size: 0.7rem;
-    color: #94a3b8;
-    text-transform: capitalize;
-    font-weight: 500;
-}
-
-.admin-sidebar.closed .user-info {
-    display: none;
+    font-size: 0.6875rem;
+    color: #64748b;
+    white-space: nowrap;
 }
 
 .logout-btn {
@@ -226,51 +217,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.625rem;
-    padding: 0.5625rem 0.75rem;
-    background: transparent;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-    font-weight: 600;
+    border-radius: 8px;
+    color: #dc2626;
     font-size: 0.8125rem;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
 
 .logout-btn:hover {
     background: #fef2f2;
-    border-color: #fecaca;
-    color: #dc2626;
-}
-
-.logout-btn:active {
-    transform: scale(0.98);
-}
-
-.admin-sidebar.closed .logout-btn span {
-    display: none;
+    border-color: #fca5a5;
 }
 
 /* =========================================================
-   Main Area
+   Main Area & Header
    ========================================================= */
 .admin-main {
     flex: 1;
-    margin-left: 256px;
+    margin-left: 260px;
     display: flex;
     flex-direction: column;
-    transition: margin-left 0.2s cubic-bezier(0.2, 0, 0, 1);
     min-width: 0;
-    background: #f1f5f9;
+    transition: margin-left 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.admin-sidebar.closed ~ .admin-main {
-    margin-left: 72px;
+.admin-sidebar.closed + .admin-main {
+    margin-left: 76px;
 }
 
-/* Header */
 .admin-header {
     height: 64px;
     background: #ffffff;
@@ -278,157 +257,116 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.75rem;
+    padding: 0 2rem;
     position: sticky;
     top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 4px rgba(26, 95, 158, 0.08);
+    z-index: 99;
 }
 
 .sidebar-toggle {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #64748b;
+    background: none;
+    border: none;
+    color: #475569;
     cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background 0.15s ease;
 }
 
 .sidebar-toggle:hover {
-    background: #dbeafe;
-    color: #1a5f9e;
-    border-color: #93c5fd;
-}
-
-.sidebar-toggle:active {
-    transform: scale(0.98);
+    background: #f1f5f9;
+    color: #0f172a;
 }
 
 .mobile-menu-toggle {
     display: none;
     background: none;
     border: none;
-    color: #64748b;
+    color: #475569;
     cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-}
-
-.mobile-menu-toggle:hover {
-    background: #f1f5f9;
-    color: #1a5f9e;
+    padding: 6px;
 }
 
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1.25rem;
+}
+
+.header-pill-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f1f5f9;
+    border-radius: 9999px;
+    color: #334155;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.header-pill-link:hover {
+    background: #e2e8f0;
+    color: #0f172a;
 }
 
 .admin-user-menu {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    padding: 0.4375rem 0.875rem;
-    background: #f8fafc;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    color: #1e293b;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-    font-weight: 600;
+    gap: 8px;
+}
+
+.user-avatar-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #0c6759;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.user-menu-name {
     font-size: 0.875rem;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    color: #1e293b;
 }
 
-.admin-user-menu:hover {
-    border-color: #93c5fd;
-    background: #dbeafe;
-    color: #1a5f9e;
-}
-
-.admin-user-menu:active {
-    transform: scale(0.98);
-}
-
-.admin-user-menu .user-avatar {
-    width: 30px;
-    height: 30px;
-    font-size: 0.75rem;
-}
-
-/* Content Area */
 .admin-content {
     flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    width: 100%;
-    background: #f1f5f9;
+    background: #f8fafc;
 }
 
-/* Mobile overlay */
-.mobile-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 15, 26, 0.5);
-    z-index: 999;
-    backdrop-filter: blur(2px);
-}
-
-/* =========================================================
-   Responsive
-   ========================================================= */
-@media (max-width: 1024px) {
+/* Mobile responsive */
+@media (max-width: 900px) {
     .admin-sidebar {
         transform: translateX(-100%);
-        width: 256px;
-        box-shadow: none;
     }
-
     .admin-sidebar.mobile-open {
         transform: translateX(0);
-        box-shadow: 4px 0 32px rgba(26, 95, 158, 0.18);
     }
-
     .admin-main {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
-
-    .admin-sidebar.closed ~ .admin-main {
-        margin-left: 0;
-    }
-
     .sidebar-toggle {
         display: none;
     }
-
     .mobile-menu-toggle {
         display: flex;
-        align-items: center;
-        justify-content: center;
     }
-
-    .mobile-overlay {
-        display: block;
-    }
-
-    .admin-content {
-        padding: 0;
-    }
-}
-
-@media (max-width: 768px) {
-    .admin-header {
-        padding: 0 1rem;
-    }
-
-    .admin-user-menu span {
-        display: none;
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 999;
     }
 }

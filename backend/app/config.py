@@ -33,13 +33,13 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     
     # Email (Resend)
-    RESEND_API_KEY: str
+    RESEND_API_KEY: str = ""
     EMAIL_FROM: str = "no-reply@suqafuran.com"
     EMAIL_FROM_NAME: str = "Guri24"
     SUPPORT_EMAIL: str = "support@guri24.com"
     COMPANY_NAME: str = "Guri24"
-    COMPANY_ADDRESS: str = "Nairobi, Kenya"
-    COMPANY_PHONE: str = "+254 XXX XXX XXX"
+    COMPANY_ADDRESS: str = "Westlands, Nairobi, Kenya"
+    COMPANY_PHONE: str = "+254 700 000 000"
     EMAILS_ENABLED: bool = True
     EMAIL_VERIFICATION_EXPIRE_HOURS: int = 24
     

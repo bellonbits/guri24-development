@@ -7,365 +7,167 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Banner */
-.profile-banner {
+.admin-agent-profile-page .profile-banner,
+.agent-profile-page .profile-banner {
     position: relative;
-    background: linear-gradient(135deg, #1a5f9e 0%, #0d3b6e 100%);
-    height: 168px;
-    overflow: hidden;
+    background: linear-gradient(135deg, #1a5f9e 0%, #0d3b66 100%);
+    height: auto !important;
+    min-height: 180px;
+    overflow: visible !important;
+    padding: 0;
 }
 
-.banner-gradient {
-    position: absolute;
-    inset: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0 L1200,0 L1200,80 Q900,100 600,80 T0,80 Z" fill="rgba(255,255,255,0.06)"/></svg>') bottom center no-repeat;
-    background-size: cover;
+.admin-agent-profile-page .profile-banner::before,
+.admin-agent-profile-page .profile-banner::after,
+.agent-profile-page .profile-banner::before,
+.agent-profile-page .profile-banner::after {
+    display: none !important;
+    content: none !important;
 }
 
-.profile-header-content {
+.admin-agent-profile-page .profile-header-content,
+.agent-profile-page .profile-header-content {
     position: relative;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: clamp(28px, 4vw, 44px) clamp(16px, 4vw, 32px);
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
-    transform: translateY(40px);
+    transform: none !important;
 }
 
-/* Agent avatar */
-.agent-avatar-large {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    border: 4px solid #ffffff;
-    box-shadow: 0 4px 20px rgba(26, 95, 158, 0.18);
-    object-fit: cover;
-    background: #e8f1fb;
-    flex-shrink: 0;
-    overflow: hidden;
-}
-
-.agent-avatar-initials {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    border: 4px solid #ffffff;
-    box-shadow: 0 4px 20px rgba(26, 95, 158, 0.18);
-    background: #1a5f9e;
+.admin-agent-profile-page .profile-avatar-section,
+.agent-profile-page .profile-avatar-section {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 2rem;
+    gap: clamp(16px, 3vw, 24px);
+}
+
+.admin-agent-profile-page .profile-header-info h1,
+.agent-profile-page .profile-header-info h1 {
+    margin: 0 0 10px 0;
+    font-size: clamp(1.375rem, 3.5vw, 2rem);
     font-weight: 800;
-    color: #ffffff;
-    flex-shrink: 0;
+    color: #ffffff !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
     letter-spacing: -0.02em;
 }
 
-.header-info {
-    flex: 1;
+.admin-agent-profile-page .btn-back {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     color: #ffffff;
-}
-
-.header-info h1 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0 0 4px;
-    letter-spacing: -0.03em;
-    text-shadow: 0 1px 6px rgba(10, 15, 26, 0.18);
-}
-
-.header-info p {
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0;
-    font-size: 0.9375rem;
-}
-
-.header-actions {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    align-items: center;
-    padding-bottom: 4px;
-}
-
-/* Main content area */
-.agent-profile-body {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 64px 2rem 2rem;
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 1.5rem;
-    align-items: start;
-}
-
-/* Profile cards */
-.profile-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(26, 95, 158, 0.06);
-    overflow: hidden;
-    transition: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
-}
-
-.profile-card:hover {
-    box-shadow: 0 8px 28px rgba(26, 95, 158, 0.12);
-}
-
-.profile-card-header {
-    padding: 1.125rem 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-}
-
-.profile-card-header h3 {
-    font-size: 0.9375rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    letter-spacing: -0.01em;
-}
-
-.profile-card-header h3 svg {
-    color: #1a5f9e;
-}
-
-.profile-card-body {
-    padding: 1.25rem 1.5rem;
-}
-
-/* Info rows */
-.info-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.625rem 0;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 0.875rem;
-    transition: background 0.15s;
-}
-
-.info-row:last-child {
-    border-bottom: none;
-}
-
-.info-row svg {
-    color: #1a5f9e;
+    justify-content: center;
+    cursor: pointer;
     flex-shrink: 0;
-    margin-top: 2px;
+    transition: all 0.2s ease;
 }
 
-.info-label {
-    font-size: 0.75rem;
-    color: #94a3b8;
+.admin-agent-profile-page .btn-back:hover {
+    background: rgba(255, 255, 255, 0.28);
+    transform: translateX(-2px);
+}
+
+.admin-agent-profile-page .role-select {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+    font-size: 0.85rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: block;
-    margin-bottom: 2px;
-}
-
-.info-value {
     color: #1e293b;
-    font-weight: 600;
-    font-size: 0.875rem;
 }
 
-/* Stat mini cards */
-.mini-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
+.admin-agent-profile-page .role-select:disabled {
+    background: #f1f5f9;
+    color: #64748b;
 }
 
-.mini-stat {
+.admin-agent-profile-page .admin-docs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-agent-profile-page .admin-doc-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 0.875rem;
-    text-align: center;
-    transition: border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
-                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.mini-stat:hover {
-    border-color: rgba(26, 95, 158, 0.2);
-    box-shadow: 0 4px 14px rgba(26, 95, 158, 0.1);
-    transform: translateY(-2px);
-}
-
-.mini-stat h4 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #1e293b;
-    margin: 0 0 3px;
-    letter-spacing: -0.03em;
-}
-
-.mini-stat p {
-    font-size: 0.75rem;
-    color: #64748b;
-    margin: 0;
-    font-weight: 500;
-}
-
-/* Buttons */
-.btn-primary {
-    display: inline-flex;
+.admin-agent-profile-page .doc-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #1a5f9e;
+    display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.admin-agent-profile-page .doc-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-agent-profile-page .doc-name {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 0.9rem;
+}
+
+.admin-agent-profile-page .doc-meta {
+    font-size: 0.78rem;
+    color: #64748b;
+}
+
+.admin-agent-profile-page .btn-view-doc {
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1a5f9e;
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.admin-agent-profile-page .btn-view-doc:hover {
     background: #1a5f9e;
     color: #ffffff;
-    padding: 9px 18px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border: none;
-    cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
-                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-    text-decoration: none;
-    letter-spacing: -0.01em;
 }
 
-.btn-primary:hover {
-    background: #0d3b6e;
-    box-shadow: 0 6px 20px rgba(26, 95, 158, 0.28);
-}
-
-.btn-primary:active {
-    transform: scale(0.98);
-}
-
-.btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #ffffff;
-    color: #334155;
-    padding: 9px 18px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border: 1.5px solid #e2e8f0;
-    cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
-                border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
-                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-    text-decoration: none;
-    letter-spacing: -0.01em;
-}
-
-.btn-secondary:hover {
+.admin-agent-profile-page .no-docs-text {
+    color: #64748b;
+    font-size: 0.9rem;
+    padding: 16px;
     background: #f8fafc;
-    border-color: rgba(26, 95, 158, 0.25);
-    box-shadow: 0 3px 10px rgba(26, 95, 158, 0.08);
-}
-
-.btn-secondary:active {
-    transform: scale(0.98);
-}
-
-.btn-danger {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 9px 18px;
     border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border: 1px solid #fca5a5;
-    cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
-                color 0.2s cubic-bezier(0.2, 0, 0, 1),
-                border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
-                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-    letter-spacing: -0.01em;
+    border: 1px dashed #cbd5e1;
 }
 
-.btn-danger:hover {
-    background: #ef4444;
-    color: #ffffff;
-    border-color: #ef4444;
-    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
-}
-
-.btn-danger:active {
-    transform: scale(0.98);
-}
-
-/* Status badges */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: capitalize;
-    letter-spacing: 0.02em;
-}
-
-.status-badge.verified,
-.status-badge.active    { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
-.status-badge.pending   { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-.status-badge.rejected,
-.status-badge.suspended { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-
-/* Loading */
-.loading-state {
+.admin-profile-loading {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 4rem 2rem;
-    gap: 1rem;
-    color: #64748b;
-    text-align: center;
-}
-
-.spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid #e2e8f0;
-    border-top-color: #1a5f9e;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .agent-profile-body { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 768px) {
-    .profile-header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        transform: translateY(20px);
-    }
-    .agent-profile-body { padding: 40px 1.25rem 1.25rem; }
+    min-height: 400px;
+    gap: 12px;
+    color: #1a5f9e;
 }

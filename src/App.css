@@ -1,14 +1,14 @@
-/* Guri24 — App-level global transitions & route wrapper animations */
+/* Guri24 — App-level global transitions & route wrapper animations (B7 curve) */
 
 /* ── Route wrapper ── */
 .app-route-wrapper {
-    animation: routeFadeIn 0.22s cubic-bezier(0.2, 0, 0, 1) both;
+    animation: routeFadeIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes routeFadeIn {
     from {
         opacity: 0;
-        transform: translateY(6px);
+        transform: translateY(8px);
     }
     to {
         opacity: 1;
@@ -16,7 +16,7 @@
     }
 }
 
-/* ── Page-level enter transition (used with React Transition Group or manual class) ── */
+/* ── Page-level enter transition ── */
 .page-enter {
     opacity: 0;
     transform: translateY(8px);
@@ -25,8 +25,8 @@
 .page-enter-active {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.22s cubic-bezier(0.2, 0, 0, 1),
-                transform 0.22s cubic-bezier(0.2, 0, 0, 1);
+    transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .page-exit {
@@ -36,10 +36,13 @@
 
 .page-exit-active {
     opacity: 0;
-    transform: translateY(-6px);
-    transition: opacity 0.18s cubic-bezier(0.2, 0, 0, 1),
-                transform 0.18s cubic-bezier(0.2, 0, 0, 1);
+    transform: translateY(-8px);
+    transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ── Sticky nav offset helper ── */
-/* Legacy fixed-header offsets removed — nav is now sticky */
+@media (prefers-reduced-motion: reduce) {
+    .app-route-wrapper {
+        animation: none;
+    }
+}

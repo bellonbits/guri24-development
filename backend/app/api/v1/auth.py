@@ -6,7 +6,7 @@ from app.database import get_db
 from app.models.user import User, UserRole, AgentStatus
 from app.schemas.user import (
     UserRegister, UserLogin, UserResponse, TokenResponse,
-    EmailVerification, PasswordResetRequest, PasswordReset,
+    EmailVerification, ResendVerificationRequest, PasswordResetRequest, PasswordReset,
     MessageResponse
 )
 from app.core.security import (
@@ -92,7 +92,7 @@ async def register(
         # Log but don't block registration — user can resend verification
         print(f"WARNING: Failed to send verification email to {new_user.email}: {e}")
     
-    return {"message": "Registration successful. User auto-verified due to email service error (Dev Mode)."}
+    return {"message": "Registration successful! Please check your email for the 6-digit verification code to activate your account."}
 
 @router.post("/verify-email", response_model=MessageResponse)
 async def verify_email(
@@ -137,13 +137,27 @@ async def verify_email(
 
 @router.post("/resend-verification", response_model=MessageResponse)
 async def resend_verification(
-    email: str,
     request: Request,
     db: AsyncSession = Depends(get_db)
 ):
-    """Resend verification email"""
+    """Resend verification email (supports JSON body or query param)"""
+    target_email = None
+    try:
+        body = await request.json()
+        target_email = body.get("email")
+    except Exception:
+        pass
+
+    if not target_email:
+        target_email = request.query_params.get("email")
+
+    if not target_email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email is required to resend verification"
+        )
     
-    stmt = select(User).where(User.email == email)
+    stmt = select(User).where(User.email == target_email)
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
     

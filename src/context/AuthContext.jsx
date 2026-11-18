@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import Cookies from 'js-cookie';
 import api from '../utils/api';
 import analytics from '../utils/analytics';
 
@@ -15,29 +13,34 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem('guri24_user');
+        if (storedUser) {
+            try {
+                return JSON.parse(storedUser);
+            } catch {
+                localStorage.removeItem('guri24_user');
+            }
+        }
+        return null;
+    });
+    const [loading, setLoading] = useState(false);
 
     // Check for existing auth on mount and setup interceptors
     useEffect(() => {
         const storedUser = localStorage.getItem('guri24_user');
-        if (storedUser) {
-            try {
-                setUser(JSON.parse(storedUser));
-            } catch (e) {
-                localStorage.removeItem('guri24_user');
-            }
-        }
 
         const checkAuth = async () => {
+            if (!storedUser) {
+                setLoading(false);
+                return;
+            }
             try {
                 const response = await api.get('/users/me');
                 setUser(response);
                 localStorage.setItem('guri24_user', JSON.stringify(response));
-            } catch (error) {
-                // If it fails on mount, we trust the localStorage for a few seconds 
-                // to avoid immediate logout loops in Capacitor.
-                console.log('Mount auth check failed, retaining cached user if present.');
+            } catch {
+                // Retain cached user if present
             } finally {
                 setLoading(false);
             }
@@ -49,15 +52,10 @@ export const AuthProvider = ({ children }) => {
         const interceptorId = api.interceptors.response.use(
             (response) => response,
             (error) => {
-                // If we get a 401 but we have a user in localStorage, 
-                // it might be a temporary cookie sync issue in Capacitor.
-                // We'll only clear if it's NOT the login request itself failing.
                 if (error.response?.status === 401 || error.response?.status === 403) {
                     const isLoginRequest = error.config.url.includes('/auth/login');
                     if (!isLoginRequest) {
-                        console.warn('Unauthorized request detected, but keeping session for now to prevent immediate logout loop.');
-                        // setUser(null); // Commented out to prevent immediate logout loop
-                        // localStorage.removeItem('guri24_user');
+                        console.warn('Unauthorized request detected, keeping cached session.');
                     }
                 }
                 return Promise.reject(error);
@@ -74,11 +72,9 @@ export const AuthProvider = ({ children }) => {
             const formData = { email, password };
             const response = await api.post('/auth/login', formData);
 
-            // Backend sets HttpOnly cookies. We get user data in response.
             setUser(response);
             localStorage.setItem('guri24_user', JSON.stringify(response));
 
-            // Track login
             analytics.trackLogin('email');
             if (response.id) {
                 analytics.identifyUser(response.id, {
@@ -98,14 +94,7 @@ export const AuthProvider = ({ children }) => {
     const register = async (userData) => {
         try {
             await api.post('/auth/register', userData);
-
-            // Backend sends simple message, email verification required
-            // We don't log them in automatically usually, or we do?
-            // "Registration successful. Please check your email..."
-
-            // Track signup
             analytics.trackSignup('email');
-
             return { success: true, message: "Please check your email to verify your account." };
         } catch (error) {
             console.error('Registration error:', error);
@@ -127,7 +116,6 @@ export const AuthProvider = ({ children }) => {
             return { success: true };
         } catch (error) {
             console.error('Logout error:', error);
-            // Even if API fails, clear local state
             setUser(null);
             localStorage.removeItem('guri24_user');
             return { success: false };
@@ -183,9 +171,7 @@ export const AuthProvider = ({ children }) => {
 
     const refreshUser = async () => {
         try {
-            // Add cache-busting timestamp
             const response = await api.get(`/users/me?t=${Date.now()}`);
-            console.log('User refreshed:', response);
             setUser(response);
             return response;
         } catch (error) {

@@ -9,7 +9,7 @@ from datetime import datetime
 from sqlalchemy.orm.attributes import flag_modified
 from app.database import get_db, Base
 from app.models.user import User, AgentStatus, UserRole, UserStatus
-from app.schemas.user import UserUpdate, UserResponse, PasswordChange, MessageResponse
+from app.schemas.user import UserUpdate, UserResponse, PasswordChange, MessageResponse, ApplicationResponse
 from app.core.dependencies import get_current_active_user
 from app.core.security import verify_password, get_password_hash
 from app.models.verification_document import VerificationDocument, DocumentStatus
@@ -350,19 +350,22 @@ async def get_public_agent_profile(agent_id: str, db: AsyncSession = Depends(get
         "last_login": agent.last_login,
     }
 
-@router.post("/me/apply-agent", response_model=MessageResponse)
+@router.post("/me/apply-agent", response_model=ApplicationResponse)
 async def apply_to_be_agent(
     national_id_number: str = Form(...),
     date_of_birth: str = Form(...),
     full_address: str = Form(...),
     motivation: str = Form(...),
+    gender: Optional[str] = Form(None),
     location: Optional[str] = Form(None),
     phone: Optional[str] = Form(None),
     file: Optional[UploadFile] = File(None),
     current_user: User = Depends(get_current_active_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Unified endpoint for agent application including document upload"""
+    """Unified endpoint for agent application including document upload and email confirmation"""
+    import random
+    from app.services.email_service import email_service
     
     # Update profile fields
     current_user.agent_status = AgentStatus.PENDING
@@ -371,15 +374,11 @@ async def apply_to_be_agent(
     if location:
         current_user.location = location
     
-    # In some models we might store motivation/address in bio or other fields, 
-    # but here we'll just focus on getting the document and status right.
-    # For now, let's append motivation to bio or just rely on the logging.
     if motivation:
         current_user.bio = (current_user.bio or "") + f"\n\n[Agent Application Motivation]:\n{motivation}"
 
     # Handle document upload if provided
     if file:
-        # Re-use logic from upload_verification_document but integrated
         from app.utils.s3 import s3_client
         s3_client.ensure_bucket_exists()
         
@@ -390,7 +389,6 @@ async def apply_to_be_agent(
         
         success = s3_client.upload_file(file.file, object_name, content_type=file.content_type)
         if success:
-            from app.models.verification_document import VerificationDocument, DocumentStatus
             new_doc = VerificationDocument(
                 user_id=current_user.id,
                 name=f"Identity Document (Application - {national_id_number})",
@@ -404,7 +402,33 @@ async def apply_to_be_agent(
 
     await db.commit()
     
-    return {"message": "Agent application submitted successfully. Please wait for admin verification."}
+    # Generate official reference number & formatted submission date
+    sr_number = str(random.randint(23300000, 23399999))
+    submitted_date = datetime.utcnow().strftime("%d-%b-%Y")
+    
+    app_details = {
+        "sr_number": sr_number,
+        "submitted_date": submitted_date,
+        "name": current_user.name,
+        "national_id_number": national_id_number,
+        "date_of_birth": date_of_birth,
+        "gender": gender or "Not specified",
+        "phone": phone or current_user.phone or "",
+        "full_address": full_address,
+        "motivation": motivation
+    }
+    
+    # Send email copy to applicant
+    try:
+        await email_service.send_agent_application_confirmation(current_user, app_details)
+    except Exception as e:
+        print(f"Warning: Failed to send agent application confirmation email: {e}")
+    
+    return {
+        "message": "Agent application submitted successfully. Please wait for admin verification.",
+        "sr_number": sr_number,
+        "submitted_date": submitted_date
+    }
 
 @router.post("/me/request-agent", response_model=MessageResponse)
 async def request_agent_status(

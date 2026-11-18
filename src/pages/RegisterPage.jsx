@@ -55,11 +55,12 @@ const RegisterPage = () => {
         const result = await register(payload);
         setLoading(false);
         if (result.success) {
+            localStorage.setItem('pending_verification_email', formData.email);
             if (is_agent_request) {
                 localStorage.setItem('pending_agent_application', '1');
             }
             message.success(t('register.account_created'));
-            navigate('/verify-email');
+            navigate('/verify-email', { state: { email: formData.email } });
         } else {
             message.error(result.error || t('register.registration_failed'));
         }

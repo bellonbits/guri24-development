@@ -7,3 +7,19 @@
   RewriteCond %{REQUEST_FILENAME} !-l
   RewriteRule . /index.html [L]
 </IfModule>
+
+# Never cache index.html so users always get the latest SPA version
+<FilesMatch "index\.html$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </IfModule>
+</FilesMatch>
+
+# Static assets with Vite build hashes can be safely cached
+<FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "max-age=31536000, public, immutable"
+  </IfModule>
+</FilesMatch>

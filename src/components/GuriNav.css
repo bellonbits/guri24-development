@@ -59,9 +59,10 @@
     color: rgba(255, 255, 255, 0.9);
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link-active {
     color: var(--primary);
-    background: var(--gray-100);
+    background: var(--primary-lighter);
 }
 
 .nav-transparent .nav-link:hover {
@@ -195,7 +196,9 @@
 .desktop-nav-actions {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 /* Breakpoint for Mobile Nav */
@@ -241,9 +244,16 @@
 .nav-phone {
     color: #fff;
     font-weight: 600;
+    font-size: 0.875rem;
     display: flex;
     align-items: center;
     gap: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.nav-phone span {
+    white-space: nowrap;
 }
 
 .nav-scrolled .nav-phone {

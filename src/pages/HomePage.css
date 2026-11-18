@@ -1,13 +1,13 @@
-/* HomePage Styles — Guri24 Premium */
+/* HomePage Styles — Guri24 (landing-page-design B1–B11 & modern-web-guidance color calibrated) */
 .home-page {
     background: #ffffff;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--font-sans);
     color: #0a0f1a;
 }
 
-/* ── Section Header ─────────────────────────── */
+/* ── Section Header (B2 Spacing: 32px / 48px) ─────────────── */
 .home-section-header {
-    margin-bottom: 2.75rem;
+    margin-bottom: 32px;
 }
 
 .home-section-header.text-center {
@@ -18,68 +18,152 @@
 
 .section-subtitle {
     color: #1a5f9e;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 0.75rem;
+    line-height: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     display: block;
-    margin-bottom: 0.75rem;
+    margin-bottom: 8px;
 }
 
-/* ── Service / Feature Cards ────────────────── */
-.card-minimal {
+.home-outline-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
     background: #ffffff;
-    padding: 2.75rem;
-    border-radius: 20px;
+    color: #1a5f9e;
+    border: 1px solid #1a5f9e;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-outline-btn:hover {
+    background: #1a5f9e;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.home-outline-btn:active {
+    transform: scale(0.98);
+}
+
+/* ── B9. Skeleton Property Cards ─────────────────────────── */
+.property-skeleton-card {
+    background: #ffffff;
+    border-radius: 16px;
     border: 1px solid #e2e8f0;
-    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
-                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-                border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
-    height: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
+.property-skeleton-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0;
+}
+
+.property-skeleton-body {
+    padding: 16px 24px 24px;
+}
+
+.property-skeleton-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.home-empty-card {
+    text-align: center;
+    padding: 48px 24px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
+}
+
+/* ── B11. Mandatory Tagline Reveal Section ────────────────── */
+.tagline-reveal-section {
+    padding: 80px 0;
+    background: #0a0f1a;
+    border-top: 1px solid #1e293b;
+    border-bottom: 1px solid #1e293b;
+}
+
+.tagline-reveal-text {
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: left;
+    color: #ffffff;
+}
+
+.tagline-word {
+    color: rgba(255, 255, 255, 0.28);
+    transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tagline-word.is-active {
+    color: #ffffff;
+}
+
+/* ── Service / Benefit Cards (B3 Nested Radius: outer 16px, inner icon 8px) ── */
+.card-minimal {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 16px;
+    border: 1px solid #cbd5e1;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+}
+
 .card-minimal:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 48px -8px rgba(26, 95, 158, 0.14),
-                0 8px 16px -4px rgba(26, 95, 158, 0.08);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
     border-color: #1a5f9e;
 }
 
 .service-icon-wrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 14px;
-    background: rgba(26, 95, 158, 0.08);
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: var(--entity-people-tint, #eff6ff);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
     color: #1a5f9e;
-    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
-                color 0.2s cubic-bezier(0.2, 0, 0, 1);
-    border: 1px solid rgba(26, 95, 158, 0.1);
+    transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    border: 1px solid color-mix(in oklab, #1a5f9e 18%, #ffffff);
 }
 
 .card-minimal:hover .service-icon-wrapper {
     background: #1a5f9e;
     color: #ffffff;
-    border-color: transparent;
+    border-color: #1a5f9e;
 }
 
 .service-link {
     margin-top: auto;
     padding: 0;
-    font-weight: 700;
+    background: transparent;
     color: #1a5f9e;
-    font-size: 0.9rem;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: gap 0.2s cubic-bezier(0.2, 0, 0, 1),
-                color 0.2s cubic-bezier(0.2, 0, 0, 1);
-    letter-spacing: -0.01em;
+    transition: gap 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .service-link:hover {
@@ -91,60 +175,172 @@
     transform: scale(0.98);
 }
 
-.service-link:focus-visible {
-    outline: 2px solid rgba(26, 95, 158, 0.4);
-    outline-offset: 2px;
-    border-radius: 4px;
-}
-
-@media (max-width: 768px) {
-    .card-minimal {
-        padding: 2rem;
-    }
-}
-
-/* ── Blog Cards ─────────────────────────────── */
-.blog-post-card {
+/* ── How It Works Cards ──────────────────────────────────── */
+.how-step-card {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
-    gap: 0.875rem;
-    cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.blog-post-card:hover {
+.how-step-card:hover {
     transform: translateY(-4px);
+    border-color: #1a5f9e;
+    box-shadow: var(--shadow);
+    background: #ffffff;
 }
 
-.blog-post-card:hover h4 {
+.how-step-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.how-step-num {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    color: #1a5f9e;
+    background: var(--entity-people-tint, #eff6ff);
+    border: 1px solid color-mix(in oklab, #1a5f9e 20%, #ffffff);
+    padding: 4px 12px;
+    border-radius: 8px;
+}
+
+.how-step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+}
+
+/* ── FAQ Section ─────────────────────────────────────────── */
+.home-faq-list {
+    max-width: 768px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.home-faq-item {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-faq-item[open] {
+    border-color: #1a5f9e;
+    box-shadow: var(--shadow-sm);
+}
+
+.home-faq-summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 24px;
+    cursor: pointer;
+    color: #0a0f1a;
+    user-select: none;
+}
+
+.home-faq-summary::-webkit-details-marker {
+    display: none;
+}
+
+.home-faq-chevron {
+    color: #475569;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-faq-item[open] .home-faq-chevron {
+    transform: rotate(180deg);
     color: #1a5f9e;
 }
 
-.blog-post-title {
-    font-weight: 700;
-    min-height: 60px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin: 0 !important;
-    line-height: 1.45 !important;
-    letter-spacing: -0.02em;
-    color: #1e293b;
-    transition: color 0.2s cubic-bezier(0.2, 0, 0, 1);
+.home-faq-answer {
+    padding: 0 24px 16px;
+    color: #334155;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
 }
 
-.blog-post-date {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #94a3b8;
+/* ── Final CTA Section (B4: flat surface, B5: 680px cap) ──── */
+.home-final-cta-section {
+    padding: 64px 0;
+    background: #ffffff;
 }
 
-.blog-post-meta {
-    font-size: 0.875rem;
-    color: #64748b;
-    font-weight: 500;
+.home-final-cta-box {
+    background: #0a0f1a;
+    border: 1px solid #1e293b;
+    border-radius: 24px;
+    padding: 64px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-final-cta-badge {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 8px 16px;
+    margin-bottom: 16px;
+}
+
+.home-final-cta-heading {
+    max-width: 680px;
+    margin-bottom: 16px;
+    background-image: linear-gradient(to right, #FFFFFF 0%, #9B9B9B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.home-final-cta-sub {
+    max-width: 680px;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 32px;
+}
+
+.home-final-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .tagline-reveal-section {
+        padding: 48px 0;
+    }
+
+    .card-minimal,
+    .how-step-card {
+        padding: 24px;
+    }
+
+    .home-final-cta-box {
+        padding: 40px 24px;
+    }
 }

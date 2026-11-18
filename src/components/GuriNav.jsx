@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Button, Space, Drawer } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
     Home,
     Info,
@@ -24,6 +24,7 @@ const { Header } = Layout;
 
 const GuriNav = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { isAuthenticated, user } = useAuth();
     const isAdmin = ['admin', 'super_admin'].includes(user?.role);
     const isAgent = ['agent', 'admin', 'super_admin'].includes(user?.role);
@@ -69,17 +70,21 @@ const GuriNav = () => {
                 </Link>
 
                 {/* Center: Main Nav (desktop only) */}
-                <div className="desktop-nav-main">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.label}
-                            to={item.path}
-                            className="nav-link"
-                        >
-                            {item.label}
-                        </Link>
-                    ))}
-                </div>
+                <nav className="desktop-nav-main" aria-label="Primary">
+                    {navItems.map((item) => {
+                        const isActive = location.pathname === item.path;
+                        return (
+                            <Link
+                                key={item.label}
+                                to={item.path}
+                                aria-current={isActive ? 'page' : undefined}
+                                className={`nav-link ${isActive ? 'nav-link-active' : ''}`}
+                            >
+                                {item.label}
+                            </Link>
+                        );
+                    })}
+                </nav>
 
                 {/* Right: Actions (desktop only) */}
                 <div className="desktop-nav-actions">
@@ -162,6 +167,8 @@ const GuriNav = () => {
 
                     <Button
                         type="text"
+                        aria-label="Open navigation menu"
+                        aria-expanded={mobileVisible}
                         className="mobile-nav-toggle flex items-center justify-center"
                         icon={<MenuIcon size={26} />}
                         onClick={() => setMobileVisible(true)}

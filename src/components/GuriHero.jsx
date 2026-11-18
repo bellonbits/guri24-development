@@ -3,16 +3,8 @@ import { fadeUp, staggerContainer } from '../utils/animations';
 import GuriFilterBar from './GuriFilterBar';
 import { useTranslation } from 'react-i18next';
 
-const GuriHero = ({ onSearch, loading }) => {
+const GuriHero = ({ onSearch }) => {
     const { t } = useTranslation();
-    if (loading) {
-        return (
-            <section style={{ height: '680px', background: 'linear-gradient(135deg, #0d3b66 0%, #1a5f9e 100%)' }}
-                className="flex items-center justify-center">
-                <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-            </section>
-        );
-    }
 
     return (
         <section
@@ -20,88 +12,94 @@ const GuriHero = ({ onSearch, loading }) => {
             style={{
                 position: 'relative',
                 minHeight: '600px',
-                backgroundColor: '#0a1f3d',
-                backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80')`,
+                backgroundColor: '#181818',
+                backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1280&q=75')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
                 alignItems: 'center',
-                paddingTop: '60px',
-                paddingBottom: '60px',
+                paddingTop: '64px',
+                paddingBottom: '64px',
             }}
         >
-            {/* Overlay */}
-            <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to bottom, rgba(10,30,60,0.72) 0%, rgba(10,30,60,0.55) 60%, rgba(10,30,60,0.7) 100%)',
-            }} />
+            {/* Flat high-contrast dark scrim for WCAG AAA legibility over photography */}
+            <div
+                aria-hidden="true"
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundColor: 'rgba(10, 15, 26, 0.68)',
+                }}
+            />
 
             <motion.div
                 className="container w-full"
                 style={{ position: 'relative', zIndex: 1 }}
                 variants={staggerContainer}
-                initial="hidden"
+                initial={false}
                 animate="visible"
             >
-                {/* Badge */}
-                <motion.div className="flex justify-center mb-4" variants={fadeUp} custom={0}>
-                    <span style={{
-                        background: 'rgba(255,255,255,0.15)',
-                        border: '1px solid rgba(255,255,255,0.25)',
-                        color: 'white',
-                        borderRadius: '100px',
-                        padding: '6px 18px',
-                        fontSize: '13px',
-                        fontWeight: 600,
-                        backdropFilter: 'blur(8px)',
-                        letterSpacing: '0.04em',
-                    }}>
-                        {t('home.hero_badge', "East Africa's #1 Real Estate Platform")}
+                {/* Proof signal badge */}
+                <motion.div className="flex justify-center" style={{ marginBottom: '16px' }} variants={fadeUp} custom={0}>
+                    <span
+                        className="caption-3"
+                        style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                            border: '1px solid rgba(255, 255, 255, 0.24)',
+                            color: '#ffffff',
+                            borderRadius: '9999px',
+                            padding: '8px 16px',
+                            backdropFilter: 'blur(8px)',
+                            letterSpacing: '0.02em',
+                        }}
+                    >
+                        {t('home.hero_badge', 'Verified real estate across East Africa')}
                     </span>
                 </motion.div>
 
-                {/* Headline */}
+                {/* B5. Hero Headline — max-width 680px, meaningful line break, left-to-right #FFFFFF -> #9B9B9B text gradient */}
                 <motion.h1
+                    className="heading-1"
                     variants={fadeUp}
                     custom={1}
                     style={{
-                        color: 'white',
-                        fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                        fontWeight: 800,
+                        maxWidth: '680px',
+                        marginInline: 'auto',
+                        marginBottom: '16px',
                         textAlign: 'center',
-                        lineHeight: 1.15,
-                        letterSpacing: '-0.02em',
-                        marginBottom: '10px',
-                        textShadow: '0 2px 20px rgba(0,0,0,0.3)',
+                        backgroundImage: 'linear-gradient(to right, #FFFFFF 0%, #9B9B9B 100%)',
+                        WebkitBackgroundClip: 'text',
+                        backgroundClip: 'text',
+                        color: 'transparent',
                     }}
                 >
-                    {t('home.hero_title_p1', 'Find Your Dream Home')}<br />
-                    <span style={{ color: '#7eb8f7' }}>{t('home.hero_title_p2', 'with Guri24')}</span>
+                    {t('home.hero_title_p1', 'Find your next home')}
+                    <br />
+                    {t('home.hero_title_p2', 'with verified local agents')}
                 </motion.h1>
 
-                {/* Subheadline */}
+                {/* B5. Subheadline — max-width 680px, clarifies how and adds specificity */}
                 <motion.p
+                    className="title-2"
                     variants={fadeUp}
                     custom={2}
                     style={{
-                        color: 'rgba(255,255,255,0.8)',
-                        fontSize: 'clamp(13px, 1.8vw, 17px)',
+                        maxWidth: '680px',
+                        marginInline: 'auto',
+                        color: 'rgba(255, 255, 255, 0.86)',
                         textAlign: 'center',
-                        marginBottom: '28px',
-                        fontWeight: 400,
-                        lineHeight: 1.6,
+                        marginBottom: '32px',
                     }}
                 >
-                    {t('home.hero_subtitle', 'Thousands of verified properties across Kenya & East Africa')}
+                    {t('home.hero_subtitle', 'Browse 1,500+ inspected homes, apartments, and short stays across Kenya and East Africa with transparent pricing.')}
                 </motion.p>
 
-                {/* Search Bar */}
+                {/* Primary Action Search Bar */}
                 <motion.div variants={fadeUp} custom={3} style={{ maxWidth: '860px', margin: '0 auto' }}>
                     <GuriFilterBar onSearch={onSearch} />
                 </motion.div>
 
-                {/* Trust indicators */}
+                {/* Proof strip (A2.4: one proof signal above the fold, tabular numbers) */}
                 <motion.div
                     variants={fadeUp}
                     custom={4}
@@ -109,42 +107,47 @@ const GuriHero = ({ onSearch, loading }) => {
                         display: 'flex',
                         flexWrap: 'wrap',
                         justifyContent: 'center',
-                        gap: '8px 20px',
-                        marginTop: '28px',
+                        gap: '12px 24px',
+                        marginTop: '32px',
                     }}
                 >
                     {[
-                        { num: '10+', text: t('home.stats_exp', 'Years Experience') },
-                        { num: '2,000+', text: t('home.stats_clients', 'Happy Clients') },
-                        { num: '1,500+', text: t('home.stats_props', 'Properties') },
+                        { num: '10+', text: t('home.stats_exp', 'Years in East Africa') },
+                        { num: '2,000+', text: t('home.stats_clients', 'Verified buyers and tenants') },
+                        { num: '1,500+', text: t('home.stats_props', 'Inspected listings') },
                     ].map(({ num, text }) => (
-                        <motion.div
+                        <div
                             key={text}
-                            whileHover={{ scale: 1.06 }}
                             style={{
-                                display: 'flex',
+                                display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '6px',
-                                background: 'rgba(255,255,255,0.1)',
-                                border: '1px solid rgba(255,255,255,0.15)',
-                                borderRadius: '100px',
-                                padding: '5px 14px',
-                                backdropFilter: 'blur(4px)',
+                                gap: '8px',
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                borderRadius: '9999px',
+                                padding: '8px 16px',
+                                backdropFilter: 'blur(6px)',
                             }}
                         >
-                            <span style={{
-                                color: '#7eb8f7',
-                                fontWeight: 800,
-                                fontSize: 'clamp(12px, 1.5vw, 14px)',
-                                whiteSpace: 'nowrap',
-                            }}>{num}</span>
-                            <span style={{
-                                color: 'rgba(255,255,255,0.75)',
-                                fontWeight: 500,
-                                fontSize: 'clamp(11px, 1.4vw, 13px)',
-                                whiteSpace: 'nowrap',
-                            }}>{text}</span>
-                        </motion.div>
+                            <span
+                                className="body-4 tabular-nums"
+                                style={{
+                                    color: '#ffffff',
+                                    whiteSpace: 'nowrap',
+                                }}
+                            >
+                                {num}
+                            </span>
+                            <span
+                                className="caption-1"
+                                style={{
+                                    color: 'rgba(255, 255, 255, 0.82)',
+                                    whiteSpace: 'nowrap',
+                                }}
+                            >
+                                {text}
+                            </span>
+                        </div>
                     ))}
                 </motion.div>
             </motion.div>

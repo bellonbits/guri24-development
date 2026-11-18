@@ -16,15 +16,21 @@ const PublicLayout = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <a href="#main-content" className="skip-link visually-hidden">
+                Skip to main content
+            </a>
             {!isAuthRoute && <Header />}
-            <main 
+            <main
+                id="main-content"
+                tabIndex={-1}
                 className={!hasHero ? 'main-with-padding' : ''}
-                style={{ 
-                    flex: 1, 
-                    display: 'flex', 
-                    flexDirection: 'column', 
+                style={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
                     minHeight: 0,
-                    paddingTop: isAuthRoute ? '0' : 'calc(64px + var(--sat))'
+                    paddingTop: isAuthRoute ? '0' : 'calc(64px + var(--sat))',
+                    outline: 'none'
                 }}
             >
                 <Outlet />

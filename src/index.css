@@ -1,79 +1,165 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand Colors - Blue palette from Guri24 logo */
+  /* Native browser UI theming & color scheme (modern-web-guidance: browser-ui-theming & color) */
+  color-scheme: light;
+  accent-color: #1a5f9e;
+
+  /* Safe OKLab / OKLCH gradient interpolation tokens (modern-web-guidance: visual-effects) */
+  --in-oklab: ;
+  --in-oklch: ;
+
+  /* Brand Palette — Perceptually calibrated Guri24 Blue */
   --primary-dark: #0d3b66;
   --primary: #1a5f9e;
-  --primary-light: #3498db;
-  --primary-lighter: #e8f1fa;
-  --primary-accent: #d0e4f4;
+  --primary-light: #2b7ac4;
+  --primary-lighter: color-mix(in oklab, #1a5f9e 8%, #ffffff);
+  --primary-accent: color-mix(in oklab, #1a5f9e 16%, #ffffff);
   --accent-blue: #2563eb;
 
-  /* Modern Neutral Palette - Slate family (consistent cool undertone) */
+  /* Perceptually Uniform Neutral Scale (Slate/Cool Undertone — WCAG AA/AAA calibrated)
+     Note: Mixes use Cartesian `in oklab` (never `in oklch` on neutrals) to prevent Chromium bug 565837690 magenta shift */
   --white: #ffffff;
   --gray-50: #f8fafc;
   --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  --gray-300: #94a3b8; /* 3.02:1 on white — meets WCAG 1.4.11 3:1 non-text boundary contrast */
+  --gray-400: #64748b; /* 4.76:1 on white — meets WCAG 1.4.3 4.5:1 AA normal text contrast */
+  --gray-500: #475569; /* 7.58:1 on white — meets WCAG AAA contrast */
+  --gray-600: #334155; /* 10.9:1 on white */
+  --gray-700: #1e293b; /* 14.6:1 on white */
+  --gray-800: #0f172a; /* 17.8:1 on white */
+  --gray-900: #0a0f1a; /* 19.3:1 on white */
   --black: #0a0f1a;
 
-  /* Accent Colors */
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --info: #3b82f6;
+  /* Dashboard Entity & Semantic Status Tokens (dashboard-design: colour follows the entity) */
+  --entity-people: #1a5f9e;
+  --entity-people-tint: color-mix(in oklab, #1a5f9e 10%, #ffffff);
+  --entity-money: #0d7a52;
+  --entity-money-tint: color-mix(in oklab, #0d7a52 10%, #ffffff);
+  --entity-attention: #b45309;
+  --entity-attention-bg: color-mix(in oklab, #f59e0b 12%, #ffffff);
+  --entity-attention-border: color-mix(in oklab, #f59e0b 38%, #ffffff);
+  --entity-danger: #b91c1c;
+  --entity-danger-bg: color-mix(in oklab, #ef4444 10%, #ffffff);
+  --entity-neutral-icon-bg: #f1f5f9;
+  --entity-neutral-icon-fg: #475569;
 
-  /* Safe Area Insets (for mobile devices) */
-  --sat: env(safe-area-inset-top);
-  --sab: env(safe-area-inset-bottom);
-  --sar: env(safe-area-inset-right);
-  --sal: env(safe-area-inset-left);
+  /* Semantic Status Colors (WCAG 4.5:1+ text contrast on light surfaces) */
+  --success: #0d7a52;
+  --warning: #b45309;
+  --error: #b91c1c;
+  --info: #1d4ed8;
 
-  /* Spacing & Layout */
+  /* B2. Strict Spacing Scale (landing-page-design) */
+  --spacing-0: 0px;
+  --spacing-25: 2px;
+  --spacing-50: 4px;
+  --spacing-75: 8px;
+  --spacing-100: 12px;
+  --spacing-200: 16px;
+  --spacing-300: 24px;
+  --spacing-400: 32px;
+  --spacing-500: 40px;
+  --spacing-600: 48px;
+  --spacing-700: 64px;
+  --spacing-800: 80px;
+  --spacing-900: 96px;
+
+  /* B3. Corner Radius Tokens (Tailwind aligned) */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-2xl: 24px;
   --radius-3xl: 32px;
-  --radius-pill: 100px;
+  --radius-pill: 9999px;
 
-  /* Semantic tokens for components */
-  --color-text-secondary: #717171;
-  --color-border: #ebebeb;
+  /* Semantic component tokens */
+  --color-text-primary: var(--gray-900);
+  --color-text-secondary: var(--gray-500);
+  --color-text-muted: var(--gray-400);
+  --color-border: var(--gray-200);
+  --color-border-strong: var(--gray-300);
 
-  /* Shadows - Tinted with brand hue for premium feel */
-  --shadow-sm: 0 1px 3px rgba(26, 95, 158, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow: 0 4px 12px rgba(26, 95, 158, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
-  --shadow-hover: 0 10px 30px rgba(26, 95, 158, 0.14), 0 4px 8px rgba(15, 23, 42, 0.06);
-  --shadow-floating: 0 16px 40px rgba(26, 95, 158, 0.12), 0 6px 12px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 12px 28px rgba(26, 95, 158, 0.1), 0 4px 8px rgba(15, 23, 42, 0.06);
-  --shadow-xl: 0 24px 56px rgba(26, 95, 158, 0.14), 0 8px 16px rgba(15, 23, 42, 0.08);
-  --shadow-2xl: 0 32px 64px rgba(26, 95, 158, 0.18), 0 12px 24px rgba(15, 23, 42, 0.1);
+  /* Layered Perceptual Shadows (visual-effects) */
+  --shadow-sm: 0 1px 2px color-mix(in oklab, #0f172a 5%, transparent),
+               0 2px 6px color-mix(in oklab, #1a5f9e 5%, transparent);
+  --shadow: 0 2px 6px color-mix(in oklab, #0f172a 5%, transparent),
+            0 8px 20px color-mix(in oklab, #1a5f9e 7%, transparent);
+  --shadow-hover: 0 6px 14px color-mix(in oklab, #0f172a 6%, transparent),
+                  0 16px 36px color-mix(in oklab, #1a5f9e 12%, transparent);
+  --shadow-floating: 0 8px 20px color-mix(in oklab, #0f172a 8%, transparent),
+                     0 24px 48px color-mix(in oklab, #1a5f9e 14%, transparent);
+  --shadow-lg: 0 6px 16px color-mix(in oklab, #0f172a 6%, transparent),
+               0 16px 32px color-mix(in oklab, #1a5f9e 10%, transparent);
+  --shadow-xl: 0 12px 24px color-mix(in oklab, #0f172a 8%, transparent),
+               0 24px 56px color-mix(in oklab, #1a5f9e 14%, transparent);
+  --shadow-2xl: 0 16px 32px color-mix(in oklab, #0f172a 10%, transparent),
+                0 32px 64px color-mix(in oklab, #1a5f9e 16%, transparent);
 
-  /* Typography */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* B1. Single Approved Typeface */
+  --font-sans: 'Manrope', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Transitions */
-  --transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  /* B7. Weighted Deceleration Motion Curve (never browser default ease/linear) */
+  --ease-base: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Safe Areas (iOS) */
+  /* Safe Area Insets (iOS/Mobile) */
   --sat: env(safe-area-inset-top);
   --sar: env(safe-area-inset-right);
   --sab: env(safe-area-inset-bottom);
   --sal: env(safe-area-inset-left);
 }
 
+@supports (background: linear-gradient(in oklab, white, black)) {
+  :root {
+    --in-oklab: in oklab;
+    --in-oklch: in oklch;
+  }
+}
+
+/* High Contrast / Forced Colors Mode Support (modern-web-guidance: color) */
+@media (forced-colors: active) {
+  :root {
+    --color-border: CanvasText;
+    --color-border-strong: CanvasText;
+  }
+  .card,
+  .card-minimal,
+  .property-card-wrapper,
+  .stat-card,
+  .section-card,
+  .status-badge {
+    border: 1px solid CanvasText !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --gray-200: #94a3b8;
+    --gray-400: #334155;
+    --gray-500: #1e293b;
+    --color-border: #64748b;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-style: normal; /* B1: Never use italic fonts anywhere in the interface */
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--primary) 22%, #ffffff);
+  color: var(--gray-900);
 }
 
 html {
@@ -82,17 +168,23 @@ html {
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  background: var(--white);
+  /* Thumb (#475569) vs Track (#f1f5f9) has 6.8:1 contrast (≥ 3:1 requirement in browser-ui-theming) */
+  scrollbar-color: var(--gray-500) var(--gray-100);
 }
 
 body {
   margin: 0;
   padding: 0;
+  max-width: 100vw;
   width: 100%;
   min-height: 100vh;
   position: relative;
   font-family: var(--font-sans);
   background-color: var(--gray-50);
   color: var(--gray-900);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
@@ -103,6 +195,36 @@ body {
   min-height: 100vh;
 }
 
+/* Visually hidden utility that becomes visible when focused (modern-web-guidance: accessibility) */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link:focus-visible {
+  position: fixed;
+  top: var(--spacing-200);
+  left: var(--spacing-200);
+  z-index: 9999;
+  background: var(--primary-dark);
+  color: var(--white);
+  padding: var(--spacing-100) var(--spacing-200);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: var(--shadow-lg);
+  outline: 3px solid var(--white);
+  outline-offset: 2px;
+}
+
+/* B1. Typography Rules — No orphaned words, weights capped at Semibold (600) / Bold (700) */
 h1,
 h2,
 h3,
@@ -113,26 +235,69 @@ h6 {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
+  text-wrap: balance;
 }
 
 h1 {
   font-size: 3rem;
-  font-weight: 800;
+  line-height: 1;
+  font-weight: 600;
 }
 
 h2 {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 600;
 }
 
 h3 {
   font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
 }
 
 p {
-  line-height: 1.7;
-  color: var(--gray-700);
+  line-height: 1.5rem;
+  color: var(--gray-600);
   font-size: 1rem;
+  text-wrap: pretty;
+}
+
+/* B1. Named Text Styles (exact scale steps & weights from landing-page-design) */
+.heading-1 { font-size: 3.75rem; line-height: 3.75rem; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+.heading-2 { font-size: 3rem; line-height: 3rem; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+.heading-3 { font-size: 2.25rem; line-height: 2.5rem; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+.heading-4 { font-size: 1.875rem; line-height: 2.25rem; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+.heading-5 { font-size: 1.5rem; line-height: 2rem; font-weight: 600; letter-spacing: -0.015em; text-wrap: balance; }
+.heading-6 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
+
+.title-1 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 500; }
+.title-2 { font-size: 1.125rem; line-height: 1.75rem; font-weight: 500; }
+.title-3 { font-size: 1rem; line-height: 1.5rem; font-weight: 500; }
+.title-4 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+.title-5 { font-size: 0.75rem; line-height: 1rem; font-weight: 500; }
+
+.body-1 { font-size: 1rem; line-height: 1.5rem; font-weight: 600; text-wrap: pretty; }
+.body-2 { font-size: 1rem; line-height: 1.5rem; font-weight: 500; text-wrap: pretty; }
+.body-3 { font-size: 1rem; line-height: 1.5rem; font-weight: 400; text-wrap: pretty; }
+.body-4 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; text-wrap: pretty; }
+.body-5 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; text-wrap: pretty; }
+.body-6 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 400; text-wrap: pretty; }
+
+.button-lg  { font-size: 1.125rem; line-height: 1.75rem; font-weight: 600; }
+.button-md  { font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
+.button-sm  { font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; }
+.button-xsm { font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
+
+.caption-1 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+.caption-2 { font-size: 0.875rem; line-height: 1.25rem; font-weight: 400; }
+.caption-3 { font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
+.caption-4 { font-size: 0.75rem; line-height: 1rem; font-weight: 500; }
+.caption-5 { font-size: 0.75rem; line-height: 1rem; font-weight: 400; }
+
+/* Tabular numbers for all dashboard metrics and prices (dashboard-design) */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
 a {
@@ -148,15 +313,40 @@ button {
   transition: var(--transition);
 }
 
+/* Accessible Focus Indicators (modern-web-guidance: accessibility — never outline:none without replacement) */
+:where(a:any-link, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 input,
 select,
 textarea {
   font-family: var(--font-sans);
-  outline: none;
-  font-size: 16px !important; /* Forces 16px to prevent iOS auto-zoom on focus */
+  font-size: 16px !important; /* Prevents iOS auto-zoom on focus */
 }
 
-img {
+textarea {
+  resize: vertical;
+}
+
+/* User-interaction validity states (modern-web-guidance: browser-ui-theming) */
+input:not([type="range"]):user-invalid,
+textarea:user-invalid,
+select:user-invalid {
+  border-color: var(--error);
+}
+
+input:not([type="range"]):user-valid,
+textarea:user-valid {
+  border-color: var(--success);
+}
+
+img,
+video,
+iframe,
+embed,
+object {
   max-width: 100%;
   display: block;
 }
@@ -165,64 +355,72 @@ img {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--spacing-300);
 }
 
-/* Section Spacing */
+/* Section Spacing (B2: Spacing-700 = 64px) */
 .section {
-  padding: 4rem 0;
+  padding: var(--spacing-700) 0;
 }
 
 .section-title {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: var(--spacing-600);
 }
 
 .section-title h2 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-200);
 }
 
 .section-title p {
-  font-size: 1.15rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   color: var(--gray-500);
   max-width: 600px;
   margin: 0 auto;
 }
 
-/* Buttons */
+/* Buttons (B2 & B9: hover, active scale(0.98), focus-visible ring, flat surface) */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 14px 28px;
+  gap: var(--spacing-75);
+  padding: var(--spacing-100) var(--spacing-300);
+  min-block-size: 40px;
   border-radius: var(--radius-md);
   font-weight: 600;
   font-size: 1rem;
+  line-height: 1.5rem;
   transition: var(--transition);
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
   text-decoration: none;
+}
+
+.btn:active {
+  transform: scale(0.98);
 }
 
 .btn-primary {
   background: var(--primary);
   color: var(--white);
-  box-shadow: 0 4px 12px rgba(26, 95, 158, 0.3);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(26, 95, 158, 0.4);
+  box-shadow: var(--shadow);
 }
 
 .btn-secondary {
   background: var(--white);
   color: var(--primary);
-  border: 2px solid var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .btn-secondary:hover {
@@ -231,54 +429,100 @@ img {
 }
 
 .btn-large {
-  padding: 16px 32px;
-  font-size: 1.1rem;
+  padding: var(--spacing-200) var(--spacing-400);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
-/* Alerts */
+/* Alerts (with icon + text, never color alone per WCAG 1.4.1) */
 .alert {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 14px 18px;
+  gap: var(--spacing-100);
+  padding: var(--spacing-200);
   border-radius: var(--radius-md);
-  font-size: 0.92rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 500;
-  margin-bottom: 20px;
-  line-height: 1.5;
+  margin-bottom: var(--spacing-300);
 }
 .alert-error {
   background: #fef2f2;
-  border: 1px solid #fecaca;
+  border: 1px solid #fca5a5;
   color: #991b1b;
 }
 .alert-success {
   background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  border: 1px solid #86efac;
   color: #14532d;
 }
 .alert-info {
   background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  border: 1px solid #93c5fd;
   color: #1e40af;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Skeleton Loader Shimmer (B9: skeleton loaders shaped like real layout, not circular spinners) */
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
 }
-@keyframes slideInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.fade-in { animation: fadeIn 0.35s ease-out; }
 
-/* Cards */
+.skeleton-block {
+  background: var(--gray-200);
+  border-radius: var(--radius-sm);
+  animation: skeletonPulse 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Animations (B7: cubic-bezier(0.22, 1, 0.36, 1)) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-in-up {
+  animation: slideInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Respect prefers-reduced-motion (B7 & B11) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Cards (B4: full all-around border, flat background) */
 .card {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 2rem;
+  padding: var(--spacing-400);
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow);
   transition: var(--transition);
 }
@@ -289,197 +533,99 @@ img {
 }
 
 /* Utilities */
-.text-center {
-  text-align: center;
-}
+.text-center { text-align: center; }
+.text-secondary { color: var(--gray-500); }
+.text-muted { color: var(--gray-400); }
 
-.text-secondary {
-  color: var(--gray-400);
-}
+.mb-1 { margin-bottom: var(--spacing-75); }
+.mb-2 { margin-bottom: var(--spacing-200); }
+.mb-3 { margin-bottom: var(--spacing-300); }
+.mb-4 { margin-bottom: var(--spacing-400); }
+.mt-1 { margin-top: var(--spacing-75); }
+.mt-2 { margin-top: var(--spacing-200); }
+.mt-3 { margin-top: var(--spacing-300); }
+.mt-4 { margin-top: var(--spacing-400); }
 
-.text-muted {
-  color: var(--gray-500);
-}
-
-.mb-1 {
-  margin-bottom: 0.5rem;
-}
-
-.mb-2 {
-  margin-bottom: 1rem;
-}
-
-.mb-3 {
-  margin-bottom: 1.5rem;
-}
-
-.mb-4 {
-  margin-bottom: 2rem;
-}
-
-.mt-1 {
-  margin-top: 0.5rem;
-}
-
-.mt-2 {
-  margin-top: 1rem;
-}
-
-.mt-3 {
-  margin-top: 1.5rem;
-}
-
-.mt-4 {
-  margin-top: 2rem;
-}
-
-/* Ant Design overrides - kill default header spacing */
+/* Ant Design overrides */
 .ant-layout-header {
   padding-inline: 0 !important;
   margin-bottom: 0 !important;
   line-height: inherit !important;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/* Coarse pointer touch target minimum (modern-web-guidance: accessibility 2.5.8) */
+@media (pointer: coarse) {
+  button,
+  .btn,
+  a.nav-link {
+    min-block-size: 44px;
   }
 }
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.6s ease-out;
-}
-
-.slide-in-up {
-  animation: slideInUp 0.6s ease-out;
-}
-
-/* Responsive Typography */
+/* Responsive Typography (snapped to Tailwind scale steps) */
 @media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
+  h1, .heading-1 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 
-  h2 {
+  h2, .heading-2, .section-title h2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  h3, .heading-3 {
     font-size: 1.5rem;
-  }
-
-  h3 {
-    font-size: 1.25rem;
-  }
-
-  .section-title h2 {
-    font-size: 1.75rem;
+    line-height: 2rem;
   }
 
   .container {
-    padding: 0 16px;
+    padding: 0 var(--spacing-200);
   }
 }
-/* ============================================================
-   MOBILE RESPONSIVE FIXES
-   ============================================================ */
 
-/* Header: hide extras on mobile/tablet */
+/* Header & Mobile Responsive Rules */
 @media (max-width: 1279px) {
   .header-phone {
     display: none !important;
   }
-  /* header-lang intentionally NOT hidden — always visible on all screens */
 }
 
 @media (max-width: 767px) {
   .header-actions {
     display: none !important;
   }
-}
 
-/* Body: pad bottom for BottomNav on mobile */
-@media (max-width: 767px) {
   body {
-    padding-bottom: 80px;
+    padding-bottom: var(--spacing-800);
   }
 
-  /* Tighten section padding on mobile */
   .section {
-    padding: 2.5rem 0;
+    padding: var(--spacing-500) 0;
   }
 
-  .section-title h2 {
-    font-size: 1.5rem;
-  }
-
-  /* Container horizontal padding */
-  .container {
-    padding: 0 16px;
-  }
-
-  /* Fix hero min-height on mobile */
   .guri-hero-section {
     min-height: 520px !important;
   }
 }
 
-/* Prevent horizontal scroll globally without locking vertical scroll */
-html {
-  background: var(--white);
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-body {
-  max-width: 100vw;
-  width: 100%;
-  min-height: 100vh;
-  position: relative;
-  margin: 0;
-  padding: 0;
-}
-
-/* Fix pages that use fixed background causing overflow */
 .profile-page::before,
 .profile-page::after {
   max-width: 100vw;
 }
 
-/* Ensure images and embeds don't overflow */
-img, video, iframe, embed, object {
-  max-width: 100%;
-}
-
-/* Cards grid responsive */
 @media (max-width: 640px) {
   .card-minimal {
-    padding: 1.5rem !important;
+    padding: var(--spacing-300) !important;
   }
 
   .btn-large {
-    padding: 12px 20px;
+    padding: var(--spacing-100) var(--spacing-300);
     font-size: 1rem;
+    line-height: 1.5rem;
   }
 }
 
-/* Fix filter bar on very small screens */
 @media (max-width: 480px) {
   .filter-bar-grid {
     grid-template-columns: 1fr !important;

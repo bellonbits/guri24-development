@@ -135,7 +135,7 @@ const PropertyCard = ({ property, index = 0 }) => {
                     )}
                     {!sqft && !bedrooms && !bathrooms && (
                         <div className="property-detail-item">
-                            <span style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>{t('property.details_on_request')}</span>
+                            <span style={{ color: 'var(--gray-500)' }}>{t('property.details_on_request')}</span>
                         </div>
                     )}
                 </div>

@@ -1,6 +1,6 @@
-/* StatsSection Styles — Guri24 Premium */
+/* StatsSection Styles — Guri24 (landing-page-design B1/B2/B4 + OKLab Color Science) */
 .stats-section {
-    padding: 72px 0;
+    padding: 64px 0;
     background: #f8fafc;
     border-top: 1px solid #e2e8f0;
     border-bottom: 1px solid #e2e8f0;
@@ -9,117 +9,129 @@
 .stats-grid-main {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3.5rem;
+    gap: 32px;
     align-items: center;
 }
 
 @media (min-width: 1024px) {
     .stats-grid-main {
         grid-template-columns: 1fr 1fr;
-        gap: 6rem;
+        gap: 64px;
     }
 }
 
 /* ── About Column ───────────────────────────── */
 .stats-about-subtitle {
     color: #1a5f9e;
-    font-weight: 700;
-    font-size: 0.72rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     display: block;
-    margin-bottom: 1rem;
+    margin-bottom: 12px;
 }
 
 .stats-about-title {
-    font-size: clamp(26px, 4vw, 34px);
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-    font-weight: 800;
+    margin-bottom: 16px;
     color: #0a0f1a;
-    letter-spacing: -0.03em;
+    max-width: 680px;
 }
 
 .stats-about-desc {
-    font-size: 1rem;
-    color: #64748b;
-    line-height: 1.8;
-    font-weight: 450;
+    color: #334155;
+    max-width: 680px;
+}
+
+.stats-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    color: #1a5f9e;
+    text-decoration: none;
+    transition: gap 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stats-cta-link:hover {
+    color: #0d3b66;
+    gap: 12px;
 }
 
 /* ── Numbers Grid ───────────────────────────── */
 .stats-numbers-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+    gap: 16px;
 }
 
+/* B3 Nested Radius: outer 16px, inner icon 8px */
 .stat-item {
-    text-align: center;
-    padding: 1.75rem 1rem;
+    text-align: left;
+    padding: 24px;
     background: #ffffff;
     border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 8px rgba(26, 95, 158, 0.06);
-    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
-                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-                border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
+    border: 1px solid #cbd5e1;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .stat-item:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(26, 95, 158, 0.12);
-    border-color: rgba(26, 95, 158, 0.25);
+    box-shadow: var(--shadow);
+    border-color: #1a5f9e;
 }
 
 .stat-icon-wrapper {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
-    background: rgba(26, 95, 158, 0.08);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--entity-people-tint, #eff6ff);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.1rem;
+    margin-bottom: 16px;
     color: #1a5f9e;
-    transition: background 0.2s cubic-bezier(0.2, 0, 0, 1),
-                color 0.2s cubic-bezier(0.2, 0, 0, 1),
-                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
-    border: 1px solid rgba(26, 95, 158, 0.12);
+    transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    border: 1px solid color-mix(in oklab, #1a5f9e 18%, #ffffff);
 }
 
 .stat-item:hover .stat-icon-wrapper {
     background: #1a5f9e;
     color: #ffffff;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(26, 95, 158, 0.22);
-    border-color: transparent;
+    border-color: #1a5f9e;
 }
 
 .stat-value {
     display: block;
-    font-size: clamp(22px, 3vw, 30px);
-    font-weight: 800;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 600;
     color: #0a0f1a;
-    margin-bottom: 5px;
-    letter-spacing: -0.03em;
-    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
-    font-size: 0.8rem;
-    color: #64748b;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #475569; /* 7.58:1 WCAG AAA contrast */
+    font-weight: 500;
+    display: block;
 }
 
 @media (max-width: 640px) {
     .stats-numbers-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 16px;
     }
 
     .stat-item {
-        padding: 1.5rem 1.25rem;
+        padding: 24px;
     }
 }

@@ -1,155 +1,208 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
-import { MapPin, X } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import { MapPin, Navigation, Search, X, Loader2 } from 'lucide-react';
 import './LocationPicker.css';
 
-const LIBRARIES = ['places'];
-const MAP_CONTAINER_STYLE = { width: '100%', height: '220px', borderRadius: '10px' };
+// Fix Leaflet's default marker icon
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+});
 
-export default function LocationPicker({ value, onChange }) {
-    const inputRef = useRef(null);
-    const autocompleteRef = useRef(null);
-    const [mapCenter, setMapCenter] = useState(
-        value.latitude && value.longitude
-            ? { lat: parseFloat(value.latitude), lng: parseFloat(value.longitude) }
-            : { lat: -1.286389, lng: 36.817223 } // Nairobi default
-    );
-    const [markerPos, setMarkerPos] = useState(
-        value.latitude && value.longitude
-            ? { lat: parseFloat(value.latitude), lng: parseFloat(value.longitude) }
-            : null
-    );
-
-    const { isLoaded } = useLoadScript({
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-        libraries: LIBRARIES,
-    });
-
-    // Init autocomplete once the script loads and the input is mounted
+// Helper component to recenter map view
+function ChangeView({ center }) {
+    const map = useMap();
     useEffect(() => {
-        if (!isLoaded || !inputRef.current) return;
+        if (center) {
+            map.flyTo(center, 15, { duration: 1.2 });
+        }
+    }, [center, map]);
+    return null;
+}
 
-        autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
-            fields: ['geometry', 'formatted_address', 'name', 'address_components'],
-        });
+// Click event listener on map
+function MapClickHandler({ onClick }) {
+    useMapEvents({
+        click(e) {
+            onClick(e.latlng);
+        },
+    });
+    return null;
+}
 
-        autocompleteRef.current.addListener('place_changed', () => {
-            const place = autocompleteRef.current.getPlace();
-            if (!place.geometry) return;
+export default function LocationPicker({ value = {}, onChange }) {
+    const defaultCenter = [-1.286389, 36.817223]; // Nairobi
+    const [position, setPosition] = useState(
+        value.latitude && value.longitude
+            ? [parseFloat(value.latitude), parseFloat(value.longitude)]
+            : defaultCenter
+    );
+    const [hasPicked, setHasPicked] = useState(Boolean(value.latitude && value.longitude));
+    const [searchQuery, setSearchQuery] = useState(value.address || '');
+    const [searching, setSearching] = useState(false);
+    const [geolocating, setGeolocating] = useState(false);
 
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-            const address = place.formatted_address || place.name || '';
-
-            // Extract city / area for the "location" field
-            let city = '';
-            const ac = place.address_components || [];
-            const locality = ac.find(c => c.types.includes('locality'));
-            const sublocality = ac.find(c => c.types.includes('sublocality') || c.types.includes('sublocality_level_1'));
-            const country = ac.find(c => c.types.includes('country'));
-            if (sublocality) city = sublocality.long_name;
-            else if (locality) city = locality.long_name;
-            if (country) city = city ? `${city}, ${country.long_name}` : country.long_name;
-
-            setMapCenter({ lat, lng });
-            setMarkerPos({ lat, lng });
-            onChange({ latitude: lat, longitude: lng, address, location: city || address });
-        });
-
-        return () => {
-            if (autocompleteRef.current) {
-                window.google.maps.event.clearInstanceListeners(autocompleteRef.current);
+    // Reverse geocode via OpenStreetMap Nominatim
+    const reverseGeocode = async (lat, lng) => {
+        try {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`
+            );
+            const data = await res.json();
+            if (data && data.display_name) {
+                const address = data.display_name;
+                const addr = data.address || {};
+                const city = addr.suburb || addr.neighbourhood || addr.city || addr.town || addr.county || 'Nairobi, Kenya';
+                setSearchQuery(address);
+                onChange({
+                    latitude: lat,
+                    longitude: lng,
+                    address: address,
+                    location: city
+                });
+            } else {
+                onChange({
+                    latitude: lat,
+                    longitude: lng,
+                    address: value.address || `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
+                    location: value.location || 'Kenya'
+                });
             }
-        };
-    }, [isLoaded]);
+        } catch {
+            onChange({
+                latitude: lat,
+                longitude: lng,
+                address: value.address || `${lat.toFixed(5)}, ${lng.toFixed(5)}`,
+                location: value.location || 'Kenya'
+            });
+        }
+    };
 
-    const handleMapClick = useCallback((e) => {
-        const lat = e.latLng.lat();
-        const lng = e.latLng.lng();
-        setMarkerPos({ lat, lng });
-        setMapCenter({ lat, lng });
+    // Forward geocode via Nominatim
+    const handleSearchSubmit = async (e) => {
+        if (e) e.preventDefault();
+        if (!searchQuery.trim()) return;
 
-        // Reverse geocode
-        const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-            if (status === 'OK' && results[0]) {
-                const address = results[0].formatted_address;
-                if (inputRef.current) inputRef.current.value = address;
-
-                const ac = results[0].address_components || [];
-                const locality = ac.find(c => c.types.includes('locality'));
-                const sublocality = ac.find(c => c.types.includes('sublocality'));
-                const country = ac.find(c => c.types.includes('country'));
-                let city = sublocality?.long_name || locality?.long_name || '';
-                if (country) city = city ? `${city}, ${country.long_name}` : country.long_name;
-
-                onChange({ latitude: lat, longitude: lng, address, location: city || address });
+        setSearching(true);
+        try {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery + ', Kenya')}&limit=1`
+            );
+            const data = await res.json();
+            if (data && data.length > 0) {
+                const lat = parseFloat(data[0].lat);
+                const lng = parseFloat(data[0].lon);
+                setPosition([lat, lng]);
+                setHasPicked(true);
+                reverseGeocode(lat, lng);
             }
-        });
-    }, [onChange]);
+        } catch (err) {
+            console.error('Search failed:', err);
+        } finally {
+            setSearching(false);
+        }
+    };
+
+    // User GPS Geolocation
+    const handleUseCurrentLocation = () => {
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser.');
+            return;
+        }
+
+        setGeolocating(true);
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                setPosition([lat, lng]);
+                setHasPicked(true);
+                reverseGeocode(lat, lng);
+                setGeolocating(false);
+            },
+            (err) => {
+                console.warn('Geolocation error:', err.message);
+                alert('Could not retrieve your location. Please check browser permissions.');
+                setGeolocating(false);
+            },
+            { timeout: 10000, enableHighAccuracy: true }
+        );
+    };
+
+    const handleMapClick = (latlng) => {
+        const { lat, lng } = latlng;
+        setPosition([lat, lng]);
+        setHasPicked(true);
+        reverseGeocode(lat, lng);
+    };
 
     const handleClear = () => {
-        if (inputRef.current) inputRef.current.value = '';
-        setMarkerPos(null);
-        setMapCenter({ lat: -1.286389, lng: 36.817223 });
+        setPosition(defaultCenter);
+        setHasPicked(false);
+        setSearchQuery('');
         onChange({ latitude: '', longitude: '', address: '', location: '' });
     };
 
-    if (!isLoaded) {
-        return (
-            <div className="location-picker-loading">
-                <MapPin size={16} />
-                <span>Loading map...</span>
-            </div>
-        );
-    }
-
     return (
         <div className="location-picker">
-            {/* Search Input */}
-            <div className="location-search-wrap">
-                <MapPin size={16} className="location-pin-icon" />
-                <input
-                    ref={inputRef}
-                    type="text"
-                    defaultValue={value.address || ''}
-                    placeholder="Search address, neighbourhood, city..."
-                    className="location-search-input"
-                    autoComplete="off"
-                />
-                {(value.address || value.latitude) && (
-                    <button type="button" className="location-clear-btn" onClick={handleClear} title="Clear location">
-                        <X size={14} />
-                    </button>
-                )}
+            <div className="location-controls-bar">
+                <form className="location-search-wrap" onSubmit={handleSearchSubmit}>
+                    <MapPin size={16} className="location-pin-icon" />
+                    <input
+                        type="text"
+                        className="location-search-input"
+                        placeholder="Search address, neighbourhood, city..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    {searchQuery && (
+                        <button type="button" className="location-clear-btn" onClick={handleClear} title="Clear">
+                            <X size={13} />
+                        </button>
+                    )}
+                </form>
+
+                <button
+                    type="button"
+                    className="location-locate-btn"
+                    onClick={handleUseCurrentLocation}
+                    disabled={geolocating}
+                    title="Detect my current GPS location"
+                >
+                    {geolocating ? <Loader2 size={16} className="spin" /> : <Navigation size={16} />}
+                    <span>{geolocating ? 'Locating...' : 'Use My Geolocation'}</span>
+                </button>
             </div>
 
-            {/* Coordinates display */}
-            {value.latitude && value.longitude && (
-                <div className="location-coords-row">
-                    <span>Lat: <strong>{parseFloat(value.latitude).toFixed(6)}</strong></span>
-                    <span>Lng: <strong>{parseFloat(value.longitude).toFixed(6)}</strong></span>
-                    {value.location && <span className="location-city-tag"><MapPin size={11} />{value.location}</span>}
-                </div>
-            )}
+            <div className="location-map-container">
+                <MapContainer
+                    center={position}
+                    zoom={hasPicked ? 15 : 12}
+                    scrollWheelZoom={false}
+                    style={{ width: '100%', height: '240px', borderRadius: '12px' }}
+                >
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <ChangeView center={position} />
+                    <MapClickHandler onClick={handleMapClick} />
+                    {hasPicked && <Marker position={position} />}
+                </MapContainer>
+            </div>
 
-            {/* Map */}
-            <GoogleMap
-                mapContainerStyle={MAP_CONTAINER_STYLE}
-                center={mapCenter}
-                zoom={markerPos ? 15 : 12}
-                onClick={handleMapClick}
-                options={{
-                    disableDefaultUI: false,
-                    zoomControl: true,
-                    streetViewControl: false,
-                    mapTypeControl: false,
-                    fullscreenControl: false,
-                }}
-            >
-                {markerPos && <Marker position={markerPos} />}
-            </GoogleMap>
-            <p className="location-map-hint">Click anywhere on the map to set exact pin location</p>
+            <div className="location-picker-caption">
+                <span>📍 Click anywhere on the map or drag to set the exact pin coordinates</span>
+                {value.latitude && value.longitude && (
+                    <span className="location-coords">
+                        GPS: {parseFloat(value.latitude).toFixed(4)}, {parseFloat(value.longitude).toFixed(4)}
+                    </span>
+                )}
+            </div>
         </div>
     );
 }
